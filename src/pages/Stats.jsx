@@ -15,7 +15,7 @@ const Stats = () => {
                 <Calendar className="bg-headerGray rounded-3xl"/>
             </div>
         </div>
-        <Achievements className="bg-headerGray border flex-shrink-0 rounded-3xl h-[30vh] md:h-auto max-h-[84vh] md:w-1/4" />
+        <Achievements className="bg-headerGray flex-shrink-0 rounded-3xl h-[30vh] md:h-auto max-h-[84vh] md:w-1/4" />
       </div>
     );
   };
