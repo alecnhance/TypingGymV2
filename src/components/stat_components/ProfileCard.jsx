@@ -11,7 +11,7 @@ const ProfileCard = ({ className }) => {
             <div className="w-full text-left px-3 mt-4">
                 <h3 className='text-md font-medium'>Titles</h3>
             </div>
-            <div className='flex flex-wrap gap-1 px-3 mt-2 justify-center'>
+            <div className='flex flex-wrap gap-1 px-3 mt-2 justify-left'>
                 {titles.map((item, i) => (
                     <div key={i} className="px-3 rounded-3xl bg-navOrange">
                         <h2 className='font-medium'>{item}</h2>

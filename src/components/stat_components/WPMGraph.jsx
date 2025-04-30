@@ -1,7 +1,7 @@
 const WPMGraph = ({ className }) => {
     return (
         <div className={`${className}`}>
-            <h1>Welcome to WPMGraph</h1>
+            <h1>G</h1>
         </div>
     );
 };

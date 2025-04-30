@@ -1,11 +1,20 @@
+import { useState } from 'react';
 
 const keyboardLayout = [
     ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
-    ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
-    ['CapsLock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'Enter'],
-    ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
+    ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+    ['CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter'],
+    ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'Shift'],
     ['Space']
-  ];
+];
+
+const keyboardLayoutShifted = [
+    ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'Backspace'],
+    ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '|'],
+    ['CapsLock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', 'Enter'],
+    ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 'Shift'],
+    ['Space']
+];
 
 const getKeyColor = (keyAccuracy, key) => {
 if (keyAccuracy[key] === undefined) return '#161616'; // Untyped keys
@@ -16,12 +25,12 @@ if (keyAccuracy[key] === undefined) return '#161616'; // Untyped keys
     const deviations = (keyAccuracy[key] - mean) / stdDev;
 
     const colorStops = [
-        { threshold: -2.5, color: 'worstAcc' },
-        { threshold: -1.5, color: 'secondWorstAcc' },
-        { threshold: -0.5, color: 'belowAvgAcc' },
-        { threshold: 0.5,  color: 'aboveAvgAcc' },
-        { threshold: 1.5,  color: 'secondBestAcc' }, 
-        { threshold: 2.5,  color: 'bestAcc' } 
+        { threshold: -2.5, color: '#7f1d1d' },
+        { threshold: -1.5, color: '#dc2626' }, 
+        { threshold: -0.5, color: '#ea580c' },  
+        { threshold:  0.5, color: '#ca8a04' },  
+        { threshold:  1.5, color: '#8bc34a' },  
+        { threshold:  2.5, color: '#16a34a' }   
     ];
 
     let lowerStop, upperStop;
@@ -59,23 +68,39 @@ const interpolateColor = (color1, color2, factor) => {
   
 const keyAccuracy = {
     A: 0.97,
+    a: 0.89,
     S: 0.82,
+    s: 0.71,
     D: 0.58,
+    d: 0.64,
     F: 0.44,
+    f: 0.53,
     J: 0.91,
+    j: 0.86,
     K: 0.95,
+    k: 0.88,
     L: 0.78,
+    l: 0.81,
     ';': 0.55,
     Q: 0.88,
+    q: 0.76,
     W: 0.92,
+    w: 0.83,
     E: 0.66,
+    e: 0.70,
     R: 0.74,
+    r: 0.68,
     'Shift': 0.70,
     'Space': 0.99,
     '4': 0.67,
     '$': 0.32,
+    '%': 0.41,
+    '&': 0.48,
+    '(': 0.36,
+    ')': 0.38,
     'Backspace': 0.93,
-    };
+};
+  
 
 const getKeySize = (key) => {
     if (key === 'Backspace' || key === 'Enter' || key === 'Shift') {
@@ -110,11 +135,27 @@ const colorCodeInfo = [
   
 
 const Keyboard = ({ className }) => {
+    const [shifted, setShift] = useState(false);
+
+    const toggleShift = () => {
+        setShift(!shifted);
+    };
+
+    const currentLayout = shifted ? keyboardLayoutShifted : keyboardLayout;
+
     return (
         <div className={`${className} w-full flex flex-col overflow-auto justify-between py-4`}>
-            <h2 className="text-3xl">Accuracy</h2>
+            <div className="flex w-full justify-between px-10 items-center">
+                <h2 className="text-3xl">Accuracy</h2>
+                <button
+                    onClick={toggleShift}
+                    className="text-sm border border-white px-3 rounded-md text-white max-h-[3vh] min-w-[5vw]"
+                >
+                    {shifted ? 'Unshift' : 'Shift'}
+                </button>
+            </div>
             <div className="w-full inline-block px-10 mt-2">
-                {keyboardLayout.map((row, i) => (
+                {currentLayout.map((row, i) => (
                     <div key={i} className="flex justify-center w-full">
                         {row.map((key, i) => (
                             <div 
