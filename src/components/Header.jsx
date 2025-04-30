@@ -26,12 +26,12 @@ const Header = () => {
                     Practice
                 </NavLink>
                 <NavLink
-                    to="/userpage"
+                    to="/stats"
                     className={({ isActive}) => 
                         isActive ? 'font-bold text-navOrange' : 'hover:underline cursor-pointer'
                     }
                 >
-                    User
+                    Stats
                 </NavLink>
             </nav>
         </header>
