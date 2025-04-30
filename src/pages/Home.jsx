@@ -24,10 +24,10 @@ const widgetData = [
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center p-8">
+    <div className="flex flex-col p-4 justify-start">
       <div className="flex justify-center items-start gap-8 p-4 w-full">
         {widgetData.map((item, i) => (
-          <div key={i} className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 min-h-[250px] max-h-[350px] bg-headerGray text-white">
+          <div key={i} className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[30vh] bg-headerGray text-white overflow-auto">
             <h2 className="text-xl font-bold mb-2">{item.title}</h2>
             <p className="text-gray-300 mb-4">{item.description}</p>
             <button 
@@ -43,7 +43,7 @@ const Home = () => {
       </div>
       <div className="flex justify-center items-start gap-8 p-4 w-full">
         {[1, 2].map((i) => (
-          <div key={i} className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 min-h-[300px] max-h-[400px] bg-headerGray text-white">
+          <div key={i} className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[50vh] bg-headerGray text-white">
             <p className="text-gray-300 mb-4">{i}</p>
           </div>
         ))}
