@@ -6,6 +6,7 @@ export default {
       colors: {
         headerGray: '#2D2D2D',
         navOrange: '#F5972F',
+        mainBackground: '#181414',
       },
     },
   },

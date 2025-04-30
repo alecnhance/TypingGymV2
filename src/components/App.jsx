@@ -10,15 +10,17 @@ const App = () => {
 
   return (
     <Router>
-      <Header />
-      <div className="p-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/practice" element={<Practice />} />
-          <Route path="/userpage" element={<UserPage />} />
-        </Routes>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="p-4 flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/practice" element={<Practice />} />
+            <Route path="/userpage" element={<UserPage />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-      <Footer />
     </Router>
   );
 };
