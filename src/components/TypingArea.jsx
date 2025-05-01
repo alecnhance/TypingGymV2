@@ -27,7 +27,7 @@ const TypingArea = () => {
             <InnerTyping />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: 00:00</h2>
-                <ProgressBar progress={progress}/>
+                <ProgressBar progress={progress} height="5"/>
                 <h2>Accuracy: 100%</h2>
             </div>
             <div className="flex w-full items-center justify-center gap-4 mt-6">
