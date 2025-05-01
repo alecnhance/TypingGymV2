@@ -21,32 +21,45 @@ const widgetData = [
   }
 ];
 
+const practiceDescription = "Grind through the fundamentals to build rock-solid muscle memory. Consistency here pays off when you\'re chasing speed PRs later."
+
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col p-4 justify-start">
-      <div className="flex justify-center items-start gap-8 p-4 w-full">
-        {widgetData.map((item, i) => (
-          <div key={i} className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[30vh] bg-headerGray text-white overflow-auto">
-            <h2 className="text-xl font-bold mb-2">{item.title}</h2>
-            <p className="text-gray-300 mb-4">{item.description}</p>
-            <button 
-              className="mt-auto px-4 py-2 w-1/2 rounded-full transition bg-navOrange text-white self-center"
-              onClick={() => {
-                if (item.route) navigate(item.route);
-              }}
-            >
-              {item.buttonTitle}
-            </button>
+    <div className="flex flex-col p-[2vh] justify-center h-[95vh]">
+      <div className="flex flex-col md:flex-row justify-center items-start gap-8 p-4 w-full">
+        <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
+          <h2 className="text-xl font-bold mb-2">Training Circuit</h2>
+          <p className="text-gray-300 mb-4">{practiceDescription}</p>
+          <button 
+            className="mt-auto px-4 py-2 w-1/2 rounded-full transition bg-navOrange text-white self-center"
+            onClick={() => {
+              navigate('/practice');
+            }}
+          >
+            Typing Practice
+          </button>
+        </div>
+        <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
+          <h2 className="text-xl font-bold mb-2">Community</h2>
+        </div>
+        <div className="flex flex-col justify-between  shadow-md  w-1/2 h-[42vh] flex-grow gap-4 p-1 text-white overflow-auto">
+          <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl'>
+            <h2 className="text-xl ">Make sure to always put your fingers of the f and j keys</h2>
           </div>
-        ))}
+          <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl gap-2'>
+            <h1 className="">120 WPM</h1>
+            <h2 className="font-extralight">Keep Pushing!</h2>
+          </div>
+        </div>
       </div>
       <div className="flex justify-center items-start gap-8 p-4 w-full">
-        {[1, 2].map((i) => (
-          <div key={i} className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[50vh] bg-headerGray text-white">
-            <p className="text-gray-300 mb-4">{i}</p>
-          </div>
-        ))}
+        <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
+          <h2 className="text-xl font-bold mb-2">Daily Challenge</h2>
+        </div>
+        <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
+          <h2 className="text-xl font-bold mb-2">Recent Activity</h2>
+        </div>
       </div>
     </div>
 
