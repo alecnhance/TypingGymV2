@@ -1,4 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+import bulb from "../assets/bright-light-bulb.svg";
+
+
 
 const widgetData = [
   { 
@@ -28,11 +31,11 @@ const Home = () => {
   return (
     <div className="flex flex-col p-[2vh] justify-center h-[95vh]">
       <div className="flex flex-col md:flex-row justify-center items-start gap-8 p-4 w-full">
-        <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
-          <h2 className="text-xl font-bold mb-2">Training Circuit</h2>
-          <p className="text-gray-300 mb-4">{practiceDescription}</p>
+        <div className="flex flex-col justify-center gap-[3vh] rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
+          <h2 className="text-2xl font-bold ">Training Circuit</h2>
+          <p className="text-gray-300 text-lg ">{practiceDescription}</p>
           <button 
-            className="mt-auto px-4 py-2 w-1/2 rounded-full transition bg-navOrange text-white self-center"
+            className="px-4 py-2 w-1/2 rounded-full transition bg-navOrange text-white self-center"
             onClick={() => {
               navigate('/practice');
             }}
@@ -44,8 +47,11 @@ const Home = () => {
           <h2 className="text-xl font-bold mb-2">Community</h2>
         </div>
         <div className="flex flex-col justify-between  shadow-md  w-1/2 h-[42vh] flex-grow gap-4 p-1 text-white overflow-auto">
-          <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl'>
-            <h2 className="text-xl ">Make sure to always put your fingers of the f and j keys</h2>
+          <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl px-3'>
+            <div className='flex items-center gap-2'>
+              <img src={bulb} className='w-[15%]' />
+              <h2 className="text-xl ">Make sure to always put your fingers of the f and j keys</h2>
+            </div>
           </div>
           <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl gap-2'>
             <h1 className="">120 WPM</h1>
