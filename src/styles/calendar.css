@@ -1,0 +1,106 @@
+/* calendar.css */
+/* Complete spacing reduction for react-calendar */
+
+/* Root calendar container */
+.react-calendar {
+  width: 100% !important;
+  max-width: 800px; /* Adjust as needed */
+  background: #2D2D2D; /* Match your bg-gray-800 */
+  border: none !important;
+  font-family: inherit;
+}
+
+/* Calendar view container */
+.react-calendar__viewContainer {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Month view grid */
+.react-calendar__month-view {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Weekday headers */
+.react-calendar__month-view__weekdays {
+  margin-bottom: 2px !important;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0 !important;
+  font-size: 0.7em !important;
+  text-align: center !important;
+  text-transform: uppercase;
+  color: #a0aec0;
+}
+
+.react-calendar__navigation__label {
+  font-size: 1em !important; /* Inherits from parent */
+  padding: 0 1vmin !important;
+  min-width: auto !important; /* Allows natural shrinkage */
+}
+
+/* Day tiles - THE KEY TO TIGHT SPACING */
+.react-calendar__tile {
+  margin: 0 !important;
+  padding: 0 !important;
+  aspect-ratio: 1 !important; /* Square cells */
+  max-width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  position: relative;
+}
+
+/* Date number styling */
+.react-calendar__tile abbr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  height: 100% !important;
+  font-size: 0.8em !important;
+  color: white;
+}
+
+/* Current day styling */
+.react-calendar__tile--now {
+  background: #4a5568 !important;
+  border-radius: 50% !important;
+}
+
+/* Selected day styling */
+.react-calendar__tile--active {
+  background: #4299e1 !important;
+  border-radius: 50% !important;
+}
+
+/* Practice day styling */
+.bg-orange-500 {
+  background: #ed8936 !important;
+  border-radius: 50% !important;
+}
+
+/* Navigation buttons */
+.react-calendar__navigation {
+  margin-bottom: 5px !important;
+}
+
+.react-calendar__navigation button {
+  min-width: 30px !important;
+  background: none !important;
+  color: white !important;
+  border: none !important;
+  padding: 5px !important;
+}
+
+/* Week number styling */
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #718096 !important;
+}
+
+.react-calendar__navigation__label {
+  font-size: 0.9rem !important; /* Default is ~1.1em */
+  padding: 0 5px !important;
+}
