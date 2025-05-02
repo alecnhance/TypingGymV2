@@ -1,4 +1,4 @@
-import TypingArea from "../components/TypingArea";
+import TypingArea from "../components/typing_area_comp/TypingArea";
 
 const Practice = () => {
     return (

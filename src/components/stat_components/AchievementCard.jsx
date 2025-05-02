@@ -1,4 +1,4 @@
-import ProgressBar from '../ProgressBar';
+import ProgressBar from '../typing_area_comp/ProgressBar';
 
 const AchievementCard = ({ progress, title, description, image }) => {
     return (
