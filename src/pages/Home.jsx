@@ -1,6 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import bulb from "../assets/bright-light-bulb.svg";
 import DailyBar from '../components/home_components/DailyBar';
+import CommunityGraph from '../components/home_components/CommunityGraph';
+import profilePic from '../assets/selfie.jpg';
+import flame from '../assets/flame.svg';
+import dumbbell from '../assets/dumbbell.svg';
+import RecentActivity from '../components/RecentActivity';
 
 
 const widgetData = [
@@ -24,6 +29,14 @@ const widgetData = [
   }
 ];
 
+const demoData = {
+  timeLabels: ['9AM', '10AM', '11AM', '12PM', '1PM', 'Now'],
+  avgWpms: [45, 52, 48, 57, 62, 58],
+  userCounts: [82, 104, 156, 210, 187, 203],
+  peakWpm: 89,
+  totalCompleted: 1243
+};
+
 const practiceDescription = "Grind through the fundamentals to build rock-solid muscle memory. Consistency here pays off when you\'re chasing speed PRs later."
 
 const Home = () => {
@@ -44,7 +57,9 @@ const Home = () => {
           </button>
         </div>
         <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
-          <h2 className="text-xl font-bold mb-2">Community</h2>
+          <div className=' h-full'>
+            <CommunityGraph image={profilePic} username="enhanced!" title="highest speed today" stat="250 WPM"/>
+          </div>
         </div>
         <div className="flex flex-col justify-between  shadow-md  w-1/2 h-[42vh] flex-grow gap-4 p-1 text-white overflow-auto">
           <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl px-3'>
@@ -53,9 +68,9 @@ const Home = () => {
               <h2 className="text-xl ">Make sure to always put your fingers of the f and j keys</h2>
             </div>
           </div>
-          <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl gap-2'>
-            <h1 className="">120 WPM</h1>
-            <h2 className="font-extralight">Keep Pushing!</h2>
+          <div className='flex justify-center items-center w-full bg-headerGray flex-1 rounded-2xl gap-2'>
+            <h1 className="text-3xl">X Day Streak</h1>
+            <img src={flame} className='w-[10%]'/>
           </div>
         </div>
       </div>
@@ -67,7 +82,7 @@ const Home = () => {
           </div>
         </div>
         <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
-          <h2 className="text-xl font-bold mb-2">Recent Activity</h2>
+          <RecentActivity />
         </div>
       </div>
     </div>
