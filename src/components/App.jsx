@@ -4,6 +4,7 @@ import Footer from './Footer';
 import Home from '../pages/Home';
 import Practice from '../pages/Practice';
 import Stats from '../pages/Stats';
+import UserPage from "../pages/UserPage";
 import '../styles/App.css';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/practice" element={<Practice />} />
             <Route path="/stats" element={<Stats />} />
+            <Route path="/user" element={<UserPage />} />
           </Routes>
         </main>
         <Footer />

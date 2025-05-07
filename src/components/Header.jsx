@@ -33,6 +33,14 @@ const Header = () => {
                 >
                     Stats
                 </NavLink>
+                <NavLink
+                    to="/user"
+                    className={({ isActive}) => 
+                        isActive ? 'font-bold text-navOrange' : 'hover:underline cursor-pointer'
+                    }
+                >
+                    Name
+                </NavLink>
             </nav>
         </header>
     );
