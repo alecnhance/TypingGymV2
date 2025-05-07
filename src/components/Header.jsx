@@ -1,7 +1,31 @@
 import dumbbell from '../assets/dumbbell.svg';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import ProfileDropdown from './ProfileDropdown';
 
 const Header = () => {
+    const [showDrop, setDrop] = useState(false);
+    const handleNameClick = () => {
+        setDrop((prev) => !prev);
+    }
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isUserPage = location.pathname === '/user';
+    const goToProfile = () => {
+        navigate("/user");
+    };
+    const dropOptions = ["profile", "signout"];
+    const dropSelect = (option) => {
+        switch (option) {
+            case "profile": 
+                goToProfile();
+                setDrop(false);
+                break;
+            default: 
+                setDrop(false);
+                break;
+        }
+    }
     return (
         <header className="flex w-full justify-between items-center p-4 bg-headerGray text-white ">
             <div className="flex items-center space-x-2">
@@ -33,14 +57,19 @@ const Header = () => {
                 >
                     Stats
                 </NavLink>
-                <NavLink
-                    to="/user"
-                    className={({ isActive}) => 
-                        isActive ? 'font-bold text-navOrange' : 'hover:underline cursor-pointer'
-                    }
+                <button
+                    className={`hover:underline cursor-pointer ${
+                        isUserPage ? 'font-bold text-navOrange' : ''
+                    }`}
+                    onClick={handleNameClick}
                 >
                     Name
-                </NavLink>
+                </button>
+                {showDrop && (
+                    <div className="absolute right-0">
+                        <ProfileDropdown options={dropOptions} onSelect={dropSelect} />
+                    </div>
+                )}
             </nav>
         </header>
     );

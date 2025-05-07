@@ -23,7 +23,7 @@ const ProfileSettings = () => {
             `}
             </style>
 
-            <h2 className='text-large'>Profile</h2>
+            <h2 className='text-2xl'>Profile</h2>
             <div className='flex flex-col w-full items-center h-[50%] gap-4'>
                 <input
                     type="text"
