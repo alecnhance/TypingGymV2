@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Dropdown from './Dropdown';
 import InnerTyping from './InnerTyping';
 import ProgressBar from './ProgressBar';
@@ -6,6 +6,7 @@ import ProgressBar from './ProgressBar';
 const TypingArea = () => {
     const [selectedOption, setSelectedOption] = useState(' ');
     const [progress, setProgress] = useState(50);
+    const innerTypingRef = useRef(null); 
 
     const options = [
         { value: 'option1', label: 'Option 1' },
@@ -17,6 +18,23 @@ const TypingArea = () => {
         setSelectedOption(value);
     };
 
+    const [inputText, setInputText] = useState('');
+    const samplePrompt = "This is a sample prompt that I am testing out"
+    const samplePromptSplit = samplePrompt.split("");
+    const initColorDict = () => {
+        return samplePromptSplit.map((_, index) => index).reduce((acc, val) => {
+            acc[val] = "text-headerGray";
+            return acc;
+        }, {});
+    }
+    const [colorDict, setColorDict] = useState(initColorDict());
+
+    const handleRestart = () => {
+        setInputText("");
+        setColorDict(initColorDict());
+        innerTypingRef.current?.focus();
+    }
+
     return(
         <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8">
             <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
@@ -24,7 +42,14 @@ const TypingArea = () => {
                 <Dropdown options={options} onSelect={handleSelect} />
                 <h2>WPM: 100</h2>
             </div>
-            <InnerTyping />
+            <InnerTyping 
+                ref={innerTypingRef}
+                inputText={inputText}
+                onInputChange={setInputText}
+                colorDict={colorDict}
+                onColorChange={setColorDict}
+                prompt={samplePrompt}
+            />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: 00:00</h2>
                 <ProgressBar progress={progress} height="5"/>
@@ -33,6 +58,7 @@ const TypingArea = () => {
             <div className="flex w-full items-center justify-center gap-4 mt-6">
                 <button
                     className="rounded-full text-white bg-navOrange px-4 py-2 min-w-[130px]"
+                    onClick={handleRestart}
                 >
                     Restart
                 </button>

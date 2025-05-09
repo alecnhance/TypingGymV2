@@ -1,42 +1,38 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 
-const InnerTyping = () => {
-    const [inputText, setInputText] = useState('');
-    const samplePrompt = "This is a sample prompt that I am testing out"
-    const samplePromptSplit = samplePrompt.split("");
-    const initColorDict = () => {
-        return samplePromptSplit.map((_, index) => index).reduce((acc, val) => {
-            acc[val] = "text-headerGray";
-            return acc;
-        }, {});
-    }
-    const [colorDict, setColorDict] = useState(initColorDict);
+const InnerTyping = React.forwardRef(({ inputText, onInputChange, colorDict, onColorChange, prompt}, ref) => {
+    
     const inputRef = useRef(null);
+
+    useImperativeHandle(ref, () => ({
+        focus: () => inputRef.current?.focus()
+    }));
     
     const handleInputChange = (event) => {
         const len = event.target.value.length;
         if (len > inputText.length) {
             const newChar = event.target.value[len - 1];
-            if (samplePrompt[len - 1] === newChar) {
-                setColorDict(prev => ({
+            if (prompt[len - 1] === newChar) {
+                onColorChange(prev => ({
                     ...prev,
                     [len - 1]: prev[len - 1] === 'text-headerGray' || prev[len - 1] === 'text-green-500'
                         ? 'text-green-500'
                         : 'text-yellow-500'
                 }));
             } else {
-                setColorDict(prev => ({
+                onColorChange(prev => ({
                     ...prev,
                     [len - 1]: 'text-red-500'
                 }));
             }
         }
-        setInputText(event.target.value);
+        onInputChange(event.target.value);
     };
 
     const handleKeyDown = (event) => {
 
     }
+
 
     return (
         <div className="flex flex-wrap bg-white rounded-3xl items-start py-4 px-4 min-h-[100px]">
@@ -49,10 +45,10 @@ const InnerTyping = () => {
                 className='absolute opacity-0 w-0 h-0'
                 autoFocus
             />
-            {samplePrompt.split(/(\s+)/).map((word, wordIndex) => (
+            {prompt.split(/(\s+)/).map((word, wordIndex) => (
                 <span key={wordIndex} className='whitespace-pre'>
                     {word.split("").map((char, charIndex) => {
-                        const index = samplePrompt.split(/(\s+)/).slice(0, wordIndex).join("").length + charIndex;
+                        const index = prompt.split(/(\s+)/).slice(0, wordIndex).join("").length + charIndex;
                         const isCursor = index === inputText.length;
                         const color = index >= inputText.length ? 'text-headerGray' : colorDict[index];
                         return (
@@ -68,6 +64,6 @@ const InnerTyping = () => {
             ))}
         </div>
     );
-};
+});
 
 export default InnerTyping;
