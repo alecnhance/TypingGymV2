@@ -63,7 +63,7 @@ const InnerTyping = React.forwardRef(
                 return;
             }
             if (prompt[len - 1] === newChar) {
-                if (len === prompt.length) {
+                if (len === prompt.length && redCount === 0) {
                     endTimer();
                 }
                 if (colorDict[len - 1] === 'text-red-500') {
@@ -144,7 +144,6 @@ const InnerTyping = React.forwardRef(
                     })}
                 </span>
             ))}
-            <h2 className='text-red-500'>{redCount}</h2>
         </div>
     );
 });

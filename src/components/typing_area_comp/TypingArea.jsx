@@ -2,7 +2,13 @@ import React, { useState, useRef } from 'react';
 import Dropdown from './Dropdown';
 import InnerTyping from './InnerTyping';
 import ProgressBar from './ProgressBar';
-import { space } from 'postcss/lib/list';
+
+const formatTime = (ms) => {
+    const min = Math.floor(ms / 60000);
+    const seconds = Math.floor(ms / 1000);
+    const sec = seconds - (min * 60);
+    return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+}
 
 const TypingArea = () => {
     const [selectedOption, setSelectedOption] = useState(' ');
@@ -11,7 +17,6 @@ const TypingArea = () => {
     const [redCount, setRedCount] = useState(0);
     const [spaceMisses, setSpaceMisses] = useState(new Set());
     const [totalTime, setTotalTime] = useState(0);
-
 
     const options = [
         { value: 'option1', label: 'Option 1' },
@@ -40,6 +45,7 @@ const TypingArea = () => {
         setColorDict(initColorDict());
         setRedCount(0);
         setProgress(0);
+        setTotalTime(0);
         innerTypingRef.current?.focus();
     }
 
@@ -76,7 +82,7 @@ const TypingArea = () => {
                 setProgress={setProgress}
             />
             <div className="flex w-full justify-between py-3 items-center">
-                <h2>Time: 00:00</h2>
+                <h2>Time: {formatTime(totalTime)}</h2>
                 <ProgressBar progress={progress} height="5"/>
                 <h2>Accuracy: 100%</h2>
             </div>
