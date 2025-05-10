@@ -13,12 +13,16 @@ const InnerTyping = React.forwardRef(
         redCount,
         setRedCount,
         spaceMisses,
-        setSpaceMisses
+        setSpaceMisses,
+        totalTime,
+        setTotalTime,
       },
       ref
     ) => {
     
     const inputRef = useRef(null);
+    const intervalRef = useRef(null);
+    const startRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
         focus: () => inputRef.current?.focus()
@@ -34,15 +38,34 @@ const InnerTyping = React.forwardRef(
         }
         return newSet;
     }
-    
+
+    const startTimer = () => {
+        startRef.current = Date.now();
+        intervalRef.current = setInterval(() => {
+            setTotalTime(Date.now() - startRef.current);
+        }, 1000)
+    }
+
+    const endTimer = () => {
+        clearInterval(intervalRef.current);
+        setTotalTime(Date.now() - startRef.current);
+        startRef.current = null;
+    }
+ 
     const handleInputChange = (event) => {
         const len = event.target.value.length;
-        if (inputText.length === prompt.length && len >= inputText.length) {
-            return;
+        if (inputText.length === 0 && len > 0 && startRef.current === null) {
+            startTimer();
         }
         if (len > inputText.length) {
             const newChar = event.target.value[len - 1];
+            if (inputText.length === prompt.length && len >= inputText.length) {
+                return;
+            }
             if (prompt[len - 1] === newChar) {
+                if (len === prompt.length) {
+                    endTimer();
+                }
                 if (colorDict[len - 1] === 'text-red-500') {
                     setRedCount(prev => prev - 1);
                 }
@@ -89,7 +112,6 @@ const InnerTyping = React.forwardRef(
             }
         }
     }
-
 
     return (
         <div className="flex flex-wrap bg-white rounded-3xl items-start py-4 px-4 min-h-[100px]">

@@ -10,6 +10,8 @@ const TypingArea = () => {
     const innerTypingRef = useRef(null); 
     const [redCount, setRedCount] = useState(0);
     const [spaceMisses, setSpaceMisses] = useState(new Set());
+    const [totalTime, setTotalTime] = useState(0);
+
 
     const options = [
         { value: 'option1', label: 'Option 1' },
@@ -40,12 +42,22 @@ const TypingArea = () => {
         innerTypingRef.current?.focus();
     }
 
+    const getWPM = () => {
+        const characters = inputText.length;
+        const words = characters / 5;
+        const minutes = totalTime / 60000;
+        if (characters === 0 || minutes === 0) {
+            return 0;
+        }
+        return Math.floor(words/minutes);
+    }
+
     return(
         <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8">
             <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
             <div className="flex justify-between w-full mb-3 items-center">
                 <Dropdown options={options} onSelect={handleSelect} />
-                <h2>WPM: 100</h2>
+                <h2>WPM: {getWPM()}</h2>
             </div>
             <InnerTyping 
                 ref={innerTypingRef}
@@ -59,6 +71,8 @@ const TypingArea = () => {
                 setRedCount={setRedCount}
                 spaceMisses={spaceMisses}
                 setSpaceMisses={setSpaceMisses}
+                totalTime={totalTime}
+                setTotalTime={setTotalTime}
             />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: 00:00</h2>
