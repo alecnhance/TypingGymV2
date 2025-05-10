@@ -15,7 +15,9 @@ const InnerTyping = React.forwardRef(
         spaceMisses,
         setSpaceMisses,
         setTotalTime,
-        setProgress
+        setProgress,
+        setNumTyped,
+        setNumWrong
       },
       ref
     ) => {
@@ -58,6 +60,7 @@ const InnerTyping = React.forwardRef(
             startTimer();
         }
         if (len > inputText.length) {
+            setNumTyped(prev => prev + 1);
             const newChar = event.target.value[len - 1];
             if (inputText.length === prompt.length && len >= inputText.length) {
                 return;
@@ -79,6 +82,7 @@ const InnerTyping = React.forwardRef(
                     setProgress(Math.floor(len / prompt.length * 100));
                 }
             } else {
+                setNumWrong(prev => prev + 1);
                 if (prompt[len - 1] === ' ') {
                     setPrompt(prev => `${prev.slice(0, len - 1)}${newChar}${prev.slice(len - 1)}`);
                     setSpaceMisses(prev => {

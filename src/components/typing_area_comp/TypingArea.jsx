@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import Dropdown from './Dropdown';
 import InnerTyping from './InnerTyping';
 import ProgressBar from './ProgressBar';
+import { set } from 'date-fns';
 
 const formatTime = (ms) => {
     const min = Math.floor(ms / 60000);
@@ -17,6 +18,8 @@ const TypingArea = () => {
     const [redCount, setRedCount] = useState(0);
     const [spaceMisses, setSpaceMisses] = useState(new Set());
     const [totalTime, setTotalTime] = useState(0);
+    const [numTyped, setNumTyped] = useState(0);
+    const [numWrong, setNumWrong] = useState(0);
 
     const options = [
         { value: 'option1', label: 'Option 1' },
@@ -46,6 +49,8 @@ const TypingArea = () => {
         setRedCount(0);
         setProgress(0);
         setTotalTime(0);
+        setNumTyped(0);
+        setNumWrong(0);
         innerTypingRef.current?.focus();
     }
 
@@ -57,6 +62,10 @@ const TypingArea = () => {
             return 0;
         }
         return Math.floor(words/minutes);
+    }
+
+    const getAccuracy = () => {
+        return numTyped > 0 ? Math.floor(((numTyped - numWrong) / numTyped) * 100) : 100;
     }
 
     return(
@@ -80,11 +89,13 @@ const TypingArea = () => {
                 setSpaceMisses={setSpaceMisses}
                 setTotalTime={setTotalTime}
                 setProgress={setProgress}
+                setNumTyped={setNumTyped}
+                setNumWrong={setNumWrong}
             />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: {formatTime(totalTime)}</h2>
                 <ProgressBar progress={progress} height="5"/>
-                <h2>Accuracy: 100%</h2>
+                <h2>Accuracy: {getAccuracy()}%</h2>
             </div>
             <div className="flex w-full items-center justify-center gap-4 mt-6">
                 <button
