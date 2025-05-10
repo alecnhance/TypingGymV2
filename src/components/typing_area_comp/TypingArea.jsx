@@ -2,11 +2,14 @@ import React, { useState, useRef } from 'react';
 import Dropdown from './Dropdown';
 import InnerTyping from './InnerTyping';
 import ProgressBar from './ProgressBar';
+import { space } from 'postcss/lib/list';
 
 const TypingArea = () => {
     const [selectedOption, setSelectedOption] = useState(' ');
     const [progress, setProgress] = useState(50);
     const innerTypingRef = useRef(null); 
+    const [redCount, setRedCount] = useState(0);
+    const [spaceMisses, setSpaceMisses] = useState(new Set());
 
     const options = [
         { value: 'option1', label: 'Option 1' },
@@ -19,7 +22,8 @@ const TypingArea = () => {
     };
 
     const [inputText, setInputText] = useState('');
-    const samplePrompt = "This is a sample prompt that I am testing out"
+    const samplePrompt = "This is a sample prompt that I am testing out";
+    const [prompt, setPrompt] = useState(samplePrompt);
     const samplePromptSplit = samplePrompt.split("");
     const initColorDict = () => {
         return samplePromptSplit.map((_, index) => index).reduce((acc, val) => {
@@ -32,6 +36,7 @@ const TypingArea = () => {
     const handleRestart = () => {
         setInputText("");
         setColorDict(initColorDict());
+        setRedCount(0);
         innerTypingRef.current?.focus();
     }
 
@@ -48,7 +53,12 @@ const TypingArea = () => {
                 onInputChange={setInputText}
                 colorDict={colorDict}
                 onColorChange={setColorDict}
-                prompt={samplePrompt}
+                prompt={prompt}
+                setPrompt={setPrompt}
+                redCount={redCount}
+                setRedCount={setRedCount}
+                spaceMisses={spaceMisses}
+                setSpaceMisses={setSpaceMisses}
             />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: 00:00</h2>

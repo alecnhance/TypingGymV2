@@ -1,18 +1,51 @@
+import { space } from 'postcss/lib/list';
 import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 
-const InnerTyping = React.forwardRef(({ inputText, onInputChange, colorDict, onColorChange, prompt}, ref) => {
+const InnerTyping = React.forwardRef(
+    (
+      {
+        inputText,
+        onInputChange,
+        colorDict,
+        onColorChange,
+        prompt,
+        setPrompt,
+        redCount,
+        setRedCount,
+        spaceMisses,
+        setSpaceMisses
+      },
+      ref
+    ) => {
     
     const inputRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
         focus: () => inputRef.current?.focus()
     }));
+
+    const updateSet = (old, index) => {
+        const newSet = new Set();
+        for (const num of old) {
+            if (num === index) {
+                continue;
+            }
+            newSet.add(num > index ? num - 1 : num);
+        }
+        return newSet;
+    }
     
     const handleInputChange = (event) => {
         const len = event.target.value.length;
+        if (inputText.length === prompt.length && len >= inputText.length) {
+            return;
+        }
         if (len > inputText.length) {
             const newChar = event.target.value[len - 1];
             if (prompt[len - 1] === newChar) {
+                if (colorDict[len - 1] === 'text-red-500') {
+                    setRedCount(prev => prev - 1);
+                }
                 onColorChange(prev => ({
                     ...prev,
                     [len - 1]: prev[len - 1] === 'text-headerGray' || prev[len - 1] === 'text-green-500'
@@ -20,6 +53,18 @@ const InnerTyping = React.forwardRef(({ inputText, onInputChange, colorDict, onC
                         : 'text-yellow-500'
                 }));
             } else {
+                if (prompt[len - 1] === ' ') {
+                    setPrompt(prev => `${prev.slice(0, len - 1)}${newChar}${prev.slice(len - 1)}`);
+                    setSpaceMisses(prev => {
+                        const newSet = new Set(prev);
+                        newSet.add(len - 1);
+                        return newSet;
+                    })
+                    console.log(spaceMisses);
+                }
+                if (colorDict[len - 1] !== 'text-red-500') {
+                    setRedCount(prev => prev + 1);
+                }
                 onColorChange(prev => ({
                     ...prev,
                     [len - 1]: 'text-red-500'
@@ -27,10 +72,22 @@ const InnerTyping = React.forwardRef(({ inputText, onInputChange, colorDict, onC
             }
         }
         onInputChange(event.target.value);
+        
     };
 
     const handleKeyDown = (event) => {
-
+        if (event.key === 'Backspace') {
+            console.log(spaceMisses);
+            if (inputText.length === prompt.length && redCount === 0) {
+                event.preventDefault();
+                return;
+            }
+            const index = inputText.length - 1;
+            if (spaceMisses.has(index)) {
+                setPrompt(prev => `${prev.slice(0, index)}${prev.slice(index + 1)}`);
+                setSpaceMisses(updateSet(spaceMisses, index));
+            }
+        }
     }
 
 
@@ -62,6 +119,7 @@ const InnerTyping = React.forwardRef(({ inputText, onInputChange, colorDict, onC
                     })}
                 </span>
             ))}
+            <h2 className='text-red-500'>{redCount}</h2>
         </div>
     );
 });
