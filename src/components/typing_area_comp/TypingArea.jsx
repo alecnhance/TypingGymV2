@@ -6,7 +6,7 @@ import { space } from 'postcss/lib/list';
 
 const TypingArea = () => {
     const [selectedOption, setSelectedOption] = useState(' ');
-    const [progress, setProgress] = useState(50);
+    const [progress, setProgress] = useState(0);
     const innerTypingRef = useRef(null); 
     const [redCount, setRedCount] = useState(0);
     const [spaceMisses, setSpaceMisses] = useState(new Set());
@@ -39,6 +39,7 @@ const TypingArea = () => {
         setInputText("");
         setColorDict(initColorDict());
         setRedCount(0);
+        setProgress(0);
         innerTypingRef.current?.focus();
     }
 
@@ -71,8 +72,8 @@ const TypingArea = () => {
                 setRedCount={setRedCount}
                 spaceMisses={spaceMisses}
                 setSpaceMisses={setSpaceMisses}
-                totalTime={totalTime}
                 setTotalTime={setTotalTime}
+                setProgress={setProgress}
             />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: 00:00</h2>

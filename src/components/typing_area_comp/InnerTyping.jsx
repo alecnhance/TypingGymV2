@@ -14,8 +14,8 @@ const InnerTyping = React.forwardRef(
         setRedCount,
         spaceMisses,
         setSpaceMisses,
-        totalTime,
         setTotalTime,
+        setProgress
       },
       ref
     ) => {
@@ -75,6 +75,9 @@ const InnerTyping = React.forwardRef(
                         ? 'text-green-500'
                         : 'text-yellow-500'
                 }));
+                if (redCount === 0) {
+                    setProgress(Math.floor(len / prompt.length * 100));
+                }
             } else {
                 if (prompt[len - 1] === ' ') {
                     setPrompt(prev => `${prev.slice(0, len - 1)}${newChar}${prev.slice(len - 1)}`);
