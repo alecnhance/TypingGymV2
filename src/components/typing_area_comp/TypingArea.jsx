@@ -21,6 +21,7 @@ const TypingArea = () => {
     const [totalTime, setTotalTime] = useState(0);
     const [numTyped, setNumTyped] = useState(0);
     const [numWrong, setNumWrong] = useState(0);
+    const [wordCount, setWordCount] = useState(10);
 
     const options = [
         { value: 'Random', label: 'Random' },
@@ -34,23 +35,24 @@ const TypingArea = () => {
 
     useEffect(() => {
         resetPrompt();
+        setColorDict(initColorDict(prompt));
     }, [])
 
     const [inputText, setInputText] = useState('');
     const samplePrompt = "This is a sample prompt that I am testing out";
     const [prompt, setPrompt] = useState(samplePrompt);
-    const samplePromptSplit = samplePrompt.split("");
-    const initColorDict = () => {
+    const initColorDict = (curr) => {
+        const samplePromptSplit = curr.split("");
         return samplePromptSplit.map((_, index) => index).reduce((acc, val) => {
             acc[val] = "text-headerGray";
             return acc;
         }, {});
     }
-    const [colorDict, setColorDict] = useState(initColorDict());
+    const [colorDict, setColorDict] = useState(initColorDict(prompt));
 
     const handleRestart = () => {
         setInputText("");
-        setColorDict(initColorDict());
+        setColorDict(initColorDict(prompt));
         setRedCount(0);
         setProgress(0);
         setTotalTime(0);
@@ -66,17 +68,18 @@ const TypingArea = () => {
         }
     }
 
-    const makeRandomPrompt = () => {
+    const makeRandomPrompt = (count = wordCount) => {
         fetch('/words.txt')
             .then(res => res.text())
             .then(text => {
                 const words = text.split('\n');
                 let string = "";
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < count; i++) {
                     const index = Math.floor(Math.random() * words.length);
                     string += words[index] + ' ';
                 }
                 setPrompt(string.slice(0, string.length - 1));
+                setColorDict(initColorDict(string.slice(0, string.length - 1)));
             })
     }
 
@@ -99,6 +102,13 @@ const TypingArea = () => {
         handleRestart();
     }
 
+    const handleRandomButtons = (item) => {
+        setWordCount(item);
+        makeRandomPrompt(item);
+        handleRestart();
+    }
+
+
     return(
         <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8">
             <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
@@ -114,6 +124,20 @@ const TypingArea = () => {
                                 <img src={custom} className='invert aspect-square h-[1.75vh]'/>
                             </div>
                         </button>
+                    }
+                    {selectedOption === 'Random' &&
+                        <div className='flex gap-4'>
+                            {[10, 25, 50, 100].map((item, index) => (
+                                <div key={index}>
+                                    <button
+                                        className={`${wordCount === item ? 'text-navOrange' : ''}`}
+                                        onClick={() => handleRandomButtons(item)}
+                                    >
+                                        {item}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     }
                 </div>
                 <h2>WPM: {getWPM()}</h2>

@@ -136,7 +136,7 @@ const InnerTyping = React.forwardRef(
                 autoFocus
             />
             {prompt.split(/(\s+)/).map((word, wordIndex) => (
-                <span key={wordIndex} className='whitespace-pre text-lg'>
+                <span key={wordIndex} className='whitespace-pre text-xl'>
                     {word.split("").map((char, charIndex) => {
                         const index = prompt.split(/(\s+)/).slice(0, wordIndex).join("").length + charIndex;
                         const isCursor = index === inputText.length;
