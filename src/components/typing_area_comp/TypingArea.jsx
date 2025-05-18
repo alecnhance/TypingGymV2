@@ -12,7 +12,7 @@ const formatTime = (ms) => {
 }
 
 const TypingArea = () => {
-    const [selectedOption, setSelectedOption] = useState(' ');
+    const [selectedOption, setSelectedOption] = useState('Random');
     const [progress, setProgress] = useState(0);
     const innerTypingRef = useRef(null); 
     const [redCount, setRedCount] = useState(0);
@@ -22,7 +22,7 @@ const TypingArea = () => {
     const [numWrong, setNumWrong] = useState(0);
 
     const options = [
-        { value: 'option1', label: 'Option 1' },
+        { value: 'option1', label: 'Random' },
         { value: 'option2', label: 'Option 2' },
         { value: 'option3', label: 'Option 3' }
     ];
@@ -52,6 +52,27 @@ const TypingArea = () => {
         setNumTyped(0);
         setNumWrong(0);
         innerTypingRef.current?.focus();
+        innerTypingRef.current?.resetTimer();
+    }
+
+    const resetPrompt = () => {
+        if (selectedOption === "Random") {
+            makeRandomPrompt();
+        }
+    }
+
+    const makeRandomPrompt = () => {
+        fetch('/words.txt')
+            .then(res => res.text())
+            .then(text => {
+                const words = text.split('\n');
+                let string = "";
+                for (let i = 0; i < 5; i++) {
+                    const index = Math.floor(Math.random() * words.length);
+                    string += words[index] + ' ';
+                }
+                setPrompt(string.slice(0, string.length - 1));
+            })
     }
 
     const getWPM = () => {
@@ -66,6 +87,11 @@ const TypingArea = () => {
 
     const getAccuracy = () => {
         return numTyped > 0 ? Math.floor(((numTyped - numWrong) / numTyped) * 100) : 100;
+    }
+
+    const handleNewPrompt = () => {
+        resetPrompt();
+        handleRestart();
     }
 
     return(
@@ -106,6 +132,7 @@ const TypingArea = () => {
                 </button>
                 <button
                     className="rounded-full text-white bg-navOrange px-4 py-2 min-w-[130px]"
+                    onClick={handleNewPrompt}
                 >
                     New Prompt
                 </button>

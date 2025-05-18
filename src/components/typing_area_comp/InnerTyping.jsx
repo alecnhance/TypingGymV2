@@ -27,7 +27,11 @@ const InnerTyping = React.forwardRef(
     const startRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
-        focus: () => inputRef.current?.focus()
+        focus: () => inputRef.current?.focus(),
+        resetTimer: () => {
+            clearInterval(intervalRef.current);
+            startRef.current = null;
+        }
     }));
 
     const updateSet = (old, index) => {
@@ -132,7 +136,7 @@ const InnerTyping = React.forwardRef(
                 autoFocus
             />
             {prompt.split(/(\s+)/).map((word, wordIndex) => (
-                <span key={wordIndex} className='whitespace-pre'>
+                <span key={wordIndex} className='whitespace-pre text-lg'>
                     {word.split("").map((char, charIndex) => {
                         const index = prompt.split(/(\s+)/).slice(0, wordIndex).join("").length + charIndex;
                         const isCursor = index === inputText.length;
