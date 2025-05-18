@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Dropdown from './Dropdown';
 import InnerTyping from './InnerTyping';
 import ProgressBar from './ProgressBar';
@@ -23,14 +23,18 @@ const TypingArea = () => {
     const [numWrong, setNumWrong] = useState(0);
 
     const options = [
-        { value: 'option1', label: 'Random' },
-        { value: 'option2', label: 'Option 2' },
-        { value: 'option3', label: 'Option 3' }
+        { value: 'Random', label: 'Random' },
+        { value: 'Jumble', label: 'Jumble' },
+        { value: 'AI', label: 'AI' }
     ];
 
     const handleSelect = (value) => {
         setSelectedOption(value);
     };
+
+    useEffect(() => {
+        resetPrompt();
+    }, [])
 
     const [inputText, setInputText] = useState('');
     const samplePrompt = "This is a sample prompt that I am testing out";
@@ -101,14 +105,16 @@ const TypingArea = () => {
             <div className="flex justify-between w-full mb-3 items-center">
                 <div className='flex justify-between items-center gap-1'>
                     <Dropdown options={options} onSelect={handleSelect} />
-                    <button
-                        className=''
-                    >
-                        <div className='flex w-32 items-center gap-2'>
-                            <h3 className='text-md'>Customize</h3>
-                            <img src={custom} className='invert aspect-square h-[1.75vh]'/>
-                        </div>
-                    </button>
+                    {selectedOption === 'Jumble' && 
+                        <button
+                            className=''
+                        >
+                            <div className='flex w-32 items-center gap-2'>
+                                <h3 className='text-md'>Customize</h3>
+                                <img src={custom} className='invert aspect-square h-[1.75vh]'/>
+                            </div>
+                        </button>
+                    }
                 </div>
                 <h2>WPM: {getWPM()}</h2>
             </div>
