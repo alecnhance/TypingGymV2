@@ -15,7 +15,7 @@ const Dropdown = ({ options, onSelect }) => {
       <div className="relative inline-block w-32">
         <button
             onClick={() => setOpen(!open)}
-            className="w-full bg-transparent text-white    py-2 rounded-md text-left flex justify-between items-center"
+            className="w-full bg-transparent text-white    py-2 rounded-md text-left flex gap-2 items-center"
         >
             <span>{selected.label}</span>
             <ChevronDown className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`} />

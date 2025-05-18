@@ -3,6 +3,7 @@ import Dropdown from './Dropdown';
 import InnerTyping from './InnerTyping';
 import ProgressBar from './ProgressBar';
 import { set } from 'date-fns';
+import custom from '../../assets/customize.svg';
 
 const formatTime = (ms) => {
     const min = Math.floor(ms / 60000);
@@ -98,7 +99,17 @@ const TypingArea = () => {
         <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8">
             <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
             <div className="flex justify-between w-full mb-3 items-center">
-                <Dropdown options={options} onSelect={handleSelect} />
+                <div className='flex justify-between items-center gap-1'>
+                    <Dropdown options={options} onSelect={handleSelect} />
+                    <button
+                        className=''
+                    >
+                        <div className='flex w-32 items-center gap-2'>
+                            <h3 className='text-md'>Customize</h3>
+                            <img src={custom} className='invert aspect-square h-[1.75vh]'/>
+                        </div>
+                    </button>
+                </div>
                 <h2>WPM: {getWPM()}</h2>
             </div>
             <InnerTyping 
