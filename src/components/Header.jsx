@@ -34,7 +34,7 @@ const Header = () => {
             </div>
             <nav className="space-x-6">
                 <NavLink
-                    to="/"
+                    to="/home"
                     className={({ isActive}) => 
                         isActive ? 'font-bold text-navOrange' : 'hover:underline cursor-pointer'
                     }
