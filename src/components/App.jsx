@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth, ClerkLoaded } from '@clerk/clerk-react';
 import Header from './Header';
 import Footer from './Footer';
 import Home from '../pages/Home';
@@ -32,25 +32,24 @@ const App = () => {
 
   return (
     <Router>
-      <div className="flex flex-col">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={isSignedIn ? <Navigate to="/home" replace /> : <Landing/>} />
-          <Route path="/signIn" element={<SignInPage />} />
-          <Route path="/signUp" element={<SignUpPage />} />
-          
-          {/* Protected Routes Group */}
-          <Route element={<AuthLayout />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/stats" element={<Stats />} />
-            <Route path="/user" element={<UserPage />}/>
-            <Route path="/practice" element={<Practice />}/>
-          </Route>
-          
-          {/* Catch-all redirect */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
+      <ClerkLoaded>
+        <div className="flex flex-col">
+          <Routes>
+            <Route path="/" element={isSignedIn ? <Navigate to="/home" replace /> : <Landing/>} />
+            <Route path="/signIn" element={<SignInPage />} />
+            <Route path="/signUp" element={<SignUpPage />} />
+            
+            <Route element={<AuthLayout />}>
+              <Route path="/home" element={<Home />} />
+              <Route path="/stats" element={<Stats />} />
+              <Route path="/user" element={<UserPage />}/>
+              <Route path="/practice" element={<Practice />}/>
+            </Route>
+            
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </ClerkLoaded>
     </Router>
   );
 
