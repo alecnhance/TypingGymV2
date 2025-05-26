@@ -9,7 +9,9 @@ import UserPage from "../pages/UserPage";
 import SignInPage from "../pages/SignIn";
 import SignUpPage from "../pages/SignUp";
 import Landing from "../pages/Landing";
+import FreeTyping from './landing_components/FreeTyping';
 import '../styles/App.css';
+import LandingHeader from './landing_components/LandingHeader';
 
 // 1. AuthLayout Component
 const AuthLayout = () => {
@@ -26,6 +28,16 @@ const AuthLayout = () => {
   );
 };
 
+const UnsignedLayout = () => {
+  return (
+    <>
+      <LandingHeader />
+      <Outlet />
+      <Footer/>
+    </>
+  );
+}
+
 // 2. App Component
 const App = () => {
   const { isSignedIn } = useAuth();
@@ -35,7 +47,11 @@ const App = () => {
       <ClerkLoaded>
         <div className="flex flex-col">
           <Routes>
-            <Route path="/" element={isSignedIn ? <Navigate to="/home" replace /> : <Landing/>} />
+            <Route element={<UnsignedLayout />}>
+              <Route path="/" element={isSignedIn ? <Navigate to="/home" replace /> : <Landing/>} />
+              <Route path="/freeTyping" element={<FreeTyping />} />
+            </Route>
+            
             <Route path="/signIn" element={<SignInPage />} />
             <Route path="/signUp" element={<SignUpPage />} />
             
