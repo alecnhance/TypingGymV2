@@ -7,6 +7,8 @@ import Practice from '../pages/Practice';
 import Stats from '../pages/Stats';
 import UserPage from "../pages/UserPage";
 import SignInPage from "../pages/SignIn";
+import SignUpPage from "../pages/SignUp";
+import Landing from "../pages/Landing";
 import '../styles/App.css';
 
 // 1. AuthLayout Component
@@ -33,8 +35,9 @@ const App = () => {
       <div className="flex flex-col">
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={isSignedIn ? <Navigate to="/home" replace /> : <SignInPage/>} />
+          <Route path="/" element={isSignedIn ? <Navigate to="/home" replace /> : <Landing/>} />
           <Route path="/signIn" element={<SignInPage />} />
+          <Route path="/signUp" element={<SignUpPage />} />
           
           {/* Protected Routes Group */}
           <Route element={<AuthLayout />}>

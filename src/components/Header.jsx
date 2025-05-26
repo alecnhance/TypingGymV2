@@ -2,9 +2,11 @@ import dumbbell from '../assets/dumbbell.svg';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import ProfileDropdown from './ProfileDropdown';
+import { useClerk } from '@clerk/clerk-react';
 
 const Header = () => {
     const [showDrop, setDrop] = useState(false);
+    const { signOut } = useClerk();
     const handleNameClick = () => {
         setDrop((prev) => !prev);
     }
@@ -23,6 +25,7 @@ const Header = () => {
                 break;
             default: 
                 setDrop(false);
+                signOut();
                 break;
         }
     }

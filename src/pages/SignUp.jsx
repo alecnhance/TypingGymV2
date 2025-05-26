@@ -1,25 +1,23 @@
-import { SignIn } from '@clerk/clerk-react';
+import { SignUp } from '@clerk/clerk-react';
 import { NavLink } from 'react-router-dom';
 
-const SignInPage = () => {
+
+const SignUpPage = () => {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-mainBackground p-4">
-            <div className=" max-w-md flex-col">
-                <SignIn
-                    signUpUrl="/signUp"
+            <div className="w-[full max-w-md] flex-col">
+                <SignUp
+                    signInUrl="/signIn"
                     appearance={{
                         elements: {
                             formButtonPrimary: "bg-navOrange hover:bg-navOrange text-white",
-                            card: "shadow-lg",
+                            card: "shadow-lg ",
                             headerTitle: "text-white",
                             headerSubtitle: "text-white",
                             footerActionText: "text-white",
                             socialButtons: "gap-2 bg-mainBackground rounded-xl",
                             socialButtonsBlockButtonText: "text-white",
-                            formFieldInputShowPasswordButton: "text-white",
-                            formFieldInput: "bg-[#161616] text-white border-gray-600 focus:border-navOrange",
-                            formFieldLabel: "text-white",
-                            footerActionLink: "text-navOrange hover:text-orange-300"
+                            formFieldInputShowPasswordButton: "text-white"
                         },
                         variables: {
                             colorPrimary: "#F5972F",
@@ -27,7 +25,7 @@ const SignInPage = () => {
                             colorText: "#FFFFFF",
                             colorInputBackground: '#161616'
                         },
-                    }}
+                    }}   
                 />
                 <div className="mt-4 text-center w-full">
                     <NavLink 
@@ -41,5 +39,7 @@ const SignInPage = () => {
         </div>
     );
 };
+  
 
-export default SignInPage;
+
+export default SignUpPage;
