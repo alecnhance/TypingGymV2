@@ -12,7 +12,7 @@ const formatTime = (ms) => {
     return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
-const TypingArea = () => {
+const TypingArea = ({ isFree }) => {
     const [selectedOption, setSelectedOption] = useState('Random');
     const [progress, setProgress] = useState(0);
     const innerTypingRef = useRef(null); 
@@ -114,16 +114,20 @@ const TypingArea = () => {
             <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
             <div className="flex justify-between w-full mb-3 items-center">
                 <div className='flex justify-between items-center gap-1'>
-                    <Dropdown options={options} onSelect={handleSelect} />
-                    {selectedOption === 'Jumble' && 
-                        <button
-                            className=''
-                        >
-                            <div className='flex w-32 items-center gap-2'>
-                                <h3 className='text-md'>Customize</h3>
-                                <img src={custom} className='invert aspect-square h-[1.75vh]'/>
-                            </div>
-                        </button>
+                    {isFree &&
+                        <>
+                            <Dropdown options={options} onSelect={handleSelect} />
+                            {selectedOption === 'Jumble' && 
+                                <button
+                                    className=''
+                                >
+                                    <div className='flex w-32 items-center gap-2'>
+                                        <h3 className='text-md'>Customize</h3>
+                                        <img src={custom} className='invert aspect-square h-[1.75vh]'/>
+                                    </div>
+                                </button>
+                            }
+                        </>
                     }
                     {selectedOption === 'Random' &&
                         <div className='flex gap-4'>
