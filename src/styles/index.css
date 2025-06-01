@@ -29,5 +29,22 @@ h1 {
   line-height: 1.1;
 }
 
+.cl-formFieldInput:-webkit-autofill,
+.cl-formFieldInput:-webkit-autofill:hover, 
+.cl-formFieldInput:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #161616 inset !important;
+  transition: #161616 5000s ease-in-out 0s !important;
+}
+
+/* For modern browsers supporting :autofill */
+.cl-formFieldInput:autofill,
+.cl-formFieldInput:autofill:hover, 
+.cl-formFieldInput:autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 0 0px 1000px #161616 inset !important;
+  transition: #161616 5000s ease-in-out 0s !important;
+}
+
 
 
