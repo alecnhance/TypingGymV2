@@ -16,6 +16,7 @@
     "chart.js": "^4.4.9",
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^4.1.0",
+    "http": "^0.0.1-security",
     "lucide-react": "^0.503.0",
     "pg": "^8.16.0",
     "react": "^19.0.0",
@@ -26,7 +27,8 @@
     "react-router-dom": "^7.5.3",
     "react-select": "^5.10.1",
     "react-swipeable": "^7.0.2",
-    "recharts": "^2.15.3"
+    "recharts": "^2.15.3",
+    "svix": "^1.66.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
@@ -34,6 +36,7 @@
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
+    "dotenv": "^16.5.0",
     "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
@@ -41,5 +44,18 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.1",
     "vite": "^6.3.1"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "db .js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alecnhance/TypingGymV2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alecnhance/TypingGymV2/issues"
+  },
+  "homepage": "https://github.com/alecnhance/TypingGymV2#readme"
 }

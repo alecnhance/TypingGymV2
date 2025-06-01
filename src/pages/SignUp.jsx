@@ -29,13 +29,14 @@ const SignUpPage = () => {
                             footerActionText: "text-white",
                             socialButtons: "gap-2 bg-mainBackground rounded-xl",
                             socialButtonsBlockButtonText: "text-white",
-                            formFieldInputShowPasswordButton: "text-white"
+                            formFieldInputShowPasswordButton: "text-white",
                         },
                         variables: {
                             colorPrimary: "#F5972F",
                             colorBackground: "#2D2D2D",
                             colorText: "#FFFFFF",
-                            colorInputBackground: '#161616'
+                            colorInputBackground: '#161616',
+                            colorInputText: "#FFFFFF"
                         },
                     }}   
                 />
