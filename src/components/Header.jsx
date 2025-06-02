@@ -6,7 +6,7 @@ import { useClerk } from '@clerk/clerk-react';
 
 const Header = () => {
     const [showDrop, setDrop] = useState(false);
-    const { signOut } = useClerk();
+    const { signOut, user, openUserProfile } = useClerk();
     const handleNameClick = () => {
         setDrop((prev) => !prev);
     }
@@ -16,16 +16,33 @@ const Header = () => {
     const goToProfile = () => {
         navigate("/user");
     };
-    const dropOptions = ["profile", "signout"];
+    const handleDeleteAccount = async () => {
+        if (window.confirm("Are you sure you want to delete your account? This cannot be undone.")) {
+            try {
+                // Open user profile to the danger zone section for account deletion
+                await openUserProfile({
+                    tab: "danger"
+                });
+            } catch (error) {
+                console.error('Account deletion error:', error);
+                alert(`Failed to delete account: ${error.message}`);
+            }
+        }
+    }
+    const dropOptions = ["Profile", "Sign Out", "Delete Account"];
     const dropSelect = (option) => {
         switch (option) {
-            case "profile": 
+            case "Profile": 
                 goToProfile();
                 setDrop(false);
                 break;
-            default: 
+            case "Sign Out": 
                 setDrop(false);
                 signOut();
+                break;
+            default: 
+                handleDeleteAccount();
+                setDrop(false);
                 break;
         }
     }

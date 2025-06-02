@@ -12,7 +12,7 @@ export default {
         belowAvgAcc: '#ea580c',
         aboveAvgAcc: '#ca8a04',
         secondBestAcc: '#8bc34a',
-        bestAcc: '#16a34a',
+        bestAcc: '#16a34a'
       },
       keyframes: {
         blink: {
