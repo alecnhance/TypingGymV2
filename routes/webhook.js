@@ -1,5 +1,6 @@
 import { Webhook } from 'svix';
 import { userCreatedHandler } from '../handlers/userCreated.js';
+import { userDeletedHandler } from '../handlers/userDeleted.js';
 
 export default function webhookHandler(req, res) {
     console.log("Webhook received!");
@@ -17,12 +18,16 @@ export default function webhookHandler(req, res) {
         });
 
         if (event.type === 'user.created') {
-        await userCreatedHandler(event.data);
-        res.writeHead(201, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true }));
+            await userCreatedHandler(event.data);
+            res.writeHead(201, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true }));
+        } else if (event.type === 'user.deleted') {
+            await userDeletedHandler(event.data);
+            res.writeHead(201, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true }));
         } else {
-        res.writeHead(200);
-        res.end();
+            res.writeHead(200);
+            res.end();
         }
     } catch (err) {
         console.error('Webhook error:', err);

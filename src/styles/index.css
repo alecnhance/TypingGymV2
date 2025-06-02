@@ -46,5 +46,23 @@ h1 {
   transition: #161616 5000s ease-in-out 0s !important;
 }
 
+.cl-menuButtonEllipsis {
+  color: #ffffff !important;
+}
+.cl-badge {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3) !important;  /* Semi-transparent border */
+  color: rgba(255, 255, 255, 0.7) !important;                 /* 70% opacity text */
+  background-color: rgba(255, 255, 255, 0.1) !important;     /* Slight background tint */
+  backdrop-filter: blur(2px) !important;                      /* Optional: Soften edges */
+  transition: opacity 0.2s ease-in-out !important;            /* Smooth hover effect */
+}
+
+.cl-active {
+  background-color: rgba(245, 151, 47, 0.2) !important; /* 0.2 = 20% opacity */
+}
 
 
+
+img[src="https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18yeGJWbG1LeDNVWlZyT0F1RnpDbUF2TFRFRWMiLCJyaWQiOiJ1c2VyXzJ4c3lFUVBCWWZGbjF0cDZ0TU9rY1pncng3NiIsImluaXRpYWxzIjoiQUgifQ?width=160"] {
+  filter: grayscale(100%);
+}

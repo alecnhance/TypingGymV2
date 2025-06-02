@@ -1,78 +1,33 @@
 import { useState } from 'react';
+import { UserProfile } from '@clerk/clerk-react';
 
 const ProfileSettings = () => {
-    const [username, setUsername] = useState('');
-    const [fname, setFname] = useState('');
-    const [lname, setLname] = useState('');
-    const [email, setEmail] = useState('');
-    const [goal, setGoal] = useState('');
-
-    const saveChanges = () => {
-
-    }
 
     return (
-        <div className='flex flex-col w-full min-h-screen items-center justify-center gap-8 py-[5%]'>
-            <style>
-            {`
-                input:-webkit-autofill {
-                -webkit-box-shadow: 0 0 0px 1000px #161616 inset;
-                -webkit-text-fill-color: white;
-                transition: background-color 5000s ease-in-out 0s;
-                }
-            `}
-            </style>
-
-            <h2 className='text-2xl'>Profile</h2>
-            <div className='flex flex-col w-full items-center h-[50%] gap-4'>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="p-2 rounded bg-mainBackground text-white border border-headerGray w-[50%] focus:outline-navOrange"
-                    placeholder="username"
-                />
-                <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="p-2 rounded bg-mainBackground text-white border border-headerGray w-[50%] focus:outline-navOrange"
-                    placeholder="email"
-                />
-                <input
-                    type="text"
-                    value={fname}
-                    onChange={(e) => setFname(e.target.value)}
-                    className="p-2 rounded bg-mainBackground text-white border border-headerGray w-[50%] focus:outline-navOrange"
-                    placeholder="first name"
-                />
-                <input
-                    type="text"
-                    value={lname}
-                    onChange={(e) => setLname(e.target.value)}
-                    className="p-2 rounded bg-mainBackground text-white border border-headerGray w-[50%] focus:outline-navOrange"
-                    placeholder="last name"
-                />
-                <input
-                    type="text"
-                    value={goal}
-                    onChange={(e) => setGoal(e.target.value)}
-                    className="p-2 rounded bg-mainBackground text-white border border-headerGray w-[50%] focus:outline-navOrange"
-                    placeholder="goal"
-                />
-            </div>
-            <div className='flex w-full justify-center gap-4'>
-                <button className='p-2 underline bg-mainBackground rounded-2xl text-white font-extralight decoration-[1px]'>
-                    Change Password
-                </button>
-                <button
-                    onClick={saveChanges}
-                    className='py-2 px-4 bg-navOrange rounded-2xl text-white'
-                >
-                    Save
-                </button>
-
-            </div>
+        <div className='flex flex-col w-full min-h-screen items-center bg-mainBackground justify-center gap-8 py-[5%]'>
+            <UserProfile 
+                appearance={{
+                    elements: {
+                        badge: "shadow-[0_0_0_2px_#F5972F] text-white",
+                        profileSectionPrimaryButton: "hover:bg-navOrange hover:bg-opacity-20",
+                        menuButton: "hover:bg-navOrange hover:bg-opacity-20",
+                        header: "border-b border-white border-opacity-20",
+                        profileSection: "border-b border-white border-opacity-20",
+                        profileSection__connectedAccounts: "border-opacity-0",
+                        navbarButton: "text-white",
+                        profileSectionPrimaryButton__danger: "hover:bg-red-500 hover:bg-opacity-20",
+                        avatarImageActionsUpload: "bg-white/10 text-white"
+                    },
+                    variables: {
+                        colorPrimary: "#F5972F",
+                        colorBackground: "#2D2D2D",
+                        colorText: "#FFFFFF",
+                        colorInputBackground: '#161616',
+                        colorInputText: "#FFFFFF",
+                        colorDanger: "#dc2626"
+                    }
+                }}
+            />
         </div>
     );
 };
