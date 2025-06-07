@@ -1,9 +1,32 @@
 import { SignUp } from '@clerk/clerk-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
-
+import { useState } from 'react';
+import { useAuth, useSignUp } from '@clerk/clerk-react';
 
 const SignUpPage = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const { isLoaded: authLoaded, isSignedIn } = useAuth();
+    const { isLoaded: signUpLoaded } = useSignUp();
+    const navigate = useNavigate();
+
+    // If signed in, redirect to home
+    if (authLoaded && isSignedIn) {
+        navigate('/home');
+        return null;
+    }
+
+    // Show loading state while Clerk is loading
+    if (!authLoaded || !signUpLoaded || isLoading) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center bg-mainBackground p-4">
+                <div className="flex items-center justify-center p-8 bg-headerGray rounded-lg shadow-lg">
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-navOrange"></div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-mainBackground p-4">
             <div className="w-[full max-w-md] flex-col">
@@ -38,13 +61,11 @@ const SignUpPage = () => {
                             colorInputBackground: '#161616',
                             colorInputText: "#FFFFFF"
                         },
-                    }}   
+                    }}
                 />
             </div>
         </div>
     );
 };
-  
-
 
 export default SignUpPage;
