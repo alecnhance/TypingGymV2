@@ -63,6 +63,6 @@ h1 {
 
 
 
-img[src="https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18yeGJWbG1LeDNVWlZyT0F1RnpDbUF2TFRFRWMiLCJyaWQiOiJ1c2VyXzJ4c3lFUVBCWWZGbjF0cDZ0TU9rY1pncng3NiIsImluaXRpYWxzIjoiQUgifQ?width=160"] {
+img[src^="https://img.clerk.com/eyJ0eXBlIjoi"] {
   filter: grayscale(100%);
 }

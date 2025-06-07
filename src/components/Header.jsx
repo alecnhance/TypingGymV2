@@ -29,20 +29,16 @@ const Header = () => {
             }
         }
     }
-    const dropOptions = ["Profile", "Sign Out", "Delete Account"];
+    const dropOptions = ["Profile", "Sign Out"];
     const dropSelect = (option) => {
         switch (option) {
             case "Profile": 
                 goToProfile();
                 setDrop(false);
                 break;
-            case "Sign Out": 
+            default: 
                 setDrop(false);
                 signOut();
-                break;
-            default: 
-                handleDeleteAccount();
-                setDrop(false);
                 break;
         }
     }
