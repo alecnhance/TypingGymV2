@@ -3,6 +3,7 @@ import App from './components/App.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ClerkProvider } from '@clerk/clerk-react';
+import { UserProvider } from './UserContext.jsx';
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ClerkProvider 
       publishableKey={clerkPubKey}
     >
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </ClerkProvider>
   </React.StrictMode>
 );
