@@ -3,14 +3,15 @@ import db from '../db.js';
 export async function userUpdateHandler(user) {
     try {
       const result = await db.query(`
-        Update typer set username = $1, fname = $2, lname = $3, email = $4
+        Update typer set username = $1, fname = $2, lname = $3, email = $4, pic_url = $6
         WHERE clerk_id = $5
       `, [
         user.username,
         user.first_name,
         user.last_name,
         user.email_addresses[0].email_address,
-        user.id
+        user.id,
+        user.image_url
       ]);
   
       if (result.rowCount === 1) {

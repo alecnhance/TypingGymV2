@@ -63,6 +63,4 @@ h1 {
 
 
 
-img[src^="https://img.clerk.com/eyJ0eXBlIjoi"] {
-  filter: grayscale(100%);
-}
+
