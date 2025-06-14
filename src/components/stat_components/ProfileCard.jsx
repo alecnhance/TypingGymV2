@@ -1,12 +1,17 @@
 import selfie from '../../assets/selfie.jpg';
+import blank from '../../assets/blank-profile.jpg';
+import { useUserData } from '../../UserContext';
 
 const titles = ["Mr.Consistent", "Speedfingers", "Top 1%"];
 
 const ProfileCard = ({ className }) => {
+    const userData = useUserData();
+    const username = userData?.username || "username";
+    const picture = userData?.pic_url || blank;
     return (
         <div className={`${className} flex flex-col items-center font-extralight overflow-auto justify-between py-10`}>
-            <img src={selfie} alt="profilePic" className='w-[50%] aspect-square rounded-full object-cover' />
-            <h2 className='mt-5 text-2xl font-medium'>SmartAlec</h2>
+            <img src={picture} alt="profilePic" className='w-[50%] aspect-square rounded-full object-cover' />
+            <h2 className='mt-5 text-2xl font-medium'>{username}</h2>
             <h3 className='mt-1 text-md px-3'>My goal is to be the fastest typer at Gatech</h3>
             <div className="w-full text-left px-3 mt-4">
                 <h3 className='text-md font-medium'>Titles</h3>

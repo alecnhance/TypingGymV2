@@ -6,6 +6,7 @@ const Practice = () => {
         <div className="flex flex-col w-full items-center">
           <TypingArea isFree={true}/>
         </div>
+
       </div>
     );
   };

@@ -3,8 +3,11 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import ProfileDropdown from './ProfileDropdown';
 import { useClerk } from '@clerk/clerk-react';
+import { useUserData } from '../UserContext';
 
 const Header = () => {
+    const userData = useUserData();
+    const fname = userData?.fname || "name";
     const [showDrop, setDrop] = useState(false);
     const { signOut, user, openUserProfile } = useClerk();
     const handleNameClick = () => {
@@ -79,7 +82,7 @@ const Header = () => {
                     }`}
                     onClick={handleNameClick}
                 >
-                    Name
+                    {fname}
                 </button>
                 {showDrop && (
                     <div className="absolute right-0">
