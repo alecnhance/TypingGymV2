@@ -160,7 +160,9 @@ const TypingArea = ({ isFree }) => {
                 setSpaceMisses={setSpaceMisses}
                 setTotalTime={setTotalTime}
                 setProgress={setProgress}
+                numTyped={numTyped}
                 setNumTyped={setNumTyped}
+                numWrong={numWrong}
                 setNumWrong={setNumWrong}
             />
             <div className="flex w-full justify-between py-3 items-center">
