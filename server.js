@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { parse } from 'url';
 import { Clerk } from '@clerk/clerk-sdk-node';
 import { clerkAuth } from './authMiddleware.js';
+import { WebSocketServer } from 'ws';
 
 // Load environment variables
 dotenv.config();
@@ -63,6 +64,32 @@ const server = http.createServer(async (req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end('Server is running\n');
 });
+
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+  console.log("New client connected");
+
+  ws.send(JSON.stringify({ type: 'connected', message: 'Welcome'}));
+
+  ws.on('message', (data) => {
+    const msg = JSON.parse(data);
+    console.log('Received from client', msg);
+  })
+
+  ws.broadcast = (data) => {
+    wss.clients.forEach((client) => {
+      if (client.readyState === ws.OPEN) {
+        client.send(JSON.strinfify(data));
+      }
+    });
+  };
+
+  ws.on('close', () => {
+    console.log("client disconnected");
+  })
+});
+
 
 const PORT = 3000;
 server.listen(PORT, () => {

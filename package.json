@@ -32,7 +32,8 @@
     "react-select": "^5.10.1",
     "react-swipeable": "^7.0.2",
     "recharts": "^2.15.3",
-    "svix": "^1.66.0"
+    "svix": "^1.66.0",
+    "ws": "^8.18.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
