@@ -1,6 +1,7 @@
 import http from 'http';
 import webhookHandler from './webhooks/clerk.js';
 import { handleUserData } from './api/users/getMe.js';
+import { handleUserPost} from './api/users/postLogic.js';
 import dotenv from 'dotenv';
 import { parse } from 'url';
 import { Clerk } from '@clerk/clerk-sdk-node';
@@ -47,6 +48,15 @@ const server = http.createServer(async (req, res) => {
     }
     req.auth = auth;
     return handleUserData(req, res);
+  }
+
+  if (req.method === 'POST' && pathname === '/api/users/me') {
+    const auth = await clerkAuth(req, res);
+    if (!auth) {
+      return;
+    }
+    req.auth = auth;
+    return handleUserPost(req, res);
   }
 
   // Handle unmatched routes

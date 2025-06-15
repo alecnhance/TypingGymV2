@@ -1,5 +1,6 @@
 import { space } from 'postcss/lib/list';
 import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import { useAuth } from '@clerk/clerk-react';
 
 const InnerTyping = React.forwardRef(
     (
@@ -16,8 +17,10 @@ const InnerTyping = React.forwardRef(
         setSpaceMisses,
         setTotalTime,
         setProgress,
+        numTyped,
         setNumTyped,
-        setNumWrong
+        numWrong,
+        setNumWrong,
       },
       ref
     ) => {
@@ -25,6 +28,22 @@ const InnerTyping = React.forwardRef(
     const inputRef = useRef(null);
     const intervalRef = useRef(null);
     const startRef = useRef(null);
+
+    const keyAccuracyRef = useRef({});
+    const { getToken } = useAuth();
+
+    function updateKeyAccuracy(key, isCorrect) {
+        if (!keyAccuracyRef.current[key]) {
+            keyAccuracyRef.current[key] = {
+                total: 0,
+                correct: 0,
+            };
+        }
+        keyAccuracyRef.current[key].total++;
+        if (isCorrect) {
+            keyAccuracyRef.current[key].correct++;
+        }
+    }
 
     useImperativeHandle(ref, () => ({
         focus: () => inputRef.current?.focus(),
@@ -57,6 +76,44 @@ const InnerTyping = React.forwardRef(
         setTotalTime(Date.now() - startRef.current);
         startRef.current = null;
     }
+
+    const updateTypingHistory = async (chars, keyStrokes, keyDict, startStamp, endStamp, accuracy) => {
+        const startDate = new Date(startStamp);
+        const endDate = new Date(endStamp);
+        console.log(startDate); // should print a valid Date
+        console.log(endDate);
+        const durationSeconds = (endDate - startDate) / 1000;
+        console.log("duration seconds: ",durationSeconds);
+        const object = {
+            numChars: chars,
+            keyStrokes: keyStrokes,
+            keyDict: keyDict,
+            start: startStamp,
+            end: endStamp,
+            acc: accuracy,
+            wpm: (chars / 5) / (durationSeconds / 60)
+        };
+        try {
+            const token = await getToken();
+            const res = await fetch('http://localhost:3000/api/users/me', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(object)
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Server responded with ${res.status}: ${errorText}`);
+            }
+
+            keyAccuracyRef.current = {};
+        } catch (error) {
+            console.error('Error updating user data:', error);
+        }
+    }
  
     const handleInputChange = (event) => {
         const len = event.target.value.length;
@@ -66,11 +123,17 @@ const InnerTyping = React.forwardRef(
         if (len > inputText.length) {
             setNumTyped(prev => prev + 1);
             const newChar = event.target.value[len - 1];
+            const isCorrect = newChar === prompt[len - 1];
+            updateKeyAccuracy(prompt[len - 1], isCorrect);
             if (inputText.length === prompt.length && len >= inputText.length) {
                 return;
             }
             if (prompt[len - 1] === newChar) {
                 if (len === prompt.length && redCount === 0) {
+                    const acc = numTyped > 0 ? Math.floor(((numTyped - numWrong) / numTyped) * 100) : 100;
+                    const startISO = new Date(startRef.current).toISOString();
+                    const endISO = new Date(Date.now()).toISOString();
+                    updateTypingHistory(prompt.length, numTyped, keyAccuracyRef.current, startISO, endISO, acc); 
                     endTimer();
                 }
                 if (colorDict[len - 1] === 'text-red-500') {
@@ -94,7 +157,6 @@ const InnerTyping = React.forwardRef(
                         newSet.add(len - 1);
                         return newSet;
                     })
-                    console.log(spaceMisses);
                 }
                 if (colorDict[len - 1] !== 'text-red-500') {
                     setRedCount(prev => prev + 1);
@@ -111,7 +173,6 @@ const InnerTyping = React.forwardRef(
 
     const handleKeyDown = (event) => {
         if (event.key === 'Backspace') {
-            console.log(spaceMisses);
             if (inputText.length === prompt.length && redCount === 0) {
                 event.preventDefault();
                 return;
