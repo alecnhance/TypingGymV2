@@ -1,4 +1,5 @@
 import db from '../../db.js';
+import { notifyUser } from '../../server.js';
 
 export async function handleUserPost(req, res) {
     console.log("In USER POST");
@@ -49,6 +50,8 @@ export async function handleUserPost(req, res) {
             res.end(JSON.stringify({ error: 'Insert into key_accuracy failed' }));
             return;
         }
+
+        notifyUser(userId, { type: 'keyAccuracyUpdated' });
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(keyInsert.rows[0]));

@@ -21,8 +21,10 @@ const getKeyColor = (keyAccuracy, key) => {
     if (!keyAccuracy) {
         return '#161616';
     }
+    if (key === 'Space') {
+        key = ' ';
+    }
     if (keyAccuracy[key] === undefined) return '#161616'; // Untyped keys
-    console.log("key accuracy in Color: ", keyAccuracy);
 
     const accuracies = Object.values(keyAccuracy).filter(a => a !== undefined).map(a => Number(a));
     const mean = accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length;
