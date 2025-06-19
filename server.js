@@ -10,6 +10,7 @@ import { WebSocketServer } from 'ws';
 import { handleGetKeyAcc } from './api/users/getKey.js';
 import { addSeconds } from 'date-fns';
 import { handleGetDates } from './api/users/getDates.js';
+import { handleGetGraph } from './api/users/getGraph.js';
 
 // Load environment variables
 dotenv.config();
@@ -53,13 +54,20 @@ const server = http.createServer(async (req, res) => {
     return handleGetKeyAcc(req, res);
   }
   if (req.method === 'GET' && pathname === '/api/users/me/dates') {
-    console.log("In getting dates");
     const auth = await clerkAuth(req, res);
     if (!auth) {
       return;
     }
     req.auth = auth;
     return handleGetDates(req, res);
+  }
+  if (req.method === 'GET' && pathname === '/api/users/me/wpmGraph') {
+    const auth = await clerkAuth(req, res);
+    if (!auth) {
+      return;
+    }
+    req.auth = auth;
+    return handleGetGraph(req, res);
   }
 
   if (req.method === 'GET' && pathname === '/api/users/me') {
