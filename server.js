@@ -7,6 +7,7 @@ import { parse } from 'url';
 import { Clerk } from '@clerk/clerk-sdk-node';
 import { clerkAuth } from './authMiddleware.js';
 import { WebSocketServer } from 'ws';
+import { handleGetKeyAcc } from './api/users/getKey.js';
 
 // Load environment variables
 dotenv.config();
@@ -41,6 +42,15 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && pathname === '/webhooks/clerk') {
     return webhookHandler(req, res);
   }
+  if (req.method === 'GET' && pathname === '/api/users/me/keyAccuracy') {
+    console.log("Potatoe gravy");
+    const auth = await clerkAuth(req, res);
+    if (!auth) {
+      return;
+    }
+    req.auth = auth;
+    return handleGetKeyAcc(req, res);
+  }
 
   if (req.method === 'GET' && pathname === '/api/users/me') {
     const auth = await clerkAuth(req, res);
@@ -59,6 +69,7 @@ const server = http.createServer(async (req, res) => {
     req.auth = auth;
     return handleUserPost(req, res);
   }
+
 
   // Handle unmatched routes
   res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -80,7 +91,7 @@ wss.on('connection', (ws) => {
   ws.broadcast = (data) => {
     wss.clients.forEach((client) => {
       if (client.readyState === ws.OPEN) {
-        client.send(JSON.strinfify(data));
+        client.send(JSON.stringify(data));
       }
     });
   };
