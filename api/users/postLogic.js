@@ -52,6 +52,9 @@ export async function handleUserPost(req, res) {
         }
 
         notifyUser(userId, { type: 'keyAccuracyUpdated' });
+        notifyUser(userId, { type: 'dates updated' });
+
+
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(keyInsert.rows[0]));

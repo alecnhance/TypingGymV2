@@ -66,13 +66,28 @@
 
 /* Current day styling */
 .react-calendar__tile--now {
-  background: #4a5568 !important;
+  position: relative;
   border-radius: 50% !important;
+  text-decoration: underline;
+}
+
+.react-calendar__tile--now::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px; /* Adjust based on border thickness */
+  height: 24px; /* Adjust based on border thickness */
+  border: 2px solid white;
+  border-radius: 50%;
+  pointer-events: none;
+  box-sizing: border-box;
 }
 
 /* Selected day styling */
 .react-calendar__tile--active {
-  background: #4299e1 !important;
+  background: clear !important;
   border-radius: 50% !important;
 }
 
