@@ -20,7 +20,7 @@ export function useKeyAccuracy() {
                 },
             });
             if (!res.ok) {
-                console.error("Fetch Accuracy response 401: ", res.text);
+                console.error("Fetch Accuracy error ", res.text);
                 return;
             }
             const data = await res.json();

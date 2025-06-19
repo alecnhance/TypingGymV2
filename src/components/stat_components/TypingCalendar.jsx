@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../styles/calendar.css';
+import { usePracticeDates } from '../../hooks/usePracticeDates';
 
 const TypingCalendar = ( {className }) => {
   const [date, setDate] = useState(new Date());
+  const { loading, dates} = usePracticeDates();
 
   // Example practice days (replace with actual data later)
   const practiceDays = [
@@ -14,7 +16,7 @@ const TypingCalendar = ( {className }) => {
 
   // Function to check if a day is a practiced day
   const isPracticed = (day) => {
-    return practiceDays.some(practiceDay => 
+    return dates.some(practiceDay => 
       practiceDay.getDate() === day.getDate() &&
       practiceDay.getMonth() === day.getMonth() &&
       practiceDay.getFullYear() === day.getFullYear());
@@ -23,7 +25,7 @@ const TypingCalendar = ( {className }) => {
   // Function to style practiced days
   const tileClassName = ({ date, view }) => {
     if (view === 'month' && isPracticed(date)) {
-      return 'bg-orange-500 text-white'; // Orange background for practiced days
+      return 'relative text-white [&>abbr]:relative [&>abbr]:z-10 before:content-[""] before:absolute before:bg-orange-500 before:w-6 before:h-6 before:rounded-full before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:z-0';
     }
     return '';
   };

@@ -8,6 +8,8 @@ import { Clerk } from '@clerk/clerk-sdk-node';
 import { clerkAuth } from './authMiddleware.js';
 import { WebSocketServer } from 'ws';
 import { handleGetKeyAcc } from './api/users/getKey.js';
+import { addSeconds } from 'date-fns';
+import { handleGetDates } from './api/users/getDates.js';
 
 // Load environment variables
 dotenv.config();
@@ -49,6 +51,15 @@ const server = http.createServer(async (req, res) => {
     }
     req.auth = auth;
     return handleGetKeyAcc(req, res);
+  }
+  if (req.method === 'GET' && pathname === '/api/users/me/dates') {
+    console.log("In getting dates");
+    const auth = await clerkAuth(req, res);
+    if (!auth) {
+      return;
+    }
+    req.auth = auth;
+    return handleGetDates(req, res);
   }
 
   if (req.method === 'GET' && pathname === '/api/users/me') {
