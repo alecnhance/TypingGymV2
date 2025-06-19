@@ -95,7 +95,7 @@ const InnerTyping = React.forwardRef(
         };
         try {
             const token = await getToken();
-            const res = await fetch('http://localhost:3000/api/users/me', {
+            const res = await fetch('/api/users/me', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useKeyAccuracy } from '../../hooks/useKeyAccuracy';
 
 const keyboardLayout = [
     ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
@@ -17,9 +18,13 @@ const keyboardLayoutShifted = [
 ];
 
 const getKeyColor = (keyAccuracy, key) => {
-if (keyAccuracy[key] === undefined) return '#161616'; // Untyped keys
+    if (!keyAccuracy) {
+        return '#161616';
+    }
+    if (keyAccuracy[key] === undefined) return '#161616'; // Untyped keys
+    console.log("key accuracy in Color: ", keyAccuracy);
 
-    const accuracies = Object.values(keyAccuracy).filter(a => a !== undefined);
+    const accuracies = Object.values(keyAccuracy).filter(a => a !== undefined).map(a => Number(a));
     const mean = accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length;
     const stdDev = Math.sqrt(accuracies.reduce((sum, a) => sum + Math.pow(a - mean, 2), 0) / accuracies.length);
     const deviations = (keyAccuracy[key] - mean) / stdDev;
@@ -30,22 +35,24 @@ if (keyAccuracy[key] === undefined) return '#161616'; // Untyped keys
         { threshold: -0.5, color: '#ea580c' },  
         { threshold:  0.5, color: '#ca8a04' },  
         { threshold:  1.5, color: '#8bc34a' },  
-        { threshold:  2.5, color: '#16a34a' }   
+        { threshold:  2.5, color: '#16a34a' },
+        { threshold:  10, color: '#16a34a' },
     ];
 
     let lowerStop, upperStop;
     for (let i = 0; i < colorStops.length - 1; i++) {
         if (deviations <= colorStops[i+1].threshold) {
-        lowerStop = colorStops[i];
-        upperStop = colorStops[i+1];
-        break;
+            lowerStop = colorStops[i];
+            upperStop = colorStops[i+1];
+            const range = upperStop.threshold - lowerStop.threshold;
+            const position = (deviations - lowerStop.threshold) / range;
+
+            return interpolateColor(lowerStop.color, upperStop.color, position);
         }
     }
+    console.log("No range found for key: ", key);
 
-    const range = upperStop.threshold - lowerStop.threshold;
-    const position = (deviations - lowerStop.threshold) / range;
-
-    return interpolateColor(lowerStop.color, upperStop.color, position);
+    return '#161616';
 };
   
 
@@ -66,39 +73,39 @@ const interpolateColor = (color1, color2, factor) => {
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 };
   
-const keyAccuracy = {
-    A: 0.97,
-    a: 0.89,
-    S: 0.82,
-    s: 0.71,
-    D: 0.58,
-    d: 0.64,
-    F: 0.44,
-    f: 0.53,
-    J: 0.91,
-    j: 0.86,
-    K: 0.95,
-    k: 0.88,
-    L: 0.78,
-    l: 0.81,
-    ';': 0.55,
-    Q: 0.88,
-    q: 0.76,
-    W: 0.92,
-    w: 0.83,
-    E: 0.66,
-    e: 0.70,
-    R: 0.74,
-    r: 0.68,
-    'Space': 0.99,
-    '4': 0.67,
-    '$': 0.32,
-    '%': 0.41,
-    '&': 0.48,
-    '(': 0.36,
-    ')': 0.38,
-    'Backspace': 0.93,
-};
+// const keyAccuracy = {
+//     A: 0.97,
+//     a: 1.00,
+//     S: 0.82,
+//     s: 1.00,
+//     D: 0.58,
+//     d: 0.64,
+//     F: 0.44,
+//     f: 0.53,
+//     J: 0.91,
+//     j: 0.86,
+//     K: 0.95,
+//     k: 0.88,
+//     L: 0.78,
+//     l: 0.81,
+//     ';': 0.55,
+//     Q: 0.88,
+//     q: 0.76,
+//     W: 0.92,
+//     w: 0.83,
+//     E: 0.66,
+//     e: 0.70,
+//     R: 0.74,
+//     r: 0.68,
+//     'Space': 0.99,
+//     '4': 0.67,
+//     '$': 0.32,
+//     '%': 0.41,
+//     '&': 0.48,
+//     '(': 0.36,
+//     ')': 0.38,
+//     'Backspace': 0.93,
+// };
   
 
 const getKeySize = (key) => {
@@ -135,6 +142,7 @@ const colorCodeInfo = [
 
 const Keyboard = ({ className }) => {
     const [shifted, setShift] = useState(false);
+    const { keyAccuracy, loading } = useKeyAccuracy();
 
     const toggleShift = () => {
         setShift(!shifted);
