@@ -43,7 +43,6 @@ const server = http.createServer(async (req, res) => {
     return webhookHandler(req, res);
   }
   if (req.method === 'GET' && pathname === '/api/users/me/keyAccuracy') {
-    console.log("Potatoe gravy");
     const auth = await clerkAuth(req, res);
     if (!auth) {
       return;
@@ -77,6 +76,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 const wss = new WebSocketServer({ server });
+const userSockets = new Map();
 
 wss.on('connection', (ws) => {
   console.log("New client connected");
@@ -86,6 +86,10 @@ wss.on('connection', (ws) => {
   ws.on('message', (data) => {
     const msg = JSON.parse(data);
     console.log('Received from client', msg);
+    if (msg.type === 'register' && msg.clerkId) {
+      userSockets.set(msg.clerkId, ws);
+      ws.clerkId = msg.clerkId;
+    }
   })
 
   ws.broadcast = (data) => {
@@ -97,9 +101,19 @@ wss.on('connection', (ws) => {
   };
 
   ws.on('close', () => {
+    if (ws.clerkId) {
+      userSockets.delete(ws.clerkId);
+    }
     console.log("client disconnected");
   })
 });
+
+export function notifyUser(clerkId, payload) {
+  const ws = userSockets.get(clerkId);
+  if (ws && ws.readyState === ws.OPEN) {
+    ws.send(JSON.stringify(payload));
+  }
+}
 
 
 const PORT = 3000;
