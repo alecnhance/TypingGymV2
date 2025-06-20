@@ -3,15 +3,16 @@ import db from '../db.js';
 export async function userCreatedHandler(user) {
     try {
       const result = await db.query(`
-        INSERT INTO typer (clerk_id, username, fname, lname, email, pic_url)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO typer (clerk_id, username, fname, lname, email, pic_url, creation_date)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
       `, [
         user.id,
         user.username,
         user.first_name,
         user.last_name,
         user.email_addresses[0].email_address,
-        user.image_url
+        user.image_url,
+        new Date()
       ]);
   
       if (result.rowCount === 1) {
