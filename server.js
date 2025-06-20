@@ -11,6 +11,7 @@ import { handleGetKeyAcc } from './api/users/getKey.js';
 import { addSeconds } from 'date-fns';
 import { handleGetDates } from './api/users/getDates.js';
 import { handleGetGraph } from './api/users/getGraph.js';
+import { handleGetSummary } from './api/users/getSummary.js';
 
 // Load environment variables
 dotenv.config();
@@ -68,6 +69,14 @@ const server = http.createServer(async (req, res) => {
     }
     req.auth = auth;
     return handleGetGraph(req, res);
+  }
+  if (req.method === 'GET' && pathname === '/api/users/me/summaryStats') {
+    const auth = await clerkAuth(req, res);
+    if (!auth) {
+      return;
+    }
+    req.auth = auth;
+    return handleGetSummary(req, res);
   }
 
   if (req.method === 'GET' && pathname === '/api/users/me') {

@@ -2,43 +2,45 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { useWebSocket } from '../components/WebSocketProvider';
 
-
-export function useWPMGraph() {
-    const [graph, setGraph] = useState([]);
+export function useSummary() {
+    const [summary, setSummary] = useState({});
     const [loading, setLoading] = useState(true);
     const { getToken } = useAuth();
     const { data: socketData } = useWebSocket();
 
-    const fetchGraph = useCallback(async () => {
+    const fetchSummary = useCallback(async () => {
         setLoading(true);
         try {
             const token = await getToken();
-            const res = await fetch('/api/users/me/wpmGraph', {
+            const res = await fetch('/api/users/me/summaryStats', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
-                },
+                }
             });
             if (!res.ok) {
-                console.error("Fetch graph error: ", res.text);
+                console.error('Failed to fetch summary: ', res.text);
                 return;
             }
             const data = await res.json();
-            const formattedData = data.data.reduce((acc, { day, wpm }) => {
-                acc.push({ x: day, y: wpm });
-                return acc;
-            }, [])
-            setGraph(formattedData);
+            console.log(data);
+            setSummary(data.data);
         } catch (err) {
-            console.error("Error fetching graph data: ", err);
+            console.error("Error fetching summary: ", err);
         } finally {
-            setLoading(false);
+            setLoading(true);
         }
     }, [getToken]);
 
     useEffect(() => {
-        fetchGraph();
-    }, [fetchGraph]);
+        fetchSummary();
+    }, [fetchSummary]);
 
-    return { graph, loading };
+    useEffect(() => {
+        if (socketData?.type === 'updateSummary') {
+            fetchSummary();
+        }
+    }, [fetchSummary, socketData]);
+
+    return { summary, loading };
 }
