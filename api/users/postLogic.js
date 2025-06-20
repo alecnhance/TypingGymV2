@@ -53,6 +53,7 @@ export async function handleUserPost(req, res) {
 
         notifyUser(userId, { type: 'keyAccuracyUpdated' });
         notifyUser(userId, { type: 'dates updated' });
+        notifyUser(userId, { type: 'updateSummary' });
 
 
 
