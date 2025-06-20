@@ -25,6 +25,9 @@ const getKeyColor = (keyAccuracy, key) => {
         key = ' ';
     }
     if (keyAccuracy[key] === undefined) return '#161616'; // Untyped keys
+    if (Math.abs(keyAccuracy[key] - 1.0) < Number.EPSILON) {
+        return '#16a34a';
+    }
 
     const accuracies = Object.values(keyAccuracy).filter(a => a !== undefined).map(a => Number(a));
     const mean = accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length;
@@ -74,41 +77,6 @@ const interpolateColor = (color1, color2, factor) => {
 
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 };
-  
-// const keyAccuracy = {
-//     A: 0.97,
-//     a: 1.00,
-//     S: 0.82,
-//     s: 1.00,
-//     D: 0.58,
-//     d: 0.64,
-//     F: 0.44,
-//     f: 0.53,
-//     J: 0.91,
-//     j: 0.86,
-//     K: 0.95,
-//     k: 0.88,
-//     L: 0.78,
-//     l: 0.81,
-//     ';': 0.55,
-//     Q: 0.88,
-//     q: 0.76,
-//     W: 0.92,
-//     w: 0.83,
-//     E: 0.66,
-//     e: 0.70,
-//     R: 0.74,
-//     r: 0.68,
-//     'Space': 0.99,
-//     '4': 0.67,
-//     '$': 0.32,
-//     '%': 0.41,
-//     '&': 0.48,
-//     '(': 0.36,
-//     ')': 0.38,
-//     'Backspace': 0.93,
-// };
-  
 
 const getKeySize = (key) => {
     if (key === 'Backspace' || key === 'Enter' || key === 'Shift') {
