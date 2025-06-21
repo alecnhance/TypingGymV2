@@ -6,6 +6,7 @@ import profilePic from '../assets/selfie.jpg';
 import flame from '../assets/flame.svg';
 import dumbbell from '../assets/dumbbell.svg';
 import RecentActivity from '../components/RecentActivity';
+import Streaks from '../components/home_components/Streaks';
 
 
 const widgetData = [
@@ -68,10 +69,7 @@ const Home = () => {
               <h2 className="text-xl ">Make sure to always put your fingers of the f and j keys</h2>
             </div>
           </div>
-          <div className='flex justify-center items-center w-full bg-headerGray flex-1 rounded-2xl gap-2'>
-            <h1 className="text-3xl">X Day Streak</h1>
-            <img src={flame} className='w-[10%]'/>
-          </div>
+          <Streaks />
         </div>
       </div>
       <div className="flex justify-center items-start gap-8 p-4 w-full">
