@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import { useWebSocket } from '../components/WebSocketProvider';
+// import { useWebSocket } from '../components/WebSocketProvider';
 
 export function useKeyAccuracy() {
     const [keyAccuracy, setKeyAccuracy] = useState({});
     const [loading, setLoading] = useState(true);
     const { getToken } = useAuth();
-    const { data: socketData } = useWebSocket();
+    // const { data: socketData } = useWebSocket();
 
     const fetchAccuracy = useCallback(async () => {
         console.log("Fetching key accuracy...");
@@ -41,11 +41,11 @@ export function useKeyAccuracy() {
         fetchAccuracy();
     }, [fetchAccuracy]);
 
-    useEffect(() => {
-        if (socketData?.type === 'keyAccuracyUpdated') {
-            fetchAccuracy();
-        }
-    }, [socketData, fetchAccuracy]);
+    // useEffect(() => {
+    //     if (socketData?.type === 'keyAccuracyUpdated') {
+    //         fetchAccuracy();
+    //     }
+    // }, [socketData, fetchAccuracy]);
 
     return { keyAccuracy, loading };
 };

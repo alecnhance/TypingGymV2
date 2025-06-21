@@ -1,5 +1,5 @@
 import db from '../../db.js';
-import { notifyUser } from '../../server.js';
+// import { notifyUser } from '../../server.js';
 
 export async function handleUserPost(req, res) {
     console.log("In USER POST");
@@ -51,9 +51,9 @@ export async function handleUserPost(req, res) {
             return;
         }
 
-        notifyUser(userId, { type: 'keyAccuracyUpdated' });
-        notifyUser(userId, { type: 'dates updated' });
-        notifyUser(userId, { type: 'updateSummary' });
+        // notifyUser(userId, { type: 'keyAccuracyUpdated' });
+        // notifyUser(userId, { type: 'dates updated' });
+        // notifyUser(userId, { type: 'updateSummary' });
 
 
 

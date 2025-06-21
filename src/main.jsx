@@ -17,11 +17,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ClerkProvider 
       publishableKey={clerkPubKey}
     >
-      <WebSocketProvider>
+      {/* <WebSocketProvider> */}
         <UserProvider>
           <App />
         </UserProvider>
-      </WebSocketProvider>
+      {/* </WebSocketProvider> */}
     </ClerkProvider>
   </React.StrictMode>
 );

@@ -103,45 +103,45 @@ const server = http.createServer(async (req, res) => {
   res.end('Server is running\n');
 });
 
-const wss = new WebSocketServer({ server });
-const userSockets = new Map();
+// const wss = new WebSocketServer({ server });
+// const userSockets = new Map();
 
-wss.on('connection', (ws) => {
-  console.log("New client connected");
+// wss.on('connection', (ws) => {
+//   console.log("New client connected");
 
-  ws.send(JSON.stringify({ type: 'connected', message: 'Welcome'}));
+//   ws.send(JSON.stringify({ type: 'connected', message: 'Welcome'}));
 
-  ws.on('message', (data) => {
-    const msg = JSON.parse(data);
-    console.log('Received from client', msg);
-    if (msg.type === 'register' && msg.clerkId) {
-      userSockets.set(msg.clerkId, ws);
-      ws.clerkId = msg.clerkId;
-    }
-  })
+//   ws.on('message', (data) => {
+//     const msg = JSON.parse(data);
+//     console.log('Received from client', msg);
+//     if (msg.type === 'register' && msg.clerkId) {
+//       userSockets.set(msg.clerkId, ws);
+//       ws.clerkId = msg.clerkId;
+//     }
+//   })
 
-  ws.broadcast = (data) => {
-    wss.clients.forEach((client) => {
-      if (client.readyState === ws.OPEN) {
-        client.send(JSON.stringify(data));
-      }
-    });
-  };
+//   ws.broadcast = (data) => {
+//     wss.clients.forEach((client) => {
+//       if (client.readyState === ws.OPEN) {
+//         client.send(JSON.stringify(data));
+//       }
+//     });
+//   };
 
-  ws.on('close', () => {
-    if (ws.clerkId) {
-      userSockets.delete(ws.clerkId);
-    }
-    console.log("client disconnected");
-  })
-});
+//   ws.on('close', () => {
+//     if (ws.clerkId) {
+//       userSockets.delete(ws.clerkId);
+//     }
+//     console.log("client disconnected");
+//   })
+// });
 
-export function notifyUser(clerkId, payload) {
-  const ws = userSockets.get(clerkId);
-  if (ws && ws.readyState === ws.OPEN) {
-    ws.send(JSON.stringify(payload));
-  }
-}
+// export function notifyUser(clerkId, payload) {
+//   const ws = userSockets.get(clerkId);
+//   if (ws && ws.readyState === ws.OPEN) {
+//     ws.send(JSON.stringify(payload));
+//   }
+// }
 
 
 const PORT = 3000;

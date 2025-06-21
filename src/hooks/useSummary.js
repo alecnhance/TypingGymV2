@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import { useWebSocket } from '../components/WebSocketProvider';
+// import { useWebSocket } from '../components/WebSocketProvider';
 
 export function useSummary() {
     const [summary, setSummary] = useState({});
     const [loading, setLoading] = useState(true);
     const { getToken } = useAuth();
-    const { data: socketData } = useWebSocket();
+    // const { data: socketData } = useWebSocket();
 
     const fetchSummary = useCallback(async () => {
         setLoading(true);
@@ -36,11 +36,11 @@ export function useSummary() {
         fetchSummary();
     }, [fetchSummary]);
 
-    useEffect(() => {
-        if (socketData?.type === 'updateSummary') {
-            fetchSummary();
-        }
-    }, [fetchSummary, socketData]);
+    // useEffect(() => {
+    //     if (socketData?.type === 'updateSummary') {
+    //         fetchSummary();
+    //     }
+    // }, [fetchSummary, socketData]);
 
     return { summary, loading };
 }
