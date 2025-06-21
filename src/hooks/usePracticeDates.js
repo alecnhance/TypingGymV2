@@ -23,7 +23,19 @@ export function usePracticeDates() {
                 return;
             }
             const data = await res.json();
-            const formattedData = data.data.map(row => new Date(row.date));
+            const localDates = new Set();
+            data.data.forEach(row => {
+                const d = new Date(row.date);
+                const year = d.getFullYear();
+                const month = d.getMonth();
+                const day = d.getDate();
+                localDates.add(`${year}-${month}-${day}`);
+            });
+
+            const formattedData = Array.from(localDates).map(dateString => {
+                const [year, month, day] = dateString.split('-').map(Number);
+                return new Date(year, month, day);
+            });
             console.log("Practice Dates set");
             setDates(formattedData);
         } catch (err) {
