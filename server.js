@@ -12,6 +12,7 @@ import { addSeconds } from 'date-fns';
 import { handleGetDates } from './api/users/getDates.js';
 import { handleGetGraph } from './api/users/getGraph.js';
 import { handleGetSummary } from './api/users/getSummary.js';
+import { handleGetDaily } from './api/users/getDaily.js';
 
 // Load environment variables
 dotenv.config();
@@ -33,7 +34,7 @@ const getRoutes = {
   '/api/users/me/dates': handleGetDates,
   '/api/users/me/wpmGraph': handleGetGraph,
   '/api/users/me/summaryStats': handleGetSummary,
-  '/api/users/me/dailyChallenge': handleGetSummary, // placeholder
+  '/api/users/me/dailyChallenge': handleGetDaily,
 };
 
 const server = http.createServer(async (req, res) => {
@@ -62,7 +63,7 @@ const server = http.createServer(async (req, res) => {
     req.auth = auth;
     return getRoutes[pathname](req, res);
   }
-  
+
   if (req.method === 'POST' && pathname === '/api/users/me') {
     const auth = await clerkAuth(req, res);
     if (!auth) {

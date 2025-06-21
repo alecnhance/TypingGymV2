@@ -7,6 +7,8 @@ import flame from '../assets/flame.svg';
 import dumbbell from '../assets/dumbbell.svg';
 import RecentActivity from '../components/RecentActivity';
 import Streaks from '../components/home_components/Streaks';
+import DailyPromotion from '../components/home_components/DailyPromotion';
+import { useDailyStatus } from '../hooks/useDailyStatus';
 
 
 const widgetData = [
@@ -42,6 +44,7 @@ const practiceDescription = "Grind through the fundamentals to build rock-solid 
 
 const Home = () => {
   const navigate = useNavigate();
+  const { completed, loading } = useDailyStatus();
   return (
     <div className="flex flex-col p-[2vh] justify-center h-[95vh]">
       <div className="flex flex-col md:flex-row justify-center items-start gap-8 p-4 w-full">
@@ -74,10 +77,19 @@ const Home = () => {
       </div>
       <div className="flex justify-center items-start gap-8 p-4 w-full">
         <div className="flex flex-col flex-grow justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
-          <h2 className="text-xl font-bold ">Daily Challenge</h2>
-          <div className="h-full flex-1">
-            <DailyBar />
-          </div>
+          { completed &&
+            <div className='flex flex-col w-full h-full'>
+              <h2 className="text-xl font-bold ">Daily Challenge</h2>
+              <div className="h-full flex-1">
+                <DailyBar />
+              </div>
+            </div>
+          }
+          { !completed &&
+            <div className='flex w-full h-full'>
+              <DailyPromotion />
+            </div>
+          }
         </div>
         <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
           <RecentActivity />
