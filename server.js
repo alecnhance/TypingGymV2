@@ -27,6 +27,15 @@ const corsHeaders = {
   'Access-Control-Max-Age': '86400', // 24 hours
 };
 
+const getRoutes = {
+  '/api/users/me': handleUserData,
+  '/api/users/me/keyAccuracy': handleGetKeyAcc,
+  '/api/users/me/dates': handleGetDates,
+  '/api/users/me/wpmGraph': handleGetGraph,
+  '/api/users/me/summaryStats': handleGetSummary,
+  '/api/users/me/dailyChallenge': handleGetSummary, // placeholder
+};
+
 const server = http.createServer(async (req, res) => {
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
@@ -46,48 +55,14 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && pathname === '/webhooks/clerk') {
     return webhookHandler(req, res);
   }
-  if (req.method === 'GET' && pathname === '/api/users/me/keyAccuracy') {
-    const auth = await clerkAuth(req, res);
-    if (!auth) {
-      return;
-    }
-    req.auth = auth;
-    return handleGetKeyAcc(req, res);
-  }
-  if (req.method === 'GET' && pathname === '/api/users/me/dates') {
-    const auth = await clerkAuth(req, res);
-    if (!auth) {
-      return;
-    }
-    req.auth = auth;
-    return handleGetDates(req, res);
-  }
-  if (req.method === 'GET' && pathname === '/api/users/me/wpmGraph') {
-    const auth = await clerkAuth(req, res);
-    if (!auth) {
-      return;
-    }
-    req.auth = auth;
-    return handleGetGraph(req, res);
-  }
-  if (req.method === 'GET' && pathname === '/api/users/me/summaryStats') {
-    const auth = await clerkAuth(req, res);
-    if (!auth) {
-      return;
-    }
-    req.auth = auth;
-    return handleGetSummary(req, res);
-  }
 
-  if (req.method === 'GET' && pathname === '/api/users/me') {
+  if (req.method === 'GET' && getRoutes[pathname]) {
     const auth = await clerkAuth(req, res);
-    if (!auth) {
-      return;
-    }
+    if (!auth) return;
     req.auth = auth;
-    return handleUserData(req, res);
+    return getRoutes[pathname](req, res);
   }
-
+  
   if (req.method === 'POST' && pathname === '/api/users/me') {
     const auth = await clerkAuth(req, res);
     if (!auth) {
