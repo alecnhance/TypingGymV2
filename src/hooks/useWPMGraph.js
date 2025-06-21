@@ -1,13 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@clerk/clerk-react';
-import { useWebSocket } from '../components/WebSocketProvider';
+// import { useWebSocket } from '../components/WebSocketProvider';
 
 
 export function useWPMGraph() {
     const [graph, setGraph] = useState([]);
     const [loading, setLoading] = useState(true);
     const { getToken } = useAuth();
-    const { data: socketData } = useWebSocket();
+    // const { data: socketData } = useWebSocket();
 
     const fetchGraph = useCallback(async () => {
         setLoading(true);
