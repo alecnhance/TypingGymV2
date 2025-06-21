@@ -9,7 +9,7 @@ export async function handleGetDates(req, res) {
     }
     try {
         const result = await db.query(
-            ` select distinct ended_at::DATE as date from typed_prompts where user_id = $1`,
+            `select ended_at as date from typed_prompts where user_id = $1`,
             [userID]
         );
         if (!result?.rows || result.rows.length === 0) {
