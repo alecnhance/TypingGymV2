@@ -1,8 +1,13 @@
-
+import BenchPressWidget from './BenchPressWidget';
 
 const DailyPromotion = () => {
     return (
-        <h2>Daily Challenge not completed</h2>
+        <div className="flex flex-col w-full items-center justify-between" >
+            <div className='w-[60%]'>
+                <BenchPressWidget />
+            </div>
+        </div>
+        
     );
 }
 

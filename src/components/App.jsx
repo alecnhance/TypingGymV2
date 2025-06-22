@@ -12,6 +12,7 @@ import Landing from "../pages/Landing";
 import FreeTyping from './landing_components/FreeTyping';
 import '../styles/App.css';
 import LandingHeader from './landing_components/LandingHeader';
+import Challenge from '../pages/Challenge';
 
 // 1. AuthLayout Component
 const AuthLayout = () => {
@@ -61,6 +62,8 @@ const App = () => {
               <Route path="/user" element={<UserPage />}/>
               <Route path="/practice" element={<Practice />}/>
             </Route>
+
+            <Route path='/challenge' element={<Challenge />} />
             
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
