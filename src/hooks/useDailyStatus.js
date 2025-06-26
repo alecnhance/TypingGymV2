@@ -2,7 +2,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 
 export function useDailyStatus() {
-    const [completed, setStatus] = useState(false);
+    const [completed, setCompleted] = useState(false);
+    const [dates, setDates] = useState(new Set());
     const [loading, setLoading] = useState(true);
     const { getToken } = useAuth();
 
@@ -20,7 +21,19 @@ export function useDailyStatus() {
                 console.error("Fetch daily challenge status error");
                 return;
             }
-            setStatus(result?.completion || false);
+            const data = await result.json();
+            if (data?.rows === false) {
+                setCompleted(false);
+                setDates(new Set());
+                return;
+            } else {
+                const utcDates = data.formData.map((row) => {
+                    const date = new Date(row.ended_at);
+                    return date.toISOString().split('T')[0];
+                });
+                setDates(new Set(utcDates));
+            }
+            
         } catch (err) {
             console.error("Error fetching daily challenge status: ", err);
         } finally {
@@ -32,5 +45,5 @@ export function useDailyStatus() {
         fetchStatus();
     }, [fetchStatus]);
 
-    return { completed, loading };
+    return { completed, loading, dates };
 }

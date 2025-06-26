@@ -9,9 +9,8 @@ export async function handleGetDaily(req, res) {
     }
     try {
         const result = await db.query(
-            `select * from typed_prompts
+            `select ended_at from typed_prompts
             where user_id = $1
-            and ended_at::DATE = now()::DATE
             and isdaily = true`,
             [userId]
         );
@@ -22,10 +21,10 @@ export async function handleGetDaily(req, res) {
         }
         if (result.rows.length === 0) {
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ completion: false }));
+            res.end(JSON.stringify({ rows: false }));
         } else {
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ completion: true }));
+            res.end(JSON.stringify({ rows: true, data: result.rows }));
         }
     } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json' });
