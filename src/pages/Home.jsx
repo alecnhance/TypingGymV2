@@ -9,6 +9,7 @@ import RecentActivity from '../components/RecentActivity';
 import Streaks from '../components/home_components/Streaks';
 import DailyPromotion from '../components/home_components/DailyPromotion';
 import { useDailyStatus } from '../hooks/useDailyStatus';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const widgetData = [
@@ -77,7 +78,12 @@ const Home = () => {
       </div>
       <div className="flex justify-center items-start gap-8 p-4 w-full">
         <div className="flex flex-col flex-grow justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
-          { completed &&
+          { loading &&
+            <div className='w-full h-full flex items-center justify-center border-4'>
+              <CircularProgress color='white'/>
+            </div>
+          }
+          { completed && !loading &&
             <div className='flex flex-col w-full h-full'>
               <h2 className="text-xl font-bold ">Daily Challenge</h2>
               <div className="h-full flex-1">
@@ -85,7 +91,7 @@ const Home = () => {
               </div>
             </div>
           }
-          { !completed &&
+          { !completed && !loading &&
             <div className='flex w-full h-full'>
               <DailyPromotion />
             </div>

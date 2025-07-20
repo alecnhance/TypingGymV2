@@ -164,8 +164,7 @@ const TypingArea = ({ isFree }) => {
                 setNumTyped={setNumTyped}
                 numWrong={numWrong}
                 setNumWrong={setNumWrong}
-                textSize={"text-xl"}
-                minBoxSize={"100px"}
+                isDaily={false}
             />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: {formatTime(totalTime)}</h2>

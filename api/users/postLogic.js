@@ -20,11 +20,25 @@ export async function handleUserPost(req, res) {
         const data = JSON.parse(body);
         const keyDict = data.keyDict;
 
-        const promptCompletionInsert = await db.query(
-            `INSERT INTO typed_prompts (user_id, started_at, ended_at, total_chars, wpm, accuracy)
-                VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
-            [userId, data.start, data.end, data.numChars, data.wpm, data.acc]
-        );
+        const getQueryOptions = () => {
+            if (data.isDaily && data.numChars > 0) {
+                const query = {
+                    text: `UPDATE typed_prompts set started_at = $2, ended_at = $3, total_chars = $4, wpm = $5, accuracy = $6
+                        WHERE user_id = $1 and (started_at AT TIME ZONE 'UTC')::date = CURRENT_DATE RETURNING id`,
+                    values: [userId, data.start, data.end, data.numChars, data.wpm, data.acc]
+                }
+                return query;
+            } else {
+                const query = {
+                    text: `INSERT INTO typed_prompts (user_id, started_at, ended_at, total_chars, wpm, accuracy, isDaily)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
+                    values: [userId, data.start, data.end, data.numChars, data.wpm, data.acc, data.isDaily]
+                }
+                return query;
+            }
+        }
+
+        const promptCompletionInsert = await db.query(getQueryOptions());
         
         const promptId = promptCompletionInsert.rows[0]?.id;
         if (!promptId) {
@@ -62,6 +76,6 @@ export async function handleUserPost(req, res) {
     } catch (error) {
         console.error('Error updating user data:', error);
         res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Internal server error' }));
+        res.end(JSON.stringify({ error: 'Internal server error', details: error.message }));
     }
 }

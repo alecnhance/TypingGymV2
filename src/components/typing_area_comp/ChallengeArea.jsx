@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Dropdown from './Dropdown';
 import InnerTyping from './InnerTyping';
 import ProgressBar from './ProgressBar';
-import { set } from 'date-fns';
-import custom from '../../assets/customize.svg';
-import { hover } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
 
 const LockIcon = ({ size = 24, color = "currentColor", locked = true, className="" }) => (
     <div className={className}>
@@ -55,6 +53,8 @@ const ChallengeArea = () => {
     // const [wordCount, setWordCount] = useState(10);
     const [started, setStarted] = useState(false);
     const [hoveringStart, setHoveringStart] = useState(false);
+    const navigate = useNavigate();
+    const { getToken } = useAuth();
 
     useEffect(() => {
         //resetPrompt();
@@ -73,17 +73,17 @@ const ChallengeArea = () => {
     }
     const [colorDict, setColorDict] = useState(initColorDict(prompt));
 
-    // const handleRestart = () => {
-    //     setInputText("");
-    //     setColorDict(initColorDict(prompt));
-    //     setRedCount(0);
-    //     setProgress(0);
-    //     setTotalTime(0);
-    //     setNumTyped(0);
-    //     setNumWrong(0);
-    //     innerTypingRef.current?.focus();
-    //     innerTypingRef.current?.resetTimer();
-    // }
+    const handleRestart = () => {
+        setInputText("");
+        setColorDict(initColorDict(prompt));
+        setRedCount(0);
+        setProgress(0);
+        setTotalTime(0);
+        setNumTyped(0);
+        setNumWrong(0);
+        innerTypingRef.current?.focus();
+        innerTypingRef.current?.resetTimer();
+    }
 
     // const resetPrompt = () => {
     //     if (selectedOption === "Random") {
@@ -130,6 +130,42 @@ const ChallengeArea = () => {
     //     makeRandomPrompt(item);
     //     handleRestart();
     // }
+    const startChallenge = async () => {
+        handleRestart();
+        setStarted(true);
+        const startISO = new Date(Date.now()).toISOString();
+        const endISO = new Date(Date.now()).toISOString();
+        const object = {
+            numChars: 0,
+            keyStrokes: 0,
+            keyDict: {},
+            start: startISO,
+            end: endISO,
+            acc: 0,
+            wpm: 0,
+            isDaily: true
+        };
+        try {
+            const token = await getToken();
+            const res = await fetch('/api/users/me', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(object)
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Server responded with ${res.status}: ${errorText}`);
+            }
+
+            keyAccuracyRef.current = {};
+        } catch (error) {
+            console.error('Error updating user data:', error);
+        }
+    }
 
 
     return(
@@ -160,8 +196,7 @@ const ChallengeArea = () => {
                         setNumTyped={setNumTyped}
                         numWrong={numWrong}
                         setNumWrong={setNumWrong}
-                        textSize={"text-4xl"}
-                        minBoxSize={"45vh"}
+                        isDaily={true}
                     />
                 }
                 {!started && 
@@ -181,10 +216,14 @@ const ChallengeArea = () => {
                                     className='rounded-full text-white text-2xl font-bold  bg-green-500 px-4 py-2 w-[48%] min-w-[130px] h-[6vh]'
                                     onMouseEnter={() => setHoveringStart(true)}
                                     onMouseLeave={() => setHoveringStart(false)}
+                                    onClick={startChallenge}
                                 >
                                     Start
                                 </button>
-                                <button className="rounded-full text-white text-2xl font-bold bg-red-500 px-4 py-2 w-[48%] min-w-[130px] h-[6vh]">
+                                <button 
+                                    className="rounded-full text-white text-2xl font-bold bg-red-500 px-4 py-2 w-[48%] min-w-[130px] h-[6vh]"
+                                    onClick={() => navigate("/home")}
+                                >
                                     Quit
                                 </button>
                             </div>

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const DailyStreak = ({ isHovered }) => {
+    //Ensure that this uses UTC time, could lead to discrepancies
     const { completed, loading, dates } = useDailyStatus();
     const getStreak = () => {
         let current = new Date();

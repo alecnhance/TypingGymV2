@@ -1,7 +1,7 @@
 import db from '../../db.js';
 
 export async function handleGetKeyAcc(req, res) {
-    console.log("Getting key accuracy");
+    //console.log("Getting key accuracy");
     const userID = req.auth?.userId;
     if (!userID) {
         res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -9,7 +9,7 @@ export async function handleGetKeyAcc(req, res) {
         return;
     }
     const trackedPresses = 100;
-    console.log("USERID: ", userID);
+    //console.log("USERID: ", userID);
     try {
         const result = await db.query(
             `WITH key_presses AS (
