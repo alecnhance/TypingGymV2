@@ -114,7 +114,7 @@ const TypingArea = ({ isFree }) => {
             <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
             <div className="flex justify-between w-full mb-3 items-center">
                 <div className='flex justify-between items-center gap-1'>
-                    {isFree &&
+                    {!isFree &&
                         <>
                             <Dropdown options={options} onSelect={handleSelect} />
                             {selectedOption === 'Jumble' && 
@@ -164,6 +164,8 @@ const TypingArea = ({ isFree }) => {
                 setNumTyped={setNumTyped}
                 numWrong={numWrong}
                 setNumWrong={setNumWrong}
+                textSize={"text-xl"}
+                minBoxSize={"100px"}
             />
             <div className="flex w-full justify-between py-3 items-center">
                 <h2>Time: {formatTime(totalTime)}</h2>

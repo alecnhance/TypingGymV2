@@ -1,7 +1,7 @@
 const ProgressBar = ({ progress, height, className}) => {
     return (
         <div 
-            className={`${className} w-3/4 bg-white rounded-full overflow-hidden`}
+            className={`w-3/4 ${className} bg-white rounded-full overflow-hidden`}
             style={{ height: `${height}px`}}
         >
             <div
