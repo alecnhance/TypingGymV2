@@ -27,11 +27,14 @@ export function useDailyStatus() {
                 setDates(new Set());
                 return;
             } else {
-                const utcDates = data.formData.map((row) => {
+                const utcDates = data.data.map((row) => {
                     const date = new Date(row.ended_at);
                     return date.toISOString().split('T')[0];
                 });
-                setDates(new Set(utcDates));
+                const newDatesSet = new Set(utcDates);
+                setDates(newDatesSet);
+                const todayUTC = new Date().toISOString().split('T')[0];
+                setCompleted(newDatesSet.has(todayUTC));
             }
             
         } catch (err) {

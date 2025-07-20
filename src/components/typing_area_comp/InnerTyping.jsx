@@ -1,6 +1,7 @@
 import { space } from 'postcss/lib/list';
 import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
 
 const InnerTyping = React.forwardRef(
     (
@@ -21,8 +22,7 @@ const InnerTyping = React.forwardRef(
         setNumTyped,
         numWrong,
         setNumWrong,
-        textSize,
-        minBoxSize,
+        isDaily
       },
       ref
     ) => {
@@ -31,8 +31,13 @@ const InnerTyping = React.forwardRef(
     const intervalRef = useRef(null);
     const startRef = useRef(null);
 
+    const navigate = useNavigate();
+
     const keyAccuracyRef = useRef({});
     const { getToken } = useAuth();
+
+    const textSize = isDaily ? "text-4xl" : "text-xl"
+    const minBoxSize = isDaily ? "45vh" : "100px"
 
     function updateKeyAccuracy(key, isCorrect) {
         if (!keyAccuracyRef.current[key]) {
@@ -93,7 +98,8 @@ const InnerTyping = React.forwardRef(
             start: startStamp,
             end: endStamp,
             acc: accuracy,
-            wpm: (chars / 5) / (durationSeconds / 60)
+            wpm: (chars / 5) / (durationSeconds / 60),
+            isDaily: isDaily
         };
         try {
             const token = await getToken();
@@ -137,6 +143,9 @@ const InnerTyping = React.forwardRef(
                     const endISO = new Date(Date.now()).toISOString();
                     updateTypingHistory(prompt.length, numTyped, keyAccuracyRef.current, startISO, endISO, acc); 
                     endTimer();
+                    if (isDaily) {
+                        navigate("/home");
+                    }
                 }
                 if (colorDict[len - 1] === 'text-red-500') {
                     setRedCount(prev => prev - 1);
