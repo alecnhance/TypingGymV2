@@ -19,7 +19,7 @@ export function usePracticeDates() {
                 },
             });
             if (!res.ok) {
-                console.error("Fetch Dates returned error: ", err);
+                console.error("Fetch Dates returned error");
                 return;
             }
             const data = await res.json();

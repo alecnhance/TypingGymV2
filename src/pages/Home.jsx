@@ -79,7 +79,7 @@ const Home = () => {
       <div className="flex justify-center items-start gap-8 p-4 w-full">
         <div className="flex flex-col flex-grow justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
           { loading &&
-            <div className='w-full h-full flex items-center justify-center border-4'>
+            <div className='w-full h-full flex items-center justify-center'>
               <CircularProgress color='white'/>
             </div>
           }

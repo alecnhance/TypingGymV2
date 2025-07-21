@@ -3,24 +3,9 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, Cell
 } from 'recharts';
+import { useDailyStats } from '../../hooks/useDailyStats';
 
-const userWPM = 72;
 
-const wpmDistribution = [
-  { range: "30-40", count: 2 },
-  { range: "40-50", count: 8 },
-  { range: "50-60", count: 15 },
-  { range: "60-70", count: 25 },
-  { range: "70-80", count: 20 },
-  { range: "80-90", count: 10 },
-  { range: "90-100", count: 3 },
-].map(bucket => {
-  const [min, max] = bucket.range.split("-").map(Number);
-  return {
-    ...bucket,
-    isUser: userWPM >= min && userWPM < max,
-  };
-});
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -36,6 +21,20 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const DailyBar = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const { loading, stats } = useDailyStats();
+  //console.log(stats);
+  const userWPM = 72;
+
+
+  const wpmDistribution = !stats || stats.length === 0 
+  ? [] 
+  : stats.map(bucket => {
+      const [min, max] = bucket.range.split("-").map(Number);
+      return {
+        ...bucket,
+        isUser: userWPM >= min && userWPM < max,
+      };
+  });
 
   return (
     <ResponsiveContainer width="100%" height="100%">

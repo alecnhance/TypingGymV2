@@ -6,7 +6,7 @@ import { usePracticeDates } from '../../hooks/usePracticeDates';
 
 const TypingCalendar = ( {className }) => {
   const [date, setDate] = useState(new Date());
-  const { loading, dates} = usePracticeDates();
+  const { loading, dates } = usePracticeDates();
 
   // Example practice days (replace with actual data later)
   const practiceDays = [

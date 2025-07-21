@@ -13,6 +13,7 @@ import { handleGetDates } from './api/users/getDates.js';
 import { handleGetGraph } from './api/users/getGraph.js';
 import { handleGetSummary } from './api/users/getSummary.js';
 import { handleGetDaily } from './api/users/getDaily.js';
+import { handleGetDailyStats } from './api/users/getDailyStats.js';
 
 // Load environment variables
 dotenv.config();
@@ -35,6 +36,7 @@ const getRoutes = {
   '/api/users/me/wpmGraph': handleGetGraph,
   '/api/users/me/summaryStats': handleGetSummary,
   '/api/users/me/dailyChallenge': handleGetDaily,
+  '/api/dailyChallenge/stats': handleGetDailyStats,
 };
 
 const server = http.createServer(async (req, res) => {

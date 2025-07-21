@@ -161,7 +161,7 @@ const ChallengeArea = () => {
                 throw new Error(`Server responded with ${res.status}: ${errorText}`);
             }
 
-            keyAccuracyRef.current = {};
+            //keyAccuracyRef.current = {};
         } catch (error) {
             console.error('Error updating user data:', error);
         }

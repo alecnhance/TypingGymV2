@@ -24,7 +24,7 @@ export async function handleUserPost(req, res) {
             if (data.isDaily && data.numChars > 0) {
                 const query = {
                     text: `UPDATE typed_prompts set started_at = $2, ended_at = $3, total_chars = $4, wpm = $5, accuracy = $6
-                        WHERE user_id = $1 and (started_at AT TIME ZONE 'UTC')::date = CURRENT_DATE RETURNING id`,
+                        WHERE user_id = $1 and (started_at AT TIME ZONE 'UTC')::date = (now() AT TIME ZONE 'UTC')::date RETURNING id`,
                     values: [userId, data.start, data.end, data.numChars, data.wpm, data.acc]
                 }
                 return query;
@@ -54,25 +54,27 @@ export async function handleUserPost(req, res) {
             values.push(promptId, key, stats.total, stats.correct);
             placeholders.push(`($${++i}, $${++i}, $${++i}, $${++i})`)
         }
-
-        const keyInsert = await db.query(
-            `INSERT into key_accuracy_per_prompt (typed_prompt_id, key, total_presses, correct_presses)
-                VALUES ${placeholders.join(', ')}`, values
-        )
-        if (keyInsert.rowCount === 0) {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Insert into key_accuracy failed' }));
-            return;
+        if (!data.isDaily) {
+            const keyInsert = await db.query(
+                `INSERT into key_accuracy_per_prompt (typed_prompt_id, key, total_presses, correct_presses)
+                    VALUES ${placeholders.join(', ')}`, values
+            )
+            if (keyInsert.rowCount === 0) {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Insert into key_accuracy failed' }));
+                return;
+            }
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(keyInsert.rows[0]));
         }
-
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify("Success"));
         // notifyUser(userId, { type: 'keyAccuracyUpdated' });
         // notifyUser(userId, { type: 'dates updated' });
         // notifyUser(userId, { type: 'updateSummary' });
 
 
 
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(keyInsert.rows[0]));
     } catch (error) {
         console.error('Error updating user data:', error);
         res.writeHead(500, { 'Content-Type': 'application/json' });
