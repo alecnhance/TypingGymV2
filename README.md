@@ -2,6 +2,12 @@
 
 A modern typing practice app with progress tracking, daily challenges, and detailed stats (WPM graph, typing calendar, key accuracy). Built with React + Vite on the frontend and a lightweight Node HTTP server + Postgres on the backend, secured with Clerk authentication.
 
+## Project status
+- The database is currently offline to avoid hosting costs.
+- Affected: sign-in, saving progress, stats/history/graphs, any user-specific data.
+- Still works: the frontend UI and local/demo interactions.
+- If you see "Network/500" errors, it's because the API depends on the database.
+
 ## Tech Stack
 - **Frontend**: React 19, Vite, TailwindCSS, Recharts, Chart.js
 - **Backend**: Node (native `http`), Postgres (`pg`)
