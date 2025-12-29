@@ -9,9 +9,9 @@ export async function handleGetDaily(req, res) {
     }
     try {
         const result = await db.query(
-            `select ended_at from typed_prompts
+            `select ended_at, wpm from typed_prompts
             where user_id = $1
-            and isdaily = true`,
+            and isdaily = true order by ended_at desc`,
             [userId]
         );
         if (!result.rows) {

@@ -66,6 +66,7 @@ export async function handleUserPost(req, res) {
             }
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(keyInsert.rows[0]));
+            return;
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify("Success"));

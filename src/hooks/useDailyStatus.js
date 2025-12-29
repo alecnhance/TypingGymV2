@@ -5,6 +5,7 @@ export function useDailyStatus() {
     const [completed, setCompleted] = useState(false);
     const [dates, setDates] = useState(new Set());
     const [loading, setLoading] = useState(true);
+    const [wpm, setWpm] = useState(0);
     const { getToken } = useAuth();
 
     const fetchStatus = useCallback(async () => {
@@ -34,7 +35,10 @@ export function useDailyStatus() {
                 const newDatesSet = new Set(utcDates);
                 setDates(newDatesSet);
                 const todayUTC = new Date().toISOString().split('T')[0];
-                setCompleted(newDatesSet.has(todayUTC));
+                if (newDatesSet.has(todayUTC)) {
+                    setCompleted(true);
+                    setWpm(data.data[0].wpm);
+                }
             }
             
         } catch (err) {
@@ -48,5 +52,5 @@ export function useDailyStatus() {
         fetchStatus();
     }, [fetchStatus]);
 
-    return { completed, loading, dates };
+    return { completed, loading, dates, wpm };
 }
