@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, Cell
 } from 'recharts';
 import { useDailyStats } from '../../hooks/useDailyStats';
+import { useDailyStatus } from '../../hooks/useDailyStatus';
 
 
 
@@ -21,10 +22,24 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 const DailyBar = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [maxBarSize, setMaxBarSize] = useState(60);
+  const containerRef = useRef(null);
   const { loading, stats } = useDailyStats();
   //console.log(stats);
-  const userWPM = 72;
+  const { wpm } = useDailyStatus();
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setMaxBarSize(entry.contentRect.width * 0.15);
+      }
+    });
+    
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const wpmDistribution = !stats || stats.length === 0 
   ? [] 
@@ -32,12 +47,13 @@ const DailyBar = () => {
       const [min, max] = bucket.range.split("-").map(Number);
       return {
         ...bucket,
-        isUser: userWPM >= min && userWPM < max,
+        isUser: wpm >= min && wpm < max,
       };
   });
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
+      <ResponsiveContainer width="100%" height="100%">
       <BarChart
         data={wpmDistribution}
         margin={{ top: 0, right: 35, left: 0, bottom: 0 }}
@@ -51,7 +67,7 @@ const DailyBar = () => {
         <XAxis dataKey="range" />
         <YAxis />
         <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0)' }} />
-        <Bar dataKey="count" isAnimationActive={false} activeBar={false}>
+        <Bar dataKey="count" isAnimationActive={false} activeBar={false} maxBarSize={maxBarSize}>
           {wpmDistribution.map((entry, index) => {
             const isHovered = hoveredIndex === index;
             const fillColor = isHovered
@@ -68,6 +84,7 @@ const DailyBar = () => {
         </Bar>
       </BarChart>
     </ResponsiveContainer>
+    </div>
   );
 };
 
