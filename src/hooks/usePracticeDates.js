@@ -26,9 +26,11 @@ export function usePracticeDates() {
             const localDates = new Set();
             data.data.forEach(row => {
                 const d = new Date(row.date);
-                const year = d.getFullYear();
-                const month = d.getMonth();
-                const day = d.getDate();
+                // Convert to Eastern Time
+                const etDate = new Date(d.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+                const year = etDate.getFullYear();
+                const month = etDate.getMonth();
+                const day = etDate.getDate();
                 localDates.add(`${year}-${month}-${day}`);
             });
 

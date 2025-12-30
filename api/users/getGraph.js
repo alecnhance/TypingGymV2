@@ -11,12 +11,12 @@ export async function handleGetGraph(req, res) {
         const numPrompts = 50;
         const result = await db.query(
             ` WITH prompts as (SELECT 
-                ended_at::DATE as day,
+                (ended_at AT TIME ZONE 'America/New_York')::date as day,
                 AVG(wpm) OVER (
                     ORDER BY ended_at
                     ROWS BETWEEN $1 PRECEDING AND CURRENT ROW
                 ) AS rolling_avg_wpm,
-                ROW_NUMBER() OVER (PARTITION BY ended_at::DATE ORDER BY ended_at) as row
+                ROW_NUMBER() OVER (PARTITION BY (ended_at AT TIME ZONE 'America/New_York')::date ORDER BY ended_at) as row
             FROM typed_prompts where user_id = $2)
             select distinct on (day) day, round(rolling_avg_wpm) as wpm, row
             from prompts

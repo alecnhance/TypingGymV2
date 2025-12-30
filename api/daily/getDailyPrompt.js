@@ -7,14 +7,10 @@ const __dirname = path.dirname(__filename);
 
 export async function handleGetDailyPrompt(req, res) {
     try {
-        // Get today's date in YYYY-MM-DD format (UTC)
-        const today = new Date();
-        const todayUTC = new Date(Date.UTC(
-            today.getUTCFullYear(),
-            today.getUTCMonth(),
-            today.getUTCDate()
-        ));
-        const dateString = todayUTC.toISOString().split('T')[0];
+        // Get today's date in YYYY-MM-DD format (Eastern Time)
+        const now = new Date();
+        const etDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const dateString = `${etDate.getFullYear()}-${String(etDate.getMonth() + 1).padStart(2, '0')}-${String(etDate.getDate()).padStart(2, '0')}`;
         
         // Read the daily prompts file
         const promptsPath = path.join(__dirname, '..', '..', 'data', 'dailyPrompts.json');
@@ -29,10 +25,13 @@ export async function handleGetDailyPrompt(req, res) {
     } catch (err) {
         console.error('Error retrieving daily prompt:', err);
         // Return a default prompt on error
+        const now = new Date();
+        const etDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const dateString = `${etDate.getFullYear()}-${String(etDate.getMonth() + 1).padStart(2, '0')}-${String(etDate.getDate()).padStart(2, '0')}`;
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ 
             prompt: "The quick brown fox jumps over the lazy dog. Practice makes perfect!",
-            date: new Date().toISOString().split('T')[0]
+            date: dateString
         }));
     }
 }

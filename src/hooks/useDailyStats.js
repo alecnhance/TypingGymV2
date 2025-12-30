@@ -10,7 +10,7 @@ export function useDailyStats() {
         setLoading(true);
         try {
             const token = await getToken();
-            const result = await fetch('api/dailyChallenge/stats', {
+            const result = await fetch('api/daily/stats', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
