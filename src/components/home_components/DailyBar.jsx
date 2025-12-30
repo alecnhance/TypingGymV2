@@ -44,10 +44,15 @@ const DailyBar = () => {
   const wpmDistribution = !stats || stats.length === 0 
   ? [] 
   : stats.map(bucket => {
-      const [min, max] = bucket.range.split("-").map(Number);
+      const [min] = bucket.range.split("-").map(Number);
+      const userWpm = Number(wpm) || 0;
+      // Match the SQL logic: FLOOR(wpm/10)*10 creates the bucket
+      const userBucket = userWpm > 0 ? Math.floor(userWpm / 10) * 10 : -1;
+      const isUser = userWpm > 0 && userBucket === min;
+      
       return {
         ...bucket,
-        isUser: wpm >= min && wpm < max,
+        isUser,
       };
   });
 

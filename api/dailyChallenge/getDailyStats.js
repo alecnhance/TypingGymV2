@@ -31,3 +31,4 @@ export async function handleGetDailyStats(req, res) {
         res.end(JSON.stringify({ error: 'Internal Server Error' }));
     }
 }
+
