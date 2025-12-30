@@ -16,7 +16,8 @@ export function useDailyLeaders() {
         const defaultUser = {
             wpm: 0,
             username: "username",
-            pic_url: blankProfile
+            pic_url: blankProfile,
+            count: 0
         };
         
         try {
@@ -46,7 +47,9 @@ export function useDailyLeaders() {
             let users = {};
             let bestUser = null;
             resultData.data.forEach(row => {
-                if (row.isDaily) {
+                // Handle both isDaily (camelCase) and isdaily (lowercase) from database
+                const isDaily = row.isDaily || row.isdaily || false;
+                if (isDaily === true || isDaily === 'true' || isDaily === 1) {
                     if (row.wpm > bestChallengeWPM) {
                         bestChallengeWPM = row.wpm;
                         bestChallenge = row;
