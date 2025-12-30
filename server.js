@@ -15,6 +15,7 @@ import { handleGetSummary } from './api/users/getSummary.js';
 import { handleGetDaily } from './api/users/getDaily.js';
 import { handleGetDailyStats } from './api/daily/getDailyStats.js';
 import { handleGetDailyPrompt } from './api/daily/getDailyPrompt.js';
+import { handleGetDailyLeaders } from './api/daily/getDailyLeaders.js';
 
 // Load environment variables
 dotenv.config();
@@ -30,6 +31,11 @@ const corsHeaders = {
   'Access-Control-Max-Age': '86400', // 24 hours
 };
 
+const getPublicRoutes = {
+  '/api/daily/prompt': handleGetDailyPrompt,
+  '/api/daily/getDailyLeaders': handleGetDailyLeaders,
+};
+
 const getRoutes = {
   '/api/users/me': handleUserData,
   '/api/users/me/keyAccuracy': handleGetKeyAcc,
@@ -38,7 +44,6 @@ const getRoutes = {
   '/api/users/me/summaryStats': handleGetSummary,
   '/api/users/me/daily': handleGetDaily,
   '/api/daily/stats': handleGetDailyStats,
-  '/api/daily/prompt': handleGetDailyPrompt,
 };
 
 const server = http.createServer(async (req, res) => {
@@ -61,9 +66,8 @@ const server = http.createServer(async (req, res) => {
     return webhookHandler(req, res);
   }
 
-  // Skip auth for daily prompt endpoint (same prompt for everyone)
-  if (req.method === 'GET' && pathname === '/api/daily/prompt') {
-    return handleGetDailyPrompt(req, res);
+  if (req.method === 'GET' && getPublicRoutes[pathname]) {
+    return getPublicRoutes[pathname](req, res);
   }
 
   if (req.method === 'GET' && getRoutes[pathname]) {

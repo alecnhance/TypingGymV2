@@ -63,7 +63,7 @@ const Home = () => {
         </div>
         <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
           <div className=' h-full'>
-            <CommunityGraph image={profilePic} username="enhanced!" title="highest speed today" stat="250 WPM"/>
+            <CommunityGraph />
           </div>
         </div>
         <div className="flex flex-col justify-between  shadow-md  w-1/2 h-[42vh] flex-grow gap-4 p-1 text-white overflow-auto">
