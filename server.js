@@ -13,7 +13,8 @@ import { handleGetDates } from './api/users/getDates.js';
 import { handleGetGraph } from './api/users/getGraph.js';
 import { handleGetSummary } from './api/users/getSummary.js';
 import { handleGetDaily } from './api/users/getDaily.js';
-import { handleGetDailyStats } from './api/users/getDailyStats.js';
+import { handleGetDailyStats } from './api/dailyChallenge/getDailyStats.js';
+import { handleGetDailyPrompt } from './api/dailyChallenge/getDailyPrompt.js';
 
 // Load environment variables
 dotenv.config();
@@ -37,6 +38,7 @@ const getRoutes = {
   '/api/users/me/summaryStats': handleGetSummary,
   '/api/users/me/dailyChallenge': handleGetDaily,
   '/api/dailyChallenge/stats': handleGetDailyStats,
+  '/api/dailyChallenge/prompt': handleGetDailyPrompt,
 };
 
 const server = http.createServer(async (req, res) => {
@@ -57,6 +59,11 @@ const server = http.createServer(async (req, res) => {
   // Skip auth for webhook endpoint
   if (req.method === 'POST' && pathname === '/webhooks/clerk') {
     return webhookHandler(req, res);
+  }
+
+  // Skip auth for daily prompt endpoint (same prompt for everyone)
+  if (req.method === 'GET' && pathname === '/api/dailyChallenge/prompt') {
+    return handleGetDailyPrompt(req, res);
   }
 
   if (req.method === 'GET' && getRoutes[pathname]) {

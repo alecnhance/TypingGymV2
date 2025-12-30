@@ -57,13 +57,32 @@ const ChallengeArea = () => {
     const { getToken } = useAuth();
 
     useEffect(() => {
-        //resetPrompt();
-        setColorDict(initColorDict(prompt));
+        // Fetch the daily prompt
+        const fetchDailyPrompt = async () => {
+            try {
+                const response = await fetch('/api/dailyChallenge/prompt');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch daily prompt');
+                }
+                const data = await response.json();
+                setPrompt(data.prompt);
+                setColorDict(initColorDict(data.prompt));
+                setLoadingPrompt(false);
+            } catch (error) {
+                console.error('Error fetching daily prompt:', error);
+                // Fallback to default prompt
+                const defaultPrompt = "The quick brown fox jumps over the lazy dog. Practice makes perfect!";
+                setPrompt(defaultPrompt);
+                setColorDict(initColorDict(defaultPrompt));
+                setLoadingPrompt(false);
+            }
+        };
+        fetchDailyPrompt();
     }, [])
 
     const [inputText, setInputText] = useState('');
-    const samplePrompt = "This is a sample prompt that I am testing out";
-    const [prompt, setPrompt] = useState(samplePrompt);
+    const [prompt, setPrompt] = useState("Loading daily challenge...");
+    const [loadingPrompt, setLoadingPrompt] = useState(true);
     const initColorDict = (curr) => {
         const samplePromptSplit = curr.split("");
         return samplePromptSplit.map((_, index) => index).reduce((acc, val) => {
