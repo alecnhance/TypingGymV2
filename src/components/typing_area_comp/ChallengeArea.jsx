@@ -60,7 +60,7 @@ const ChallengeArea = () => {
         // Fetch the daily prompt
         const fetchDailyPrompt = async () => {
             try {
-                const response = await fetch('/api/dailyChallenge/prompt');
+                const response = await fetch('/api/daily/prompt');
                 if (!response.ok) {
                     throw new Error('Failed to fetch daily prompt');
                 }

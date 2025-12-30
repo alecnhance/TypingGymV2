@@ -12,7 +12,7 @@ export function useDailyStatus() {
         setLoading(true);
         try {
             const token = await getToken();
-            const result = await fetch('api/users/me/dailyChallenge', {
+            const result = await fetch('api/users/me/daily', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -28,14 +28,19 @@ export function useDailyStatus() {
                 setDates(new Set());
                 return;
             } else {
-                const utcDates = data.data.map((row) => {
+                // Convert dates to Eastern Time
+                const etDates = data.data.map((row) => {
                     const date = new Date(row.ended_at);
-                    return date.toISOString().split('T')[0];
+                    const etDate = new Date(date.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+                    return `${etDate.getFullYear()}-${String(etDate.getMonth() + 1).padStart(2, '0')}-${String(etDate.getDate()).padStart(2, '0')}`;
                 });
-                const newDatesSet = new Set(utcDates);
+                const newDatesSet = new Set(etDates);
                 setDates(newDatesSet);
-                const todayUTC = new Date().toISOString().split('T')[0];
-                if (newDatesSet.has(todayUTC)) {
+                // Get today's date in Eastern Time
+                const now = new Date();
+                const todayET = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+                const todayETString = `${todayET.getFullYear()}-${String(todayET.getMonth() + 1).padStart(2, '0')}-${String(todayET.getDate()).padStart(2, '0')}`;
+                if (newDatesSet.has(todayETString)) {
                     setCompleted(true);
                     setWpm(data.data[0].wpm);
                 }

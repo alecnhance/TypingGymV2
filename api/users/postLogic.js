@@ -24,7 +24,7 @@ export async function handleUserPost(req, res) {
             if (data.isDaily && data.numChars > 0) {
                 const query = {
                     text: `UPDATE typed_prompts set started_at = $2, ended_at = $3, total_chars = $4, wpm = $5, accuracy = $6
-                        WHERE user_id = $1 and (started_at AT TIME ZONE 'UTC')::date = (now() AT TIME ZONE 'UTC')::date RETURNING id`,
+                        WHERE user_id = $1 and (started_at AT TIME ZONE 'America/New_York')::date = (now() AT TIME ZONE 'America/New_York')::date RETURNING id`,
                     values: [userId, data.start, data.end, data.numChars, data.wpm, data.acc]
                 }
                 return query;

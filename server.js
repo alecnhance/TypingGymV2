@@ -13,8 +13,8 @@ import { handleGetDates } from './api/users/getDates.js';
 import { handleGetGraph } from './api/users/getGraph.js';
 import { handleGetSummary } from './api/users/getSummary.js';
 import { handleGetDaily } from './api/users/getDaily.js';
-import { handleGetDailyStats } from './api/dailyChallenge/getDailyStats.js';
-import { handleGetDailyPrompt } from './api/dailyChallenge/getDailyPrompt.js';
+import { handleGetDailyStats } from './api/daily/getDailyStats.js';
+import { handleGetDailyPrompt } from './api/daily/getDailyPrompt.js';
 
 // Load environment variables
 dotenv.config();
@@ -36,9 +36,9 @@ const getRoutes = {
   '/api/users/me/dates': handleGetDates,
   '/api/users/me/wpmGraph': handleGetGraph,
   '/api/users/me/summaryStats': handleGetSummary,
-  '/api/users/me/dailyChallenge': handleGetDaily,
-  '/api/dailyChallenge/stats': handleGetDailyStats,
-  '/api/dailyChallenge/prompt': handleGetDailyPrompt,
+  '/api/users/me/daily': handleGetDaily,
+  '/api/daily/stats': handleGetDailyStats,
+  '/api/daily/prompt': handleGetDailyPrompt,
 };
 
 const server = http.createServer(async (req, res) => {
@@ -62,7 +62,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Skip auth for daily prompt endpoint (same prompt for everyone)
-  if (req.method === 'GET' && pathname === '/api/dailyChallenge/prompt') {
+  if (req.method === 'GET' && pathname === '/api/daily/prompt') {
     return handleGetDailyPrompt(req, res);
   }
 

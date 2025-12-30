@@ -14,7 +14,7 @@ export async function handleGetDailyStats(req, res) {
             COUNT(*) AS count
           FROM typed_prompts
           WHERE isDaily = true 
-          and (started_at AT TIME ZONE 'UTC')::date = (now() AT TIME ZONE 'UTC')::date
+          and (started_at AT TIME ZONE 'America/New_York')::date = (now() AT TIME ZONE 'America/New_York')::date
           GROUP BY FLOOR(wpm/10)
           ORDER BY FLOOR(wpm/10)`,
           []

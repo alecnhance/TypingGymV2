@@ -20,24 +20,33 @@ const Countdown = () => {
     const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
     const [flipAnimation, setFlipAnimation] = useState(false);
 
-    const getTimeUntilUTCMidnight = () => {
+    const getTimeUntilETMidnight = () => {
         const now = new Date();
-        const tomorrow = new Date(now);
         
-        tomorrow.setUTCHours(24, 0, 0, 0);
+        // Get current time in Eastern Time
+        const etTime = now.toLocaleString('en-US', { 
+            timeZone: 'America/New_York',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
         
-        const diff = (tomorrow - now) / 1000;
-      
-        const hours = Math.floor(diff / 3600);
-        const minutes = Math.floor((diff % 3600) / 60);
-        const seconds = Math.floor(diff % 60);
-      
-        return { hours, minutes, seconds };
+        const [hours, minutes, seconds] = etTime.split(':').map(Number);
+        
+        // Calculate seconds remaining until midnight ET
+        const secondsRemaining = (24 * 3600) - (hours * 3600 + minutes * 60 + seconds);
+        
+        return {
+            hours: Math.floor(secondsRemaining / 3600),
+            minutes: Math.floor((secondsRemaining % 3600) / 60),
+            seconds: secondsRemaining % 60
+        };
     };
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setTime(getTimeUntilUTCMidnight());
+            setTime(getTimeUntilETMidnight());
             // Trigger flip animation
             setFlipAnimation(true);
             setTimeout(() => setFlipAnimation(false), 150);
