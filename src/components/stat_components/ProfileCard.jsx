@@ -2,14 +2,18 @@ import selfie from '../../assets/selfie.jpg';
 import blank from '../../assets/blank-profile.jpg';
 import { useUserData } from '../../UserContext';
 import { useSummary } from '../../hooks/useSummary';
+import { useAchievements } from '../../hooks/useAchievements';
+import { getAchievementData } from '../../utils/achievements';
 
 const titles = ["Mr.Consistent", "Speedfingers", "Top 1%"];
 
 const ProfileCard = ({ className }) => {
     const userData = useUserData();
+    const { summary, loading } = useSummary();
+    const { loading: achievementsLoading, achievements } = useAchievements();
+    const achievementData = getAchievementData(achievements);
     const username = userData?.username || "username";
     const picture = userData?.pic_url || blank;
-    const { summary, loading } = useSummary();
     return (
         <div className={`${className} flex flex-col items-center font-extralight overflow-auto justify-between py-10`}>
             <img src={picture} alt="profilePic" className='w-[50%] aspect-square rounded-full object-cover' />
@@ -19,9 +23,9 @@ const ProfileCard = ({ className }) => {
                 <h3 className='text-md font-medium'>Titles</h3>
             </div>
             <div className='flex flex-wrap gap-1 px-3 mt-2 justify-left'>
-                {titles.map((item, i) => (
+                {achievementData.filter(item => item.progress >= 100).map((item, i) => (
                     <div key={i} className="px-3 rounded-3xl bg-navOrange">
-                        <h2 className='font-medium'>{item}</h2>
+                        <h2 className='font-medium'>{item.title}</h2>
                     </div>
                 ))}
             </div>
