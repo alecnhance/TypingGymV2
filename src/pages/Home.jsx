@@ -10,6 +10,7 @@ import Streaks from '../components/home_components/Streaks';
 import DailyPromotion from '../components/home_components/DailyPromotion';
 import { useDailyStatus } from '../hooks/useDailyStatus';
 import CircularProgress from '@mui/material/CircularProgress';
+import TipWidget from '../components/home_components/TipWidget';
 
 
 const widgetData = [
@@ -68,10 +69,7 @@ const Home = () => {
         </div>
         <div className="flex flex-col justify-between  shadow-md  w-1/2 h-[42vh] flex-grow gap-4 p-1 text-white overflow-auto">
           <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl px-3'>
-            <div className='flex items-center gap-2'>
-              <img src={bulb} className='w-[15%]' />
-              <h2 className="text-xl ">Make sure to always put your fingers of the f and j keys</h2>
-            </div>
+            <TipWidget />
           </div>
           <Streaks />
         </div>
