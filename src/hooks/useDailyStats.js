@@ -22,14 +22,14 @@ export function useDailyStats() {
             }
             const resultData = await result.json();
             const arr = [];
-            console.log("resultData.arr", resultData.arr)
+            //console.log("resultData.arr", resultData.arr)
             resultData.data.forEach(row => {
                 arr.push({
                     range: row.range,
                     count: row.count
                 });
             });
-            console.log("arr: ", arr);
+            //console.log("arr: ", arr);
             setStats(arr);
         } catch (err) {
             console.error("Failed to fetch daily stats: ", err);
