@@ -17,6 +17,7 @@ import { handleGetDailyStats } from './api/daily/getDailyStats.js';
 import { handleGetDailyPrompt } from './api/daily/getDailyPrompt.js';
 import { handleGetDailyLeaders } from './api/daily/getDailyLeaders.js';
 import { handleGetAchievements } from './api/users/getAchievements.js';
+import { handleGetActivity } from './api/users/getActivity.js';
 
 // Load environment variables
 dotenv.config();
@@ -46,6 +47,7 @@ const getRoutes = {
   '/api/users/me/daily': handleGetDaily,
   '/api/daily/stats': handleGetDailyStats,
   '/api/users/me/achievements': handleGetAchievements,
+  '/api/users/me/activity': handleGetActivity,
 };
 
 const server = http.createServer(async (req, res) => {

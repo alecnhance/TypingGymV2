@@ -1,28 +1,50 @@
 import dumbbell from "../assets/dumbbell.svg";
 import up from "../assets/up.svg";
 import trophy from "../assets/trophy-award.svg";
-import check from "../assets/check.svg";
+import accuracy from "../assets/accuracy.svg";
+import { useActivity } from "../hooks/useActivity";
 
-const recentData = [
-    { 
-      description: "Speedfingers Achieved",
-      date: "2d ago",
-      image: trophy
-    },
-    { 
-        description: "Personal Record 156 WPM Hit",
-        date: "3d ago",
-        image: up
-    },
-    {
-        description: "Daily Challenge Completed",
-        date: "12:33 pm",
-        image: check
+const formatDate = (dateString) => {
+    if (!dateString) return "";
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffHours = diffMs / (1000 * 60 * 60);
+    
+    if (diffHours < 24) {
+        // Less than 24 hours ago - display time
+        return date.toLocaleTimeString('en-US', { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+        });
+    } else {
+        // More than 24 hours ago - display days ago
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        return `${diffDays}d ago`;
     }
-  ];
-
+};
 
 const RecentActivity = () => {
+    const { activity, loading } = useActivity();
+    const recentData = [
+        { 
+          description: "Last Perfect Typing Session",
+          date: activity?.lastperfect ? formatDate(activity.lastperfect) : "never",
+          image: accuracy
+        },
+        { 
+            description: `Personal Record ${Math.round(parseFloat(activity?.maxwpm) || 0)} WPM Hit`,
+            date: activity?.pr ? formatDate(activity.pr) : "never",
+            image: up
+        },
+        {
+            description: "Daily Challenge Completed",
+            date: activity?.lastdaily ? formatDate(activity.lastdaily) : "never",
+            image: trophy
+        }
+    ];
     return (
         <div className="flex flex-col w-full h-full text-left items-center justify-between overflow-auto">
             <h2 className="text-2xl font-medium">Recent Activity</h2>
