@@ -42,7 +42,7 @@ const Landing = () => {
             <div className=' flex bg-headerGray w-[90vw] h-[64%] rounded-3xl px-[10vh] py-[10vh]'>
                 <div className='flex flex-col w-full h-full items-center justify-between'>
                     <div className="flex flex-col text-left gap-2">
-                        <h2 className="text-white text-5xl font-bold leading-[3.5rem]">Where Typing Meets Training, and Your Words Become Workouts</h2>
+                        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[3.5rem]">Where Typing Meets Training, and Your Words Become Workouts</h2>
                         <h3 className="text-white font-extralight">Custom Prompts and Numerous Achievements</h3>
                     </div>
                     <div className="flex gap-[3vw] w-full justify-center">
