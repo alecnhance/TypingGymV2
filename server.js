@@ -18,6 +18,7 @@ import { handleGetDailyPrompt } from './api/daily/getDailyPrompt.js';
 import { handleGetDailyLeaders } from './api/daily/getDailyLeaders.js';
 import { handleGetAchievements } from './api/users/getAchievements.js';
 import { handleGetActivity } from './api/users/getActivity.js';
+import { handleGetUsage } from './api/site/getUsage.js';
 
 // Load environment variables
 dotenv.config();
@@ -36,6 +37,7 @@ const corsHeaders = {
 const getPublicRoutes = {
   '/api/daily/prompt': handleGetDailyPrompt,
   '/api/daily/getDailyLeaders': handleGetDailyLeaders,
+  '/api/site/usage': handleGetUsage,
 };
 
 const getRoutes = {

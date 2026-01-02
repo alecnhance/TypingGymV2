@@ -4,9 +4,31 @@ import keyboard from "../assets/keyboard.svg";
 import checkMark from "../assets/checkMark.svg";
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useUsage } from '../hooks/useUsage';
+
+const formatNumber = (num) => {
+    if (num >= 1000000) {
+        return `${Math.floor(num / 1000000)}M +`;
+    } else if (num >= 1000) {
+        return `${Math.floor(num / 1000)}K +`;
+    } else {
+        return num.toString();
+    }
+};
 
 const Landing = () => {
     const navigate = useNavigate();
+    const { usage, loading } = useUsage();
+    const {
+        total_words = 0,
+        num_users = 0,
+        daily_challengers = 0,
+        random_pics = null
+     } = usage || {};
+    
+    const randomPics = random_pics && random_pics.length > 0 
+        ? random_pics.filter(pic => pic !== null) 
+        : [selfie, selfie, selfie];
     const createAccountHandle = () => {
         navigate("/signUp");
     }
@@ -46,12 +68,12 @@ const Landing = () => {
                 <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
                         <h2 className="font-extralight">Engaged Users</h2>
-                        <h2 className=" text-4xl ">100K+</h2>
+                        <h2 className=" text-4xl ">{formatNumber(num_users)}</h2>
                     </div>
                     <div className="flex flex-col w-[50%] h-full justify-end items-end">
                         <div className="w-full flex justify-center">
-                            {[1, 2, 3].map((item, i) => (
-                                <img key={i} src={selfie} className="aspect-square rounded-full object-cover w-[33%] -ml-4 "/>  
+                            {randomPics.map((item, i) => (
+                                <img key={i} src={item} className="aspect-square rounded-full object-cover w-[33%] -ml-4 "/>  
                             ))}
                         </div>
                     </div>
@@ -59,7 +81,7 @@ const Landing = () => {
                 <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
                         <h2 className="font-extralight">Words Typed</h2>
-                        <h2 className=" text-4xl ">10M+</h2>
+                        <h2 className=" text-4xl ">{formatNumber(total_words)}</h2>
                     </div>
                     <div className="flex flex-col w-[50%] h-full justify-end items-end">
                         <img src={keyboard} className="invert aspect-square w-[50%]"/>
@@ -68,7 +90,7 @@ const Landing = () => {
                 <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
                         <h2 className="font-extralight">Daily Challengers</h2>
-                        <h2 className=" text-4xl ">1100+</h2>
+                        <h2 className=" text-4xl ">{formatNumber(daily_challengers)}</h2>
                     </div>
                     <div className="flex flex-col w-[50%] h-full justify-end items-end pr-[1.5vw]">
                         <img src={checkMark} className="invert aspect-square w-[50%]"/>
