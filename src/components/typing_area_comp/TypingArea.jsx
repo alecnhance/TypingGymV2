@@ -26,6 +26,7 @@ const TypingArea = ({ isFree }) => {
     const samplePrompt = "This is a sample prompt that I am testing out";
     const [prompt, setPrompt] = useState(samplePrompt);
     const [capitalization, setCapitals] = useState(false);
+    const [letters, setLetters] = useState([]);
     const [punctuation, setPunctuation] = useState(false);
     const [numbers, setNumbers] = useState(false);
     const [specialCharacters, setSpecialCharacters] = useState(false);
@@ -36,11 +37,23 @@ const TypingArea = ({ isFree }) => {
         { value: 'Jumble', label: 'Jumble' },
         { value: 'AI', label: 'AI' }
     ];
-
+    
     const letterSet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     const numberSet = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const punctuationSet = ['!', '?', '.', ',', ':', ';', '(', ')', '[', ']', '{', '}', '"', "'", '-'];
     const specialCharacterSet = ['@', '#', '$', '%', '^', '&', '*', '~', '`', '_', '+', '='];
+    
+    const initCharSet = () => {
+        let charSet = [];
+        for (let letter of letterSet) {
+            charSet.push({
+                letter: letter,
+                weight: 50,
+            });
+        }
+        return charSet;
+    }
+    const [currentCharSet, setCurrentCharSet] = useState(initCharSet());
 
     const handleCustom = () => {
         setCapitals(false);
@@ -51,15 +64,22 @@ const TypingArea = ({ isFree }) => {
     }
 
     const jumbleSettings = [
-        { label: 'Capitalization', function: setCapitals, value: capitalization, charSet: letterSet },
+        { label: 'Capitalization', function: setCapitals, value: capitalization, charSet: [] },
+        { label: 'Letters', function: setLetters, value: letters, charSet: letterSet },
         { label: 'Punctuation', function: setPunctuation, value: punctuation, charSet: punctuationSet },
         { label: 'Numbers', function: setNumbers, value: numbers, charSet: numberSet },
-        { label: 'Special Characters', function: setSpecialCharacters, value: specialCharacters, charSet: specialCharacterSet },
+        { label: 'Special', function: setSpecialCharacters, value: specialCharacters, charSet: specialCharacterSet },
         { label: 'Custom', function: handleCustom, value: custom },
     ];
     
     const handleSelect = (value) => {
         setSelectedOption(value);
+        if (value === "Jumble") {
+            makeJumblePrompt(wordCount, currentCharSet);
+        } else {
+            makeRandomPrompt(wordCount);
+        }
+        handleRestart();
     };
     
     useEffect(() => {
@@ -88,9 +108,11 @@ const TypingArea = ({ isFree }) => {
         innerTypingRef.current?.resetTimer();
     }
 
-    const resetPrompt = () => {
+    const resetPrompt = (wordCount) => {
         if (selectedOption === "Random") {
-            makeRandomPrompt();
+            makeRandomPrompt(wordCount);
+        } else if (selectedOption === "Jumble") {
+            makeJumblePrompt(wordCount);
         }
     }
 
@@ -124,26 +146,105 @@ const TypingArea = ({ isFree }) => {
     }
 
     const handleNewPrompt = () => {
-        resetPrompt();
+        resetPrompt(wordCount);
         handleRestart();
     }
 
     const handleRandomButtons = (item) => {
         setWordCount(item);
-        makeRandomPrompt(item);
+        resetPrompt(item);
         handleRestart();
     }
 
-    const handleJumbleButtons = (item) => {
-        if (custom === true) {
-            if (item.label !== 'Custom') {
-                setCustom(false);
+    const makeJumblePrompt = (wordCount, charSet = currentCharSet, cap = capitalization) => {
+        let string = "";
+        const spaceProbability = 0.2;
+        let sumWeights = charSet.reduce((acc, item) => acc + item.weight, 0);
+        let cumWords = 0;
+        let currentWordLength = 0;
+        while (cumWords < wordCount) {
+            if (currentWordLength < 4) {
+                const selectedChar = selectRandomChar(sumWeights, charSet);
+                string += currentWordLength === 0 && cap ? selectedChar.toUpperCase() : selectedChar;
+                currentWordLength++;
+            } else {
+                if (Math.random() < spaceProbability) {
+                    cumWords++
+                    currentWordLength = 0;
+                    if (cumWords < wordCount) {
+                        string += " ";
+                    }
+                } else {
+                    string += selectRandomChar(sumWeights, charSet);
+                    currentWordLength++;
+                }
             }
         }
+        setPrompt(string);
+        setColorDict(initColorDict(string));
+        return string;
+    }
+
+    const selectRandomChar = (sumWeights, charSet) => {
+        const random = Math.random() * sumWeights;
+        let cumWeight = 0;
+        for (let i = 0; i < charSet.length; i++) {
+            cumWeight += charSet[i].weight;
+            if (cumWeight >= random) {
+                return charSet[i].letter;
+            }
+        }
+        return charSet[charSet.length - 1].letter;
+    }
+
+    const handleJumbleButtons = (item) => {
+        let updatedCharSet = currentCharSet;
+        
+        if (item.label === 'Custom') {
+            // Handle custom case
+        } else {
+            const enabledCount = [letters, punctuation, numbers, specialCharacters].filter(Boolean).length;
+            if (enabledCount === 1 && item.value === true) {
+                return;
+            }
+            if (custom === true) {
+                setCustom(false);
+            }
+            
+            // Calculate the updated charSet synchronously
+            if (item.value === false) {
+                // Add characters
+                const existingLetters = new Set(updatedCharSet.map(charItem => charItem.letter));
+                const newChars = item.charSet
+                    .filter(char => !existingLetters.has(char))
+                    .map(char => ({
+                        letter: char,
+                        weight: 50
+                    }));
+                updatedCharSet = [...updatedCharSet, ...newChars];
+            } else {
+                // Remove characters
+                const charsToRemove = new Set(item.charSet);
+                updatedCharSet = updatedCharSet.filter(charItem => !charsToRemove.has(charItem.letter));
+            }
+            
+            // Update state for next time
+            setCurrentCharSet(updatedCharSet);
+        }
+        
         item.function(prev => !prev);
-        // Make jumble prompt
+        
+        // Use the updated charSet immediately to generate prompt
+        if (selectedOption === "Jumble") {
+            if (item.label === 'Capitalization') {
+                makeJumblePrompt(wordCount, updatedCharSet, !capitalization);
+            } else {
+            makeJumblePrompt(wordCount, updatedCharSet);
+            }
+        }
         handleRestart();
     }
+
 
 
     return(
@@ -167,7 +268,7 @@ const TypingArea = ({ isFree }) => {
                                 ))}
                             </div>
                             {selectedOption === 'Jumble' && 
-                                <div className='flex gap-4'>
+                                <div className='flex flex-wrap gap-4'>
                                     {jumbleSettings.map((item, index) => (
                                         <button key={index} onClick={() => handleJumbleButtons(item)}
                                         className={`${item.value ? 'text-navOrange' : ''}`}>
