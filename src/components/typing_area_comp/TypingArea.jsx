@@ -22,25 +22,51 @@ const TypingArea = ({ isFree }) => {
     const [numTyped, setNumTyped] = useState(0);
     const [numWrong, setNumWrong] = useState(0);
     const [wordCount, setWordCount] = useState(10);
-
+    const [inputText, setInputText] = useState('');
+    const samplePrompt = "This is a sample prompt that I am testing out";
+    const [prompt, setPrompt] = useState(samplePrompt);
+    const [capitalization, setCapitals] = useState(false);
+    const [punctuation, setPunctuation] = useState(false);
+    const [numbers, setNumbers] = useState(false);
+    const [specialCharacters, setSpecialCharacters] = useState(false);
+    const [custom, setCustom] = useState(false);
+    
     const options = [
         { value: 'Random', label: 'Random' },
         { value: 'Jumble', label: 'Jumble' },
         { value: 'AI', label: 'AI' }
     ];
 
+    const letterSet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    const numberSet = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const punctuationSet = ['!', '?', '.', ',', ':', ';', '(', ')', '[', ']', '{', '}', '"', "'", '-'];
+    const specialCharacterSet = ['@', '#', '$', '%', '^', '&', '*', '~', '`', '_', '+', '='];
+
+    const handleCustom = () => {
+        setCapitals(false);
+        setPunctuation(false);
+        setNumbers(false);
+        setSpecialCharacters(false);
+        setCustom(true);
+    }
+
+    const jumbleSettings = [
+        { label: 'Capitalization', function: setCapitals, value: capitalization, charSet: letterSet },
+        { label: 'Punctuation', function: setPunctuation, value: punctuation, charSet: punctuationSet },
+        { label: 'Numbers', function: setNumbers, value: numbers, charSet: numberSet },
+        { label: 'Special Characters', function: setSpecialCharacters, value: specialCharacters, charSet: specialCharacterSet },
+        { label: 'Custom', function: handleCustom, value: custom },
+    ];
+    
     const handleSelect = (value) => {
         setSelectedOption(value);
     };
-
+    
     useEffect(() => {
         resetPrompt();
         setColorDict(initColorDict(prompt));
     }, [])
-
-    const [inputText, setInputText] = useState('');
-    const samplePrompt = "This is a sample prompt that I am testing out";
-    const [prompt, setPrompt] = useState(samplePrompt);
+    
     const initColorDict = (curr) => {
         const samplePromptSplit = curr.split("");
         return samplePromptSplit.map((_, index) => index).reduce((acc, val) => {
@@ -108,40 +134,49 @@ const TypingArea = ({ isFree }) => {
         handleRestart();
     }
 
+    const handleJumbleButtons = (item) => {
+        if (custom === true) {
+            if (item.label !== 'Custom') {
+                setCustom(false);
+            }
+        }
+        item.function(prev => !prev);
+        // Make jumble prompt
+        handleRestart();
+    }
+
 
     return(
         <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8">
             <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
-            <div className="flex justify-between w-full mb-3 items-center">
-                <div className='flex justify-between items-center gap-1'>
+            <div className="flex justify-between w-full mb-3 items-center ">
+                <div className='flex justify-between items-center gap-4'>
                     {!isFree &&
                         <>
                             <Dropdown options={options} onSelect={handleSelect} />
-                            {selectedOption === 'Jumble' && 
-                                <button
-                                    className=''
-                                >
-                                    <div className='flex w-32 items-center gap-2'>
-                                        <h3 className='text-md'>Customize</h3>
-                                        <img src={custom} className='invert aspect-square h-[1.75vh]'/>
+                            <div className='flex gap-4'>
+                                {[10, 25, 50, 100].map((item, index) => (
+                                    <div key={index}>
+                                        <button
+                                            className={`${wordCount === item ? 'text-navOrange' : ''}`}
+                                            onClick={() => handleRandomButtons(item)}
+                                        >
+                                            {item}
+                                        </button>
                                     </div>
-                                </button>
+                                ))}
+                            </div>
+                            {selectedOption === 'Jumble' && 
+                                <div className='flex gap-4'>
+                                    {jumbleSettings.map((item, index) => (
+                                        <button key={index} onClick={() => handleJumbleButtons(item)}
+                                        className={`${item.value ? 'text-navOrange' : ''}`}>
+                                            {item.label}
+                                        </button>
+                                    ))}
+                                </div>
                             }
                         </>
-                    }
-                    {selectedOption === 'Random' &&
-                        <div className='flex gap-4'>
-                            {[10, 25, 50, 100].map((item, index) => (
-                                <div key={index}>
-                                    <button
-                                        className={`${wordCount === item ? 'text-navOrange' : ''}`}
-                                        onClick={() => handleRandomButtons(item)}
-                                    >
-                                        {item}
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
                     }
                 </div>
                 <h2>WPM: {getWPM()}</h2>
