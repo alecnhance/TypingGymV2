@@ -104,7 +104,7 @@ const Keyboard = ({ className }) => {
     const currentLayout = shifted ? keyboardLayoutShifted : keyboardLayout;
 
     return (
-        <div className={`${className} w-full flex flex-col overflow-auto justify-between py-4`}>
+        <div className={`${className} w-full flex flex-col overflow-auto justify-between py-4 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500`}>
             <div className="flex w-full justify-between px-10 items-center">
                 <h2 className="text-3xl">Accuracy</h2>
                 <button

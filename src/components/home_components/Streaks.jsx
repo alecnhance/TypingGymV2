@@ -25,7 +25,7 @@ const Streaks = () => {
         navigate('/practice');
     };
     return (
-        <div className='flex justify-center items-center w-full bg-headerGray flex-1 rounded-2xl gap-2'>
+        <div className='flex justify-center items-center w-full shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500 bg-headerGray flex-1 rounded-2xl gap-2'>
             {getStreak() !== 0 && (
                 <div className='flex justify-center items-center w-full bg-headerGray flex-1 rounded-2xl gap-2'>
                     <h1 className="text-3xl">{`${getStreak()} Day Streak`}</h1>

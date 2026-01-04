@@ -17,7 +17,7 @@ const Achievements = ({ className }) => {
     }
     
     return (
-        <div className={`${className} px-[2vw] py-[2vh] h-full overflow-auto`}>
+        <div className={`${className} px-[2vw] py-[2vh] h-full overflow-auto shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500`}>
             <h2 className="mb-2 text-3xl">Achievements</h2>
             {achievementData.map((item, i) => (
                 <div key={i} className="mt-2">

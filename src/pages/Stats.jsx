@@ -10,7 +10,7 @@ const Stats = () => {
   const { graph, loading } = useWPMGraph();
   return (
     <div className="flex md:flex-row flex-col gap-6 mt-auto mb-auto md:h-[95vh] justify-center py-[2vh]">
-      <ProfileCard className="bg-headerGray flex-shrink-0 rounded-3xl h-[30vh] md:h-auto  md:w-[25%]"/>
+      <ProfileCard className="bg-headerGray flex-shrink-0 rounded-3xl h-[30vh] md:h-auto  md:w-[25%] "/>
       <div className="flex flex-col gap-6  md:w-[45%]">
           <Keyboard className="bg-headerGray flex-grow  rounded-3xl max-h-[50%]" />
           <div className="flex  md:flex-row flex-col gap-6 flex-grow md:max-h-[50%]">

@@ -50,7 +50,7 @@ const Home = () => {
   return (
     <div className="flex flex-col p-[2vh] justify-center h-[95vh]">
       <div className="flex flex-col md:flex-row justify-center items-start gap-8 p-4 w-full">
-        <div className="flex flex-col justify-center gap-[3vh] rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
+        <div className="flex flex-col justify-center gap-[3vh] rounded-2xl shadow-lg shadow-white/20 hover:shadow-orange-500/20 p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto hover:scale-[1.02] duration-500">
           <h2 className="text-2xl font-bold ">Training Circuit</h2>
           <p className="text-gray-300 text-lg ">{practiceDescription}</p>
           <button 
@@ -62,20 +62,20 @@ const Home = () => {
             Typing Practice
           </button>
         </div>
-        <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto">
+        <div className="flex flex-col justify-between rounded-2xl shadow-lg shadow-white/20 hover:shadow-orange-500/20 p-6 w-1/2 h-[42vh] bg-headerGray text-white overflow-auto hover:scale-[1.02] duration-500">
           <div className=' h-full'>
             <CommunityGraph />
           </div>
         </div>
-        <div className="flex flex-col justify-between  shadow-md  w-1/2 h-[42vh] flex-grow gap-4 p-1 text-white overflow-auto">
-          <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl px-3'>
+        <div className="flex flex-col justify-between  w-1/2 h-[42vh] flex-grow gap-4 p-1 text-white overflow-auto">
+          <div className='flex flex-col justify-center bg-headerGray flex-1 rounded-2xl px-3 shadow-lg shadow-white/10 hover:shadow-orange-500/10 hover:scale-[1.02] duration-500'>
             <TipWidget />
           </div>
           <Streaks />
         </div>
       </div>
-      <div className="flex justify-center items-start gap-8 p-4 w-full">
-        <div className="flex flex-col flex-grow justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
+      <div className="flex justify-center items-start gap-8 p-4 w-full ">
+        <div className="flex flex-col flex-grow justify-between rounded-2xl shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500 p-6 w-1/2 h-[42vh] bg-headerGray text-white">
           { loading &&
             <div className='w-full h-full flex items-center justify-center'>
               <CircularProgress color='white'/>
@@ -95,7 +95,7 @@ const Home = () => {
             </div>
           }
         </div>
-        <div className="flex flex-col justify-between rounded-2xl shadow-md p-6 w-1/2 h-[42vh] bg-headerGray text-white">
+        <div className="flex flex-col justify-between rounded-2xl p-6 w-1/2 h-[42vh] bg-headerGray text-white shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500">
           <RecentActivity />
         </div>
       </div>
