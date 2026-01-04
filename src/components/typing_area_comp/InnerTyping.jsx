@@ -218,7 +218,7 @@ const InnerTyping = React.forwardRef(
                             const isCursor = index === inputText.length;
                             const color = index >= inputText.length ? 'text-headerGray' : colorDict[index];
                             return (
-                                <span key={charIndex} className={`${color} relative`}>
+                                <span key={charIndex} className={`${color} relative font-mono`}>
                                     {char}
                                     {isCursor && (
                                         <span className='absolute left-0 top-0 h-full w-0.5 bg-headerGray animate-blink'/>
