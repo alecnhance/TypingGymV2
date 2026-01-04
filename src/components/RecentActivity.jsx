@@ -46,19 +46,35 @@ const RecentActivity = () => {
         }
     ];
     return (
-        <div className="flex flex-col w-full h-full text-left items-center justify-between overflow-auto">
-            <h2 className="text-2xl font-medium">Recent Activity</h2>
-            {recentData.map((item, i) => (
-                <div key={i} className="flex w-full gap-4 items-center">
-                    <div className="w-[10%] bg-mainBackground p-3 rounded-full">
-                        <img src={item.image} alt="AchievementPic" className="aspect-square w-full invert" />
+        <div className="flex flex-col w-full h-full text-left justify-between overflow-auto gap-4">
+            <div className="flex items-center gap-2 pb-2 border-b border-gray-700/50">
+                <div className="w-1 h-6 bg-navOrange rounded-full"></div>
+                <h2 className="text-lg font-semibold text-gray-300 uppercase tracking-wide">Activity</h2>
+            </div>
+            <div className="flex flex-col w-full gap-3 flex-1 justify-center">
+                {recentData.map((item, i) => (
+                    <div 
+                        key={i} 
+                        className="flex w-full gap-4 items-center p-3 rounded-xl bg-mainBackground/50 hover:bg-mainBackground/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-md hover:shadow-orange-500/10"
+                    >
+                        <div className="w-12 h-12 bg-gradient-to-br from-navOrange/20 to-orange-600/20 p-3 rounded-full flex-shrink-0 border border-navOrange/30 shadow-sm">
+                            <img src={item.image} alt="AchievementPic" className="aspect-square w-full invert opacity-90" />
+                        </div>
+                        <div className="flex flex-col flex-1 min-w-0 gap-1">
+                            <h2 className="text-lg font-medium leading-tight">{item.description}</h2>
+                            <div className="flex items-center gap-2">
+                                <span className={`text-sm px-2 py-1 rounded-full font-medium ${
+                                    item.date === "never" 
+                                        ? "bg-gray-700/50 text-gray-400" 
+                                        : "bg-navOrange/20 text-navOrange"
+                                }`}>
+                                    {item.date}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex w-full justify-between">
-                        <h2 className="text-xl mr-1">{item.description}</h2>
-                        <h2 className="text-lg font-extralight">{item.date}</h2>
-                    </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
 };
