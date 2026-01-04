@@ -15,7 +15,7 @@ const ProfileCard = ({ className }) => {
     const username = userData?.username || "username";
     const picture = userData?.pic_url || blank;
     return (
-        <div className={`${className} flex flex-col items-center font-extralight overflow-auto justify-between py-10`}>
+        <div className={`${className} flex flex-col items-center font-extralight overflow-auto justify-between py-10 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500`}>
             <img src={picture} alt="profilePic" className='w-[50%] aspect-square rounded-full object-cover' />
             <h2 className='mt-5 text-2xl font-medium'>{username}</h2>
             <h3 className='mt-1 text-md px-3'>My goal is to be the fastest typer at Gatech</h3>

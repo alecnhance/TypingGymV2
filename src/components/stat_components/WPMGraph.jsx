@@ -128,7 +128,7 @@ const WPMGraph = ({ wpmData, className }) => {
   };
 
   return (
-    <div className={`${className} p-4`} >
+    <div className={`${className} p-4 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500`} >
       <Line data={chartData} options={options} />
     </div>
   );
