@@ -6,6 +6,7 @@ import { set } from 'date-fns';
 import custom from '../../assets/customize.svg';
 import Keyboard from '../stat_components/Keyboard';
 import { interpolateColor } from '../../utils/colors';
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 
 const formatTime = (ms) => {
     const min = Math.floor(ms / 60000);
@@ -36,6 +37,8 @@ const TypingArea = ({ isFree }) => {
     const [showModal, setShowModal] = useState(false);
     const [shifted, setShifted] = useState(false);
     const [weightDropdown, setWeightDropdown] = useState(0);
+    const [showKeyModal, setShowKeyModal] = useState(false);
+    const [selectedKey, setSelectedKey] = useState(null);
     
     const options = [
         { value: 'Random', label: 'Random' },
@@ -67,6 +70,8 @@ const TypingArea = ({ isFree }) => {
         setNumbers(false);
         setSpecialCharacters(false);
         setLetters(false);
+        setCharSetDropdown(letterSet);
+        setWeightDropdown(0);
         setCustom(true);
         setShowModal(true);
     }
@@ -233,6 +238,7 @@ const TypingArea = ({ isFree }) => {
             }
             if (custom === true) {
                 setCustom(false);
+                updatedCharSet = [];
             }
             
             // Calculate the updated charSet synchronously
@@ -269,6 +275,13 @@ const TypingArea = ({ isFree }) => {
         handleRestart();
     }
 
+    const getWeight = (key) => {
+        if (!currentCharSet || !Array.isArray(currentCharSet)) {
+            return 0;
+        }
+        const charItem = currentCharSet.find(item => item.letter === key);
+        return charItem ? charItem.weight : 0;
+    }
 
     const getKeyColor = (key) => {
         // Special keys always return base color
@@ -277,8 +290,7 @@ const TypingArea = ({ isFree }) => {
         }
         
         // Find the character in currentCharSet
-        const charItem = currentCharSet.find(item => item.letter === key);
-        const weight = charItem ? charItem.weight : 0;
+        const weight = getWeight(key);
         
         // Clamp weight between 0 and 100
         const clampedWeight = Math.max(0, Math.min(100, weight));
@@ -302,10 +314,46 @@ const TypingArea = ({ isFree }) => {
         setCurrentCharSet(newArr);
     }
 
-    const handleCloseModeal = () => {
-        setShowModal(false);
-        resetPrompt(wordCount);
-        handleRestart();
+    const handleCloseModal = (isKeyModal) => {
+        if (isKeyModal) {
+            setShowModal(true);
+            setShowKeyModal(false);
+        } else {
+            setShowModal(false);
+            resetPrompt(wordCount);
+            handleRestart();
+        }
+    }
+
+    const handleKeyClick = (key) => {
+        if (key === 'Space' || key === 'Tab' || key === 'CapsLock' || key === 'Shift' || key === 'Backspace' || key === 'Enter') {
+            return;
+        }
+        setSelectedKey(key);
+        setShowKeyModal(true);
+        setShowModal(true);
+    }
+
+    const changeWeight = (key, amount) => {
+        const normalizedKey = key.toLowerCase();
+        setCurrentCharSet(prev => {
+            const charIndex = prev.findIndex(item => item.letter === normalizedKey);
+            
+            if (charIndex === -1) {
+                // Character doesn't exist, add it with the new weight
+                const newWeight = Math.max(0, Math.min(100, amount));
+                return [...prev, { letter: normalizedKey, weight: newWeight }];
+            }
+            
+            // Character exists, update its weight
+            const currentWeight = prev[charIndex].weight;
+            const newWeight = Math.max(0, Math.min(100, currentWeight + amount));
+            
+            // Create new array with updated character
+            const updated = [...prev];
+            updated[charIndex] = { ...updated[charIndex], weight: newWeight };
+            setCurrentCharSet(updated);
+        });
     }
 
     return(
@@ -388,7 +436,7 @@ const TypingArea = ({ isFree }) => {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className='bg-headerGray w-[60vw] rounded-3xl p-4'>
                         <div className='flex justify-end'>
-                            <button onClick={() => handleCloseModeal()} className='font-bold text-2xl'>
+                            <button onClick={() => handleCloseModal(false)} className='font-bold text-2xl'>
                                 X
                             </button>
                         </div>
@@ -413,6 +461,7 @@ const TypingArea = ({ isFree }) => {
                                                 flexBasis: key === 'Space' ? '45%' : 'auto',
                                                 backgroundColor: `${getKeyColor(key.toLowerCase())}`
                                             }}
+                                            onClick={() => handleKeyClick(key)}
                                         >
                                             {key}
                                         </div>
@@ -435,6 +484,47 @@ const TypingArea = ({ isFree }) => {
                     </div>
                 </div>
             )}
+            {showKeyModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className='bg-headerGray  rounded-3xl p-4 w-[25vw] flex flex-col items-center'>
+                        <div className='flex justify-end  w-full '>
+                            <button onClick={() => handleCloseModal(true)} className='font-bold text-2xl'>
+                                X
+                            </button>
+                        </div>
+                        <div
+                            className={`text-6xl text-white rounded-xl border-black border-2 w-[8vw] h-[8vw] flex justify-center items-center`}
+                            style={{
+                                backgroundColor: `${getKeyColor(selectedKey.toLowerCase())}`,
+                            }}
+                        >
+                            {/[a-z]/.test(selectedKey) ? (
+                                <span className='leading-none inline-block' style={{ transform: 'translateY(-0.1em)' }}>
+                                    {selectedKey}
+                                </span>
+                            ) : (
+                                selectedKey
+                            )}
+                        </div>
+                        <div className='flex items-center gap-1 mt-2'>
+                            <button className='text-2xl'onClick={() => changeWeight(selectedKey, -100)}>
+                                Min
+                            </button>
+                            <ChevronLeft className='w-10 h-10' onClick={() => changeWeight(selectedKey, -10)}/>
+                            <ChevronLeft className='w-5 h-5' onClick={() => changeWeight(selectedKey, -1)}/>
+                            <h2 className='text-2xl'>{getWeight(selectedKey)}</h2>
+                            <ChevronRight className='w-4 h-4' onClick={() => changeWeight(selectedKey, 1)}/>
+                            <ChevronRight className='w-12 h-12' onClick={() => changeWeight(selectedKey, 10)}/>
+                            <button className='text-2xl'onClick={() => changeWeight(selectedKey, 100)}>
+                                Max
+                            </button>
+                            
+                        </div>
+                        <h2 className='text-2xl italic font-light'>Weight</h2>
+                    </div>
+                </div>
+           
+            )};
         </>
     );
 };
