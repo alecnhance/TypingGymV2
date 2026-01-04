@@ -39,6 +39,8 @@ const TypingArea = ({ isFree }) => {
     const [weightDropdown, setWeightDropdown] = useState(0);
     const [showKeyModal, setShowKeyModal] = useState(false);
     const [selectedKey, setSelectedKey] = useState(null);
+    const [showPromptModal, setPromptModal] = useState(false);
+    const [aiText, setAiText] = useState('');
     
     const options = [
         { value: 'Random', label: 'Random' },
@@ -314,10 +316,13 @@ const TypingArea = ({ isFree }) => {
         setCurrentCharSet(newArr);
     }
 
-    const handleCloseModal = (isKeyModal) => {
+    const handleCloseModal = (isKeyModal, isPromptModal = false) => {
         if (isKeyModal) {
             setShowModal(true);
             setShowKeyModal(false);
+        } else if (isPromptModal) {
+            setPromptModal(false);
+            resetPrompt(wordCount);
         } else {
             setShowModal(false);
             resetPrompt(wordCount);
@@ -387,6 +392,11 @@ const TypingArea = ({ isFree }) => {
                                         ))}
                                     </div>
                                 }
+                                {selectedOption === 'AI' && (
+                                    <button onClick={() => setPromptModal(true)}>
+                                        Prompt
+                                    </button>
+                                )}
                             </>
                         }
                     </div>
@@ -524,6 +534,28 @@ const TypingArea = ({ isFree }) => {
                     </div>
                 </div>
            
+            )};
+            { showPromptModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className='bg-headerGray  rounded-3xl p-4 w-[50vw] flex flex-col items-center'>
+                        <div className='flex justify-end  w-full '>
+                            <button onClick={() => handleCloseModal(false, true)} className='font-bold text-2xl'>
+                                X
+                            </button>
+                        </div>
+                        <h2 className='text-4xl'>AI Prompt Generator</h2>
+                        <textarea 
+                            value={aiText} 
+                            onChange={(e) => setAiText(e.target.value)} 
+                            placeholder='e.g., "a paragraph about artificial intelligence and machine learning"' 
+                            className='w-full p-2 rounded-md mt-4 bg-white text-black' 
+                            rows={3} 
+                        />
+                        <button className='rounded-full bg-navOrange text-white px-3 py-1 mt-4'>
+                            Generate
+                        </button>
+                    </div>
+                </div>
             )};
         </>
     );
