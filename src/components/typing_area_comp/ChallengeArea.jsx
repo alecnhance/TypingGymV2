@@ -190,7 +190,7 @@ const ChallengeArea = () => {
     return(
         <div className='relative'>
             <div className="absolute -inset-1 bg-navOrange rounded-3xl blur opacity-75 animate-pulse"></div>
-            <div className="relative flex flex-col w-full h-full  bg-headerGray rounded-3xl h-auto p-8">
+            <div className="relative flex flex-col w-full bg-headerGray rounded-3xl h-auto p-8">
                 <h2 className="w-full mb-3 font-bold text-2xl">Daily Challenge</h2>
                 <div className="flex justify-between w-full mb-3 items-right">
                     <h2>WPM: {getWPM()}</h2>
@@ -220,19 +220,24 @@ const ChallengeArea = () => {
                 }
                 {!started && 
                     <div
-                        className={`bg-gray-400 rounded-3xl py-4 px-4 w-full`}
+                        className={`bg-mainBackground rounded-3xl py-8 px-4 w-full border border-gray-700/50`}
                         style={{ minHeight: "45vh", minWidth: "62vw" }}
                     >
-                        <div className='flex flex-col h-full items-center justify-center gap-[1vh]'>
-                            {hoveringStart && 
-                                <LockIcon color="black" size={"20vh"} className="animate-wiggle"/>
-                            }
-                            {!hoveringStart &&
-                                <LockIcon color="black" size={"20vh"}/>
-                            }
-                            <div className='flex justify-between w-[50%] '>
+                        <div className='flex flex-col h-full items-center justify-center gap-8'>
+                            <div className='relative'>
+                                {hoveringStart && 
+                                    <div className="absolute inset-0 bg-navOrange/20 rounded-full blur-2xl animate-pulse"></div>
+                                }
+                                {hoveringStart && 
+                                    <LockIcon color="#F5972F" size={"20vh"} className="relative animate-wiggle drop-shadow-lg"/>
+                                }
+                                {!hoveringStart &&
+                                    <LockIcon color="#2D2D2D" size={"20vh"} className="drop-shadow-md transition-all duration-300"/>
+                                }
+                            </div>
+                            <div className='flex justify-center items-center gap-4 w-full max-w-md'>
                                 <button 
-                                    className='rounded-full text-white text-2xl font-bold  bg-green-500 px-4 py-2 w-[48%] min-w-[130px] h-[6vh]'
+                                    className='flex items-center justify-center rounded-full text-white text-xl font-bold bg-navOrange px-6 py-3 w-[45%] min-w-[130px] h-[5vh] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/50 hover:bg-orange-500'
                                     onMouseEnter={() => setHoveringStart(true)}
                                     onMouseLeave={() => setHoveringStart(false)}
                                     onClick={startChallenge}
@@ -240,13 +245,18 @@ const ChallengeArea = () => {
                                     Start
                                 </button>
                                 <button 
-                                    className="rounded-full text-white text-2xl font-bold bg-red-500 px-4 py-2 w-[48%] min-w-[130px] h-[6vh]"
+                                    className="flex items-center justify-center rounded-full text-white text-xl font-bold bg-gray-600 px-6 py-3 w-[45%] min-w-[130px] h-[5vh] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-gray-500"
                                     onClick={() => navigate("/home")}
                                 >
                                     Quit
                                 </button>
                             </div>
-                            <h2 className='text-black text-lg font-extrabold'>Once you start, there is no turning back!</h2>
+                            <div className='flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500/10 border border-orange-500/30'>
+                                <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                                <h2 className='text-orange-400 text-base font-semibold'>Once you start, there is no turning back!</h2>
+                            </div>
                         </div>
                     </div>
                 }
