@@ -379,7 +379,7 @@ const TypingArea = ({ isFree }) => {
 
     return(
         <>
-            <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8">
+            <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8 shadow-lg shadow-white/20 hover:shadow-orange-500/20">
                 <h2 className="w-full mb-3 font-bold text-2xl">Typing Practice Session</h2>
                 <div className="flex justify-between w-full mb-3 items-center ">
                     <div className='flex justify-between items-center gap-4'>
