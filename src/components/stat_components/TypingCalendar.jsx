@@ -37,9 +37,11 @@ const TypingCalendar = ( {className }) => {
   };
 
   return (
-    <div className={`${className} bg-headerGray p-6 shadow-lg max-w-full flex flex-col justify-center overflow-auto shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500`}>
-
-      <h2 className="text-lg">Practice Log</h2>
+    <div className={`${className} bg-headerGray p-6 max-w-full flex flex-col justify-center overflow-auto shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500`}>
+      <div className='flex items-center gap-2 mb-4 pb-3 border-b border-gray-700/50'>
+        <div className='w-1 h-6 bg-navOrange rounded-full'></div>
+        <h2 className="text-xl font-bold text-white">Practice Log</h2>
+      </div>
       <div className="grid grid-cols-1 place-items-center w-full">
         <Calendar
           onChange={handleDateChange}

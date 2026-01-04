@@ -22,6 +22,11 @@ ChartJS.register(
 );
 
 const WPMGraph = ({ wpmData, className }) => {
+  // Get current/latest WPM from the most recent data point
+  const currentWPM = wpmData && wpmData.length > 0 
+    ? Math.round(wpmData[wpmData.length - 1].y) 
+    : 0;
+
   // Determine time unit based on data density
   const getTimeUnit = () => {
     if (!wpmData || wpmData.length < 2) return 'day';
@@ -59,14 +64,7 @@ const WPMGraph = ({ wpmData, className }) => {
     maintainAspectRatio: false,
     plugins: {
       title: {
-        display: true,
-        text: "WPM",
-        align: 'middle',
-        font: {
-            size: 16,
-            weight: 'bold',
-        },
-        color: '#FFFFFF'
+        display: false
       },
       legend: {
         display: false
@@ -128,8 +126,20 @@ const WPMGraph = ({ wpmData, className }) => {
   };
 
   return (
-    <div className={`${className} p-4 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500`} >
-      <Line data={chartData} options={options} />
+    <div className={`${className} p-4 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500 flex flex-col`} >
+      <div className='flex items-center justify-between mb-3 pb-2 border-b border-gray-700/50'>
+        <div className='flex items-center gap-2'>
+          <div className='w-1 h-6 bg-navOrange rounded-full'></div>
+          <h2 className="text-xl font-bold text-white">WPM</h2>
+        </div>
+        <div className='flex items-center gap-2'>
+          <span className='text-gray-400 text-sm'>Current:</span>
+          <span className='text-navOrange text-xl font-bold'>{currentWPM}</span>
+        </div>
+      </div>
+      <div className='flex-1 min-h-0'>
+        <Line data={chartData} options={options} />
+      </div>
     </div>
   );
 };
