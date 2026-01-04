@@ -1,5 +1,6 @@
 import bulb from '../../assets/bright-light-bulb.svg';
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const TipWidget = () => {
     const [currentTip, setCurrentTip] = useState(0);
@@ -27,9 +28,22 @@ const TipWidget = () => {
     }, []);
 
     return (
-        <div className='flex items-center gap-2'>
-            <img src={bulb} className='w-[15%]' />
-            <h2 className="text-xl ">{tips[currentTip]}</h2>
+        <div className='flex items-center gap-2 overflow-hidden'>
+            <img src={bulb} className='w-[15%] flex-shrink-0' />
+            <div className='relative flex-1 min-h-[1.5em]'>
+                <AnimatePresence mode="wait">
+                    <motion.h2
+                        key={currentTip}
+                        initial={{ x: 50, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: -50, opacity: 0 }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        className="text-xl"
+                    >
+                        {tips[currentTip]}
+                    </motion.h2>
+                </AnimatePresence>
+            </div>
         </div>
     );
 };
