@@ -11,9 +11,9 @@ import { useDailyStatus } from '../../hooks/useDailyStatus';
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-gray-800 text-white p-2 rounded shadow-lg">
-        <p className="text-sm">{`WPM: ${label}`}</p>
-        <p className="text-sm">{`Users: ${payload[0].value}`}</p>
+      <div className="bg-headerGray border border-navOrange/30 text-white p-3 rounded-lg shadow-xl">
+        <p className="text-sm font-semibold text-navOrange mb-1">{`WPM Range: ${label}`}</p>
+        <p className="text-sm text-gray-300">{`Users: ${payload[0].value}`}</p>
       </div>
     );
   }
