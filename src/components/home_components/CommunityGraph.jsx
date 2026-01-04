@@ -1,6 +1,7 @@
 import { useDailyLeaders } from '../../hooks/useDailyLeaders';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const CommunityGraph = () => {
     const { loading, fastestTyper, fastestChallenge, mostPrompts } = useDailyLeaders();
@@ -45,13 +46,30 @@ const CommunityGraph = () => {
     }
 
     return (
-        <div className="flex flex-col w-full h-full items-center justify-center gap-[5%]">
-            <h2>{title}</h2>
-            <h1>{value}</h1>
-            <div className="flex  h-[15%] items-center gap-[1vw]">
-                <img src={user.pic_url} className=" h-full aspect-square rounded-full object-cover"/>
-                <h2>{user.username}</h2>
-            </div>
+        <div className="flex flex-col w-full h-full items-center justify-center gap-[5%] overflow-hidden">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={currentDisplay}
+                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className="flex flex-col w-full h-full items-center justify-center gap-[5%]"
+                >
+                    <h2>{title}</h2>
+                    <h1>{value}</h1>
+                    <div className="flex h-[15%] items-center gap-[1vw]">
+                        <motion.img 
+                            src={user.pic_url} 
+                            className="h-full aspect-square rounded-full object-cover"
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+                        />
+                        <h2>{user.username}</h2>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
         </div>
     );
 };
