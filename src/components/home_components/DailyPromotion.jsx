@@ -23,16 +23,12 @@ const DailyStreak = ({ isHovered }) => {
         return streak;
     };
     return (
-        <motion.div
-            animate={isHovered ? { rotate: [0, 5, -5, 5, 0], scale: [1, 1.2, 1.3, 1.2, 1] } : { rotate: 0, scale: 1 }}
-            transition={isHovered ? { repeat: Infinity, duration: 1 } : { duration: 0.3 }}
-            className="hidden lg:block relative w-[6vh]"
-        >
-            <img src={medal} className='invert'/>
+        <div className="hidden lg:block relative w-[6vh]">
+            <img src={medal} className=''/>
             <div className='absolute inset-0 flex items-center justify-center text-navOrange text-[1.7em] font-bold translate-y-[1.3vh]'>
                 {getStreak()}
             </div>
-        </motion.div>
+        </div>
     );
 };
 
@@ -52,7 +48,9 @@ const DailyPromotion = () => {
             <div className='w-[85%] items-center justify-center'>
                 <div className='flex w-full items-center justify-center lg:justify-between'>
                     <DailyStreak isHovered={hovering}/>
-                    <Countdown />
+                    <div className='px-3 py-2 rounded-lg bg-mainBackground/30 border border-navOrange/20'>
+                        <Countdown />
+                    </div>
                     <DailyStreak isHovered={hovering}/>
                 </div>
             </div>
