@@ -1,6 +1,8 @@
 import { useAuth } from '@clerk/clerk-react';
 import { useState, useCallback, useEffect } from 'react';
-import blankProfile from '../assets/blank-profile.jpg';
+import walle from '../assets/wallee.jpg';
+import r2d2 from '../assets/r2d2.jpg';
+import baymax from '../assets/baymax.jpg';
 
 export function useDailyLeaders() {
     const [loading, setLoading] = useState(true);
@@ -15,10 +17,24 @@ export function useDailyLeaders() {
         // Default fallback object
         const defaultUser = {
             wpm: 0,
-            username: "username",
-            pic_url: blankProfile,
+            username: "WALL-E",
+            pic_url: walle,
             count: 0
         };
+
+        const defaultUser2 = {
+            wpm: 0,
+            username: "R2-D2",
+            pic_url: r2d2,
+            count:0
+        }
+
+        const defaultUser3 = {
+            wpm: 0,
+            username: "Baymax",
+            pic_url: baymax,
+            count:0
+        }
         
         try {
             const token = await getToken();
@@ -32,8 +48,8 @@ export function useDailyLeaders() {
                 // If 404 or other error, use defaults
                 console.error("Fetch Daily Leaders error");
                 setFastestTyper(defaultUser);
-                setFastestChallenge(defaultUser);
-                setMostPrompts(defaultUser);
+                setFastestChallenge(defaultUser2);
+                setMostPrompts(defaultUser3);
                 setLoading(false);
                 return;
             }
@@ -77,14 +93,14 @@ export function useDailyLeaders() {
             });
             // Use defaults if no data found
             setFastestTyper(bestPrompt || defaultUser);
-            setFastestChallenge(bestChallenge || defaultUser);
-            setMostPrompts(bestUser || defaultUser);
+            setFastestChallenge(bestChallenge || defaultUser2);
+            setMostPrompts(bestUser || defaultUser3);
         } catch (err) {
             console.error("Failed to fetch daily leaders: ", err);
             // On error, use defaults
             setFastestTyper(defaultUser);
-            setFastestChallenge(defaultUser);
-            setMostPrompts(defaultUser);
+            setFastestChallenge(defaultUser2);
+            setMostPrompts(defaultUser3);
         } finally {
             setLoading(false);
         }
