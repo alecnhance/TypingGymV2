@@ -22,7 +22,7 @@ const Dropdown = ({ options, onSelect }) => {
         </button>
   
         {open && (
-          <ul className="absolute z-10 w-full mt-3 bg-headerGray border border-gray-600 rounded-md shadow-lg">
+          <ul className="absolute z-10 w-full mt-3 bg-headerGray border border-gray-600 rounded-md shadow-lg max-h-40 overflow-y-auto">
             {options.map((option) => (
               <li
                 key={option.value}
