@@ -32,23 +32,23 @@ const BenchPressWidget = () => {
     >
         <svg viewBox="25 33 250 97" className="w-full h-full">
         {/* Bench */}
-        <rect x="50" y="120" width="200" height="20" fill="#FFFFFF" />
-        <text x="150" y="134" textAnchor="middle" fill="black" fontSize="15" fontFamily="sans-serif" fontWeight="bold">
+        <rect x="50" y="120" width="200" height="20" fill="#161616" />
+        <text x="150" y="134" textAnchor="middle" fill="#F5972F" fontSize="15" fontFamily="sans-serif" fontWeight="bold">
             Daily Challenge
         </text>
 
         {/* Stands */}
-        <rect x="80" y="40" width="10" height="80" fill="#FFFFFF" />
-        <rect x="210" y="40" width="10" height="80" fill="#FFFFFF" />
+        <rect x="80" y="40" width="10" height="80" fill="#161616" />
+        <rect x="210" y="40" width="10" height="80" fill="#161616" />
 
         {/* Bar */}
-        <rect x="50" y="50" width="200" height="6" fill="#FFFFFF" />
+        <rect x="50" y="50" width="200" height="6" fill="#161616" />
 
         {/* Seat bar */}
-        <rect x="145" y="100" width="10" height="20" fill="#FFFFFF" />
+        <rect x="145" y="100" width="10" height="20" fill="#161616" />
 
         {/* Seat */}
-        <rect x="120" y="90" width="60" height="15" rx="8" ry="8" fill="#FFFFFF" />
+        <rect x="120" y="90" width="60" height="15" rx="8" ry="8" fill="#161616" />
 
         {/* Left Weights */}
         <motion.rect
