@@ -19,7 +19,7 @@ import { handleGetDailyLeaders } from './api/daily/getDailyLeaders.js';
 import { handleGetAchievements } from './api/users/getAchievements.js';
 import { handleGetActivity } from './api/users/getActivity.js';
 import { handleGetUsage } from './api/site/getUsage.js';
-
+import { handleGetGeneratedPrompt } from './api/practice/getGeneratedPrompt.js';
 // Load environment variables
 dotenv.config();
 
@@ -38,6 +38,7 @@ const getPublicRoutes = {
   '/api/daily/prompt': handleGetDailyPrompt,
   '/api/daily/getDailyLeaders': handleGetDailyLeaders,
   '/api/site/usage': handleGetUsage,
+  '/api/practice/getGeneratedPrompt': handleGetGeneratedPrompt,
 };
 
 const getRoutes = {

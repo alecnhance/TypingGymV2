@@ -7,6 +7,9 @@ import custom from '../../assets/customize.svg';
 import Keyboard from '../stat_components/Keyboard';
 import { interpolateColor } from '../../utils/colors';
 import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
+import { useGeneratedPrompt } from '../../hooks/useGeneratedPrompt';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const formatTime = (ms) => {
     const min = Math.floor(ms / 60000);
@@ -39,8 +42,9 @@ const TypingArea = ({ isFree }) => {
     const [weightDropdown, setWeightDropdown] = useState(0);
     const [showKeyModal, setShowKeyModal] = useState(false);
     const [selectedKey, setSelectedKey] = useState(null);
-    const [showPromptModal, setPromptModal] = useState(false);
+    const [showPromptModal, setShowPromptModal] = useState(false);
     const [aiText, setAiText] = useState('');
+    const { generatedPrompt, loading, fetchGeneratedPrompt } = useGeneratedPrompt();
     
     const options = [
         { value: 'Random', label: 'Random' },
@@ -107,8 +111,10 @@ const TypingArea = ({ isFree }) => {
         setSelectedOption(value);
         if (value === "Jumble") {
             makeJumblePrompt(wordCount, currentCharSet);
-        } else {
+        } else if (value === "Random") {
             makeRandomPrompt(wordCount);
+        } else if (value === "AI") {
+            fetchGeneratedPrompt(aiText, wordCount);
         }
         handleRestart();
     };
@@ -144,6 +150,8 @@ const TypingArea = ({ isFree }) => {
             makeRandomPrompt(wordCount);
         } else if (selectedOption === "Jumble") {
             makeJumblePrompt(wordCount);
+        } else if (selectedOption === "AI") {
+            fetchGeneratedPrompt(aiText, wordCount);
         }
     }
 
@@ -361,6 +369,14 @@ const TypingArea = ({ isFree }) => {
         });
     }
 
+    useEffect(() => {
+        if (generatedPrompt && !loading) {
+            setPrompt(generatedPrompt);
+            handleRestart();
+            setShowPromptModal(false);
+        }
+    }, [generatedPrompt, loading]);
+
     return(
         <>
             <div className="flex flex-col w-full max-w-[95%] bg-headerGray rounded-3xl h-auto p-8">
@@ -393,7 +409,7 @@ const TypingArea = ({ isFree }) => {
                                     </div>
                                 }
                                 {selectedOption === 'AI' && (
-                                    <button onClick={() => setPromptModal(true)}>
+                                    <button onClick={() => setShowPromptModal(true)}>
                                         Prompt
                                     </button>
                                 )}
@@ -437,8 +453,15 @@ const TypingArea = ({ isFree }) => {
                     <button
                         className="rounded-full text-white bg-navOrange px-4 py-2 min-w-[130px]"
                         onClick={handleNewPrompt}
-                        >
-                        New Prompt
+                    >
+                        {loading ? (
+                            <div className='flex items-center justify-center px-2 gap-2'>
+                                <CircularProgress size={16} color="inherit" />
+                                New Prompt...
+                            </div>
+                        ) : (
+                            'New Prompt'
+                        )}
                     </button>
                 </div>
             </div>
@@ -537,7 +560,7 @@ const TypingArea = ({ isFree }) => {
             )};
             { showPromptModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className='bg-headerGray  rounded-3xl p-4 w-[50vw] flex flex-col items-center'>
+                    <div className='bg-headerGray  rounded-3xl p-4 px-8 w-[50vw] flex flex-col items-center'>
                         <div className='flex justify-end  w-full '>
                             <button onClick={() => handleCloseModal(false, true)} className='font-bold text-2xl'>
                                 X
@@ -551,9 +574,27 @@ const TypingArea = ({ isFree }) => {
                             className='w-full p-2 rounded-md mt-4 bg-white text-black' 
                             rows={3} 
                         />
-                        <button className='rounded-full bg-navOrange text-white px-3 py-1 mt-4'>
-                            Generate
-                        </button>
+                        <div className='flex justify-center gap-4'>
+                            <button 
+                                className='rounded-full bg-gray-500 text-white px-3 py-1 mt-4'
+                                onClick={() => setAiText('')}
+                            >
+                                Clear
+                            </button>
+                            <button 
+                                className='rounded-full bg-navOrange text-white px-3 py-1 mt-4'
+                                onClick={() => fetchGeneratedPrompt(aiText, wordCount)}
+                            >
+                                {loading ? (
+                                    <div className='flex items-center justify-center px-2 gap-2'>
+                                        <CircularProgress size={16} color="inherit" />
+                                        Generating...
+                                    </div>
+                                ) : (
+                                    'Generate'
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )};
