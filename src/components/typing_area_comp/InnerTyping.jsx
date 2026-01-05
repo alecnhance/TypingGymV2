@@ -215,10 +215,18 @@ const InnerTyping = React.forwardRef(
                     className='absolute opacity-0 w-0 h-0'
                     autoFocus
                 />
-                {prompt.split(/(\s+)/).map((word, wordIndex) => (
+                {prompt.split(/\s+/).map((word, wordIndex, arr) => {
+                    const wordWithSpace = wordIndex < arr.length - 1 ? word + ' ' : word;
+                    // Calculate absolute index: sum of all previous words with their spaces
+                    const previousLength = arr.slice(0, wordIndex).reduce((sum, w, i, slice) => {
+                        // Add word length plus space (if not the last word in original array)
+                        const originalIndex = i; // index in original array
+                        return sum + w.length + (originalIndex < arr.length - 1 ? 1 : 0);
+                    }, 0);
+                    return (
                     <span key={wordIndex} className={`whitespace-pre ${textSize}`}>
-                        {word.split("").map((char, charIndex) => {
-                            const index = prompt.split(/(\s+)/).slice(0, wordIndex).join("").length + charIndex;
+                        {wordWithSpace.split("").map((char, charIndex) => {
+                            const index = previousLength + charIndex;
                             const isCursor = index === inputText.length;
                             const color = index >= inputText.length ? 'text-headerGray' : colorDict[index];
                             return (
@@ -231,7 +239,8 @@ const InnerTyping = React.forwardRef(
                             );
                         })}
                     </span>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );
