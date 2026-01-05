@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export function useGeneratedPrompt() {
     const [generatedPrompt, setGeneratedPrompt] = useState(null);
@@ -9,7 +10,7 @@ export function useGeneratedPrompt() {
             prompt = "make words about how this text is Ai generated, and can be customized by using the prompt option above"
         }
         try {
-            const res = await fetch(`/api/practice/getGeneratedPrompt?prompt=${prompt}&promptLen=${promptLen}`, {
+            const res = await fetch(`${API_BASE_URL}/api/practice/getGeneratedPrompt?prompt=${prompt}&promptLen=${promptLen}`, {
                 method: 'GET',       
             });
             if (!res.ok) {

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { API_BASE_URL } from '../utils/api.js';
 // import { useWebSocket } from '../components/WebSocketProvider';
 
 
@@ -13,7 +14,7 @@ export function useWPMGraph() {
         setLoading(true);
         try {
             const token = await getToken();
-            const res = await fetch('/api/users/me/wpmGraph', {
+            const res = await fetch(`${API_BASE_URL}/api/users/me/wpmGraph`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

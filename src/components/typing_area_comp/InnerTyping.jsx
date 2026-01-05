@@ -103,7 +103,8 @@ const InnerTyping = React.forwardRef(
         };
         try {
             const token = await getToken();
-            const res = await fetch('/api/users/me', {
+            const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+            const res = await fetch(`${API_BASE_URL}/api/users/me`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

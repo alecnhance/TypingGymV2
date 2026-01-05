@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useUser, useAuth } from '@clerk/clerk-react';
+import { API_BASE_URL } from './utils/api.js';
 
 const UserContext = createContext();
 
@@ -16,7 +17,7 @@ export function UserProvider({ children }) {
     
             try {
                 const token = await getToken();
-                const res = await fetch('/api/users/me', {
+                const res = await fetch(`${API_BASE_URL}/api/users/me`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

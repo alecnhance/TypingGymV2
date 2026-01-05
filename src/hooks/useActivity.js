@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export function useActivity() {
     const [activity, setActivity] = useState(null);
@@ -9,7 +10,7 @@ export function useActivity() {
         setLoading(true);
         try {
             const token = await getToken();
-            const res = await fetch('/api/users/me/activity', {
+            const res = await fetch(`${API_BASE_URL}/api/users/me/activity`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
