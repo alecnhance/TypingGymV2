@@ -39,33 +39,37 @@ const Landing = () => {
 
     return (
         <div className="flex flex-col gap-6 mt-auto mb-auto md:h-[95vh] py-[2vh] bg-mainBackground items-center">
-            <div className=' flex bg-headerGray w-[90vw] h-[64%] rounded-3xl px-[10vh] py-[10vh]'>
+            <div className=' flex bg-headerGray w-[90vw] h-[64%] rounded-3xl px-[10vh] py-[10vh] shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500'>
                 <div className='flex flex-col w-full h-full items-center justify-between'>
-                    <div className="flex flex-col text-left gap-2">
-                        <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[3.5rem]">Where Typing Meets Training, and Your Words Become Workouts</h2>
-                        <h3 className="text-white font-extralight">Custom Prompts and Numerous Achievements</h3>
+                    <div className="flex flex-col text-left gap-4">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="w-1 h-12 bg-navOrange rounded-full"></div>
+                            <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">Where Typing Meets Training, and Your Words Become Workouts</h2>
+                        </div>
+                        <h3 className="text-gray-300 text-lg font-medium">Custom Prompts and Numerous Achievements</h3>
                     </div>
-                    <div className="flex gap-[3vw] w-full justify-center">
+                    <div className="flex gap-4 w-full justify-center">
                         <button
-                            className="rounded-full w-[47%] px-4 py-2 bg-navOrange text-mainBackground"
+                            className="rounded-full w-[47%] px-4 py-3 bg-navOrange text-mainBackground font-semibold  duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/50 hover:bg-orange-500"
                             onClick={createAccountHandle}
                         >
                             Create Account
                         </button>
                         <button
-                            className="rounded-full w-[47%] px-6 py-2 bg-navOrange text-mainBackground"
+                            className="rounded-full w-[47%] px-6 py-3 bg-navOrange text-mainBackground font-semibold duration-300 hover:scale-105 hover:shadow-lg hover:shadow-orange-500/50 hover:bg-orange-500"
                             onClick={navigateToPractice}
                         >
                             Try Sample
                         </button>
                     </div>
                 </div>
-                <div className='flex w-full h-full justify-center'>
-                    <img src={builder} className="aspect-square w-[30%] invert"/>
+                <div className='flex w-full h-full justify-center items-center relative'>
+                    <div className='absolute inset-0 bg-navOrange/10 rounded-full blur-2xl opacity-50'></div>
+                    <img src={builder} className="relative aspect-square w-[50%] invert drop-shadow-lg"/>
                 </div>
             </div>
-            <div className='flex flex-col md:flex-row w-full h-[26%] gap-[3vw] justify-center'>
-                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3'>
+            <div className='flex flex-col md:flex-row w-full h-[26%] gap-[3vw] justify-center '>
+                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3  shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
                         <h2 className="font-extralight">Engaged Users</h2>
                         <h2 className=" text-4xl ">{formatNumber(num_users)}</h2>
@@ -78,7 +82,7 @@ const Landing = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3'>
+                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
                         <h2 className="font-extralight">Words Typed</h2>
                         <h2 className=" text-4xl ">{formatNumber(total_words)}</h2>
@@ -87,7 +91,7 @@ const Landing = () => {
                         <img src={keyboard} className="invert aspect-square w-[50%]"/>
                     </div>
                 </div>
-                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3'>
+                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
                         <h2 className="font-extralight">Daily Challengers</h2>
                         <h2 className=" text-4xl ">{formatNumber(daily_challengers)}</h2>
@@ -96,7 +100,7 @@ const Landing = () => {
                         <img src={checkMark} className="invert aspect-square w-[50%]"/>
                     </div>
                 </div>
-                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3' onClick={navigateToPractice}>
+                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500' onClick={navigateToPractice}>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
                         <h2 className="font-extralight">Guest Mode</h2>
                         <h2 className=" text-4xl ">Practice</h2>
