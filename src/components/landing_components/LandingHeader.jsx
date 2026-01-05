@@ -31,7 +31,9 @@ const LandingHeader = () => {
                 <NavLink
                     to="/signIn"
                     className={({ isActive}) => 
-                        isActive ? 'bg-white rounded' : ' cursor-pointer bg-white rounded-full text-black px-3 py-1'
+                        isActive 
+                            ? 'bg-navOrange rounded-full text-white px-3 py-1 font-semibold' 
+                            : 'cursor-pointer bg-white rounded-full text-black px-3 py-1 font-semibold transition-all duration-300 hover:bg-navOrange hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-navOrange/50'
                     }
                 >
                     Sign In
