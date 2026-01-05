@@ -39,22 +39,41 @@ export function useDailyLeaders() {
         
         try {
             const token = await getToken();
-            const result = await fetch(`${API_BASE_URL}/api/daily/getDailyLeaders`, {
+            const url = `${API_BASE_URL}/api/daily/getDailyLeaders`;
+            console.log('[DEBUG] Fetching:', url, '| API_BASE_URL:', API_BASE_URL || '(empty)');
+            
+            const result = await fetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             })
+            
+            console.log('[DEBUG] Response status:', result.status, '| Content-Type:', result.headers.get('content-type'));
+            
             if (!result.ok) {
-                // If 404 or other error, use defaults
-                console.error("Fetch Daily Leaders error");
+                const errorText = await result.text();
+                console.error('[DEBUG] Error response:', result.status, errorText.substring(0, 200));
                 setFastestTyper(defaultUser);
                 setFastestChallenge(defaultUser2);
                 setMostPrompts(defaultUser3);
                 setLoading(false);
                 return;
             }
+            
+            const contentType = result.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const text = await result.text();
+                console.error('[DEBUG] Expected JSON but got:', contentType, '| Response preview:', text.substring(0, 200));
+                setFastestTyper(defaultUser);
+                setFastestChallenge(defaultUser2);
+                setMostPrompts(defaultUser3);
+                setLoading(false);
+                return;
+            }
+            
             const resultData = await result.json();
+            console.log('[DEBUG] Success! Data received:', resultData);
 
             
             let bestPrompt = null;
@@ -97,7 +116,7 @@ export function useDailyLeaders() {
             setFastestChallenge(bestChallenge || defaultUser2);
             setMostPrompts(bestUser || defaultUser3);
         } catch (err) {
-            console.error("Failed to fetch daily leaders: ", err);
+            console.error("[DEBUG] Fetch error:", err.message, err);
             // On error, use defaults
             setFastestTyper(defaultUser);
             setFastestChallenge(defaultUser2);
