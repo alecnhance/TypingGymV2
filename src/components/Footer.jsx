@@ -3,7 +3,7 @@ const Footer = () => {
 
     return (
         <footer className="w-full bg-headerGray border-t border-gray-700/50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
                     {/* Brand Section */}
                     <div className="col-span-1 md:col-span-2">
