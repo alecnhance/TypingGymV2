@@ -71,8 +71,8 @@ const Landing = () => {
             <div className='flex flex-col md:flex-row w-full h-[26%] gap-[3vw] justify-center '>
                 <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3  shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
-                        <h2 className="font-extralight">Engaged Users</h2>
-                        <h2 className=" text-4xl ">{formatNumber(num_users)}</h2>
+                        <h2 className="font-extralight text-gray-400 text-sm uppercase tracking-wide">Engaged Users</h2>
+                        <h2 className="text-4xl text-white font-bold">{formatNumber(num_users)}</h2>
                     </div>
                     <div className="flex flex-col w-[50%] h-full justify-end items-end">
                         <div className="w-full flex justify-center">
@@ -84,29 +84,33 @@ const Landing = () => {
                 </div>
                 <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] px-[1.5vw] gap-3 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
-                        <h2 className="font-extralight">Words Typed</h2>
-                        <h2 className=" text-4xl ">{formatNumber(total_words)}</h2>
+                        <h2 className="font-extralight text-gray-400 text-sm uppercase tracking-wide">Words Typed</h2>
+                        <h2 className="text-4xl text-white font-bold">{formatNumber(total_words)}</h2>
                     </div>
                     <div className="flex flex-col w-[50%] h-full justify-end items-end">
-                        <img src={keyboard} className="invert aspect-square w-[50%]"/>
+                        <div className="w-[50%] aspect-square rounded-full bg-navOrange/10 flex items-center justify-center shadow-lg shadow-navOrange/20">
+                            <img src={keyboard} className="invert w-10 h-10 opacity-80"/>
+                        </div>
                     </div>
                 </div>
                 <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500'>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
-                        <h2 className="font-extralight">Daily Challengers</h2>
-                        <h2 className=" text-4xl ">{formatNumber(daily_challengers)}</h2>
+                        <h2 className="font-extralight text-gray-400 text-sm uppercase tracking-wide">Daily Challengers</h2>
+                        <h2 className="text-4xl text-white font-bold">{formatNumber(daily_challengers)}</h2>
                     </div>
                     <div className="flex flex-col w-[50%] h-full justify-end items-end pr-[1.5vw]">
-                        <img src={checkMark} className="invert aspect-square w-[50%]"/>
+                        <div className="w-[50%] aspect-square rounded-full bg-navOrange/10 flex items-center justify-center shadow-lg shadow-navOrange/20">
+                            <img src={checkMark} className="invert w-10 h-10 opacity-80"/>
+                        </div>
                     </div>
                 </div>
-                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500' onClick={navigateToPractice}>
+                <div className='flex bg-headerGray  w-full md:w-[20%] rounded-3xl  text-left justify-end py-[4vh] pl-[1.5vw] gap-3 shadow-lg shadow-white/20 hover:shadow-orange-500/20 hover:scale-[1.02] duration-500 cursor-pointer group' onClick={navigateToPractice}>
                     <div className="flex flex-col w-[50%] h-full justify-end gap-[1.5vh]">
-                        <h2 className="font-extralight">Guest Mode</h2>
-                        <h2 className=" text-4xl ">Practice</h2>
+                        <h2 className="font-extralight text-gray-400 text-sm uppercase tracking-wide">Guest Mode</h2>
+                        <h2 className="text-4xl text-white font-bold">Practice</h2>
                     </div>
                     <div className="flex flex-col w-[50%] h-full justify-top items-end pr-[1.5vw] ">
-                        <ChevronRight className=" aspect-square w-[60%]"/>
+                        <ChevronRight className="aspect-square w-[60%] transition-transform duration-300 group-hover:translate-x-1"/>
                     </div>
                 </div>
             </div>
