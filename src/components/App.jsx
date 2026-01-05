@@ -61,9 +61,8 @@ const App = () => {
               <Route path="/stats" element={<Stats />} />
               <Route path="/user" element={<UserPage />}/>
               <Route path="/practice" element={<Practice />}/>
+              <Route path="/challenge" element={<Challenge />} />
             </Route>
-
-            <Route path='/challenge' element={<Challenge />} />
             
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

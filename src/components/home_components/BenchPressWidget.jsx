@@ -20,7 +20,7 @@ const BenchPressWidget = () => {
 
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/challenge');
+    navigate('/challenge', { state: { fromButton: true } });
   }
 
   return (
