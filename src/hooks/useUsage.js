@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export function useUsage() {
     const [usage, setUsage] = useState(null);
@@ -7,7 +8,7 @@ export function useUsage() {
     const fetchUsage = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/site/usage', {
+            const res = await fetch(`${API_BASE_URL}/api/site/usage`, {
                 method: 'GET',
             });
             if (!res.ok) {

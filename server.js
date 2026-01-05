@@ -26,9 +26,9 @@ dotenv.config();
 // Initialize Clerk with your secret key
 const clerkClient = Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
 
-// CORS headers
+// CORS headers - allow both localhost (dev) and production frontend
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'http://localhost:5173',
+  'Access-Control-Allow-Origin': process.env.FRONTEND_URL || 'http://localhost:5173',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Max-Age': '86400', // 24 hours
@@ -140,7 +140,7 @@ const server = http.createServer(async (req, res) => {
 // }
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+  console.log(`Server running on port ${PORT}`);
 });

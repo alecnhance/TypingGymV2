@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export function useAchievements() {
     const [loading, setLoading] = useState(true);
@@ -9,7 +10,7 @@ export function useAchievements() {
         setLoading(true);
         try {
             const token = await getToken();
-            const result = await fetch('api/users/me/achievements', {
+            const result = await fetch(`${API_BASE_URL}/api/users/me/achievements`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`

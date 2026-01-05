@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import { API_BASE_URL } from '../utils/api.js';
 
 export function useDailyStats() {
     const [stats, setStats] = useState([]);
@@ -10,7 +11,7 @@ export function useDailyStats() {
         setLoading(true);
         try {
             const token = await getToken();
-            const result = await fetch('api/daily/stats', {
+            const result = await fetch(`${API_BASE_URL}/api/daily/stats`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

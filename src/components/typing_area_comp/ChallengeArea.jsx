@@ -60,7 +60,8 @@ const ChallengeArea = () => {
         // Fetch the daily prompt
         const fetchDailyPrompt = async () => {
             try {
-                const response = await fetch('/api/daily/prompt');
+                const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+                const response = await fetch(`${API_BASE_URL}/api/daily/prompt`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch daily prompt');
                 }
@@ -166,7 +167,8 @@ const ChallengeArea = () => {
         };
         try {
             const token = await getToken();
-            const res = await fetch('/api/users/me', {
+            const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+            const res = await fetch(`${API_BASE_URL}/api/users/me`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

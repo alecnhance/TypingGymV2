@@ -1,5 +1,6 @@
 import { useAuth } from '@clerk/clerk-react';
 import { useState, useCallback, useEffect } from 'react';
+import { API_BASE_URL } from '../utils/api.js';
 import walle from '../assets/wallee.jpg';
 import r2d2 from '../assets/r2d2.jpg';
 import baymax from '../assets/baymax.jpg';
@@ -38,7 +39,7 @@ export function useDailyLeaders() {
         
         try {
             const token = await getToken();
-            const result = await fetch('api/daily/getDailyLeaders', {
+            const result = await fetch(`${API_BASE_URL}/api/daily/getDailyLeaders`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
