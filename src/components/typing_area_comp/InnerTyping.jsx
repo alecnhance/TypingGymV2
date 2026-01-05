@@ -124,7 +124,7 @@ const InnerTyping = React.forwardRef(
         }
     }
  
-    const handleInputChange = (event) => {
+    const handleInputChange = async (event) => {
         const len = event.target.value.length;
         if (inputText.length === 0 && len > 0 && startRef.current === null) {
             startTimer();
@@ -142,10 +142,13 @@ const InnerTyping = React.forwardRef(
                     const acc = numTyped > 0 ? Math.floor(((numTyped - numWrong) / numTyped) * 100) : 100;
                     const startISO = new Date(startRef.current).toISOString();
                     const endISO = new Date(Date.now()).toISOString();
-                    updateTypingHistory(prompt.length, numTyped, keyAccuracyRef.current, startISO, endISO, acc); 
                     endTimer();
                     if (isDaily) {
+                        // Wait for the POST to complete before navigating to ensure DB update is committed
+                        await updateTypingHistory(prompt.length, numTyped, keyAccuracyRef.current, startISO, endISO, acc);
                         navigate("/home");
+                    } else {
+                        updateTypingHistory(prompt.length, numTyped, keyAccuracyRef.current, startISO, endISO, acc);
                     }
                 }
                 if (colorDict[len - 1] === 'text-red-500') {
