@@ -1,78 +1,196 @@
-# Typing Gym
+# 🏋️ Typing Gym
 
-A modern typing practice app with progress tracking, daily challenges, and detailed stats (WPM graph, typing calendar, key accuracy). Built with React + Vite on the frontend and a lightweight Node HTTP server + Postgres on the backend, secured with Clerk authentication.
+> **A full-stack typing practice platform with gamification, real-time analytics, and social features**
 
-## Project status
-- The database is currently offline to avoid hosting costs.
-- Affected: sign-in, saving progress, stats/history/graphs, any user-specific data.
-- Still works: the frontend UI and local/demo interactions.
-- If you see "Network/500" errors, it's because the API depends on the database.
+## 🌐 **Live Application**
 
-## Tech Stack
-- **Frontend**: React 19, Vite, TailwindCSS, Recharts, Chart.js
-- **Backend**: Node (native `http`), Postgres (`pg`)
-- **Auth**: Clerk (`@clerk/clerk-react`, `@clerk/clerk-sdk-node`)
-- **Webhooks**: Svix (for Clerk webhooks)
+### **[👉 Try Typing Gym Now 👈](https://typinggymv2-production.up.railway.app/home)**
 
-## Features
-- **Typing practice** with accuracy and WPM tracking
-- **Stats dashboard**: WPM over time, typing calendar, key accuracy
-- **Daily challenge** and community distribution graph
-- **User profiles** powered by Clerk
+**Production URL:** https://typinggymv2-production.up.railway.app/home
 
-## Getting Started
+---
+
+## 📋 Overview
+
+**Typing Gym** is a comprehensive, production-ready typing practice application that combines real-time performance tracking, gamification elements, and social features to help users improve their typing skills. Built with modern web technologies, the platform offers a complete typing experience from practice sessions to detailed analytics and competitive challenges.
+
+## ✨ Key Features
+
+### 🎯 **Core Functionality**
+- **Customizable Typing Practice** - Practice with Random words, Jumble mode, or AI-generated prompts
+- **Daily Challenges** - Compete in daily typing challenges with community leaderboards
+- **Real-time Performance Tracking** - Live WPM (Words Per Minute) and accuracy calculations
+- **Comprehensive Statistics Dashboard** - Track progress with detailed analytics
+
+### 📊 **Analytics & Insights**
+- **WPM Time-Series Graphs** - Visualize typing speed improvements over time using Chart.js
+- **Typing Calendar** - Heatmap visualization of practice frequency
+- **Key Accuracy Heatmap** - Interactive keyboard visualization showing accuracy per key
+- **Summary Statistics** - Total practice time, average WPM, best WPM, and more
+
+### 🏆 **Gamification**
+- **Achievement System** - 20+ unlockable achievements for milestones (Speed Demon, Perfect Accuracy, Consistency Master, etc.)
+- **Streak Tracking** - Daily practice streaks with visual indicators
+- **Leaderboards** - Daily challenge rankings and community statistics
+- **Activity Feed** - Recent typing sessions and accomplishments
+
+### 👥 **Social & Community Features**
+- **Community Graph** - Real-time visualization of community activity and average WPM
+- **Daily Challenge Leaderboard** - See how you rank against other users
+- **User Profiles** - Personalized profiles with statistics and achievements
+
+### 🎨 **User Experience**
+- **Modern, Responsive UI** - Built with TailwindCSS and Framer Motion animations
+- **Smooth Animations** - Polished interactions and transitions throughout
+- **Dark Theme** - Eye-friendly dark mode interface
+- **Mobile-Responsive** - Works seamlessly across desktop and mobile devices
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+- **React 19** - Latest React with modern hooks and patterns
+- **Vite** - Lightning-fast build tool and dev server
+- **TailwindCSS** - Utility-first CSS framework
+- **Framer Motion** - Advanced animation library
+- **Chart.js & Recharts** - Data visualization libraries
+- **React Router v7** - Client-side routing
+- **Material-UI** - Component library for enhanced UI elements
+
+### **Backend**
+- **Node.js** - Native HTTP server (no Express overhead)
+- **PostgreSQL** - Robust relational database
+- **Clerk** - Enterprise-grade authentication and user management
+- **Svix** - Webhook verification for secure event handling
+
+### **Infrastructure & Deployment**
+- **Railway** - Production deployment platform
+- **WebSockets** - Real-time communication support (infrastructure ready)
+- **RESTful API** - Well-structured API endpoints
+- **CORS** - Properly configured for production
+
+## 🏗️ Architecture
+
+### **Frontend Architecture**
+- Component-based React architecture with custom hooks
+- Separation of concerns: pages, components, hooks, and utilities
+- Custom hooks for data fetching and state management
+- Context API for global state (user context)
+
+### **Backend Architecture**
+- Lightweight Node.js HTTP server
+- RESTful API design with clear route structure
+- Middleware-based authentication using Clerk
+- Webhook handlers for user lifecycle events
+- Database abstraction layer
+
+### **Database Schema**
+- **typed_prompts** - Core typing session data
+- **key_accuracy_per_prompt** - Per-key accuracy tracking
+- **Achievement tracking** - User milestone data
+- **Daily challenge data** - Challenge submissions and leaderboards
+
+## 📁 Project Structure
+
+```
+typing-gym/
+├── api/                    # Backend API route handlers
+│   ├── daily/             # Daily challenge endpoints
+│   ├── practice/          # Practice session endpoints
+│   ├── site/              # Site-wide statistics
+│   └── users/             # User-specific endpoints
+├── handlers/              # User lifecycle event handlers
+├── webhooks/              # Clerk webhook handlers
+├── src/
+│   ├── components/        # React components
+│   │   ├── home_components/    # Home page widgets
+│   │   ├── landing_components/ # Landing page components
+│   │   ├── stat_components/    # Statistics dashboard components
+│   │   └── typing_area_comp/   # Typing interface components
+│   ├── hooks/             # Custom React hooks
+│   ├── pages/              # Page components
+│   ├── styles/             # Global styles
+│   └── utils/              # Utility functions
+├── server.js              # Node.js HTTP server
+└── db.js                  # PostgreSQL client
+```
+
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
-- Postgres database
-- A Clerk application (to obtain publishable and secret keys)
+- PostgreSQL database
+- Clerk account (for authentication)
 
-### 1) Clone and install
+### Installation
+
+1. **Clone the repository**
 ```bash
 git clone https://github.com/alecnhance/TypingGymV2.git
 cd TypingGymV2/typing-gym
 npm install
 ```
 
-### 2) Configure environment
-Create a `.env` file in the project root with:
+2. **Configure environment variables**
+Create a `.env` file in the project root:
 ```bash
-# Postgres connection string
+# Database
 DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DB_NAME
 
-# Clerk
+# Clerk Authentication
 CLERK_SECRET_KEY=sk_test_...
 CLERK_WEBHOOK_SECRET=whsec_...
-
-# Frontend (Vite)
 VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
+
+# Frontend URL (for CORS)
+FRONTEND_URL=http://localhost:5173
 ```
 
-- The frontend reads `VITE_CLERK_PUBLISHABLE_KEY` in `src/main.jsx`.
-- The backend uses `CLERK_SECRET_KEY` for verifying JWTs and `CLERK_WEBHOOK_SECRET` for webhook verification.
-- The DB client reads `DATABASE_URL` from `db.js`.
+3. **Set up the database**
+Run the SQL schema to create necessary tables (see Database section below).
 
-### 3) Run the app (two terminals)
-- Terminal A: start the backend server (port `3000`)
+4. **Start the development servers**
+
+Terminal 1 - Backend:
 ```bash
 node server.js
 ```
-- Terminal B: start the Vite dev server (port `5173`)
+
+Terminal 2 - Frontend:
 ```bash
 npm run dev
 ```
 
-Open the app at `http://localhost:5173`.
+5. **Open the application**
+Navigate to `http://localhost:5173`
 
-Notes:
-- `vite.config.js` proxies `/api` and `/webhooks` to `http://localhost:3000`.
-- `server.js` sets CORS to allow `http://localhost:5173` in development.
+## 📊 API Endpoints
 
-## Database
-This project expects at least the following tables (inferred from usage):
+### Public Endpoints
+- `GET /api/daily/prompt` - Get today's daily challenge prompt
+- `GET /api/daily/getDailyLeaders` - Get daily challenge leaderboard
+- `GET /api/site/usage` - Get site-wide usage statistics
+- `GET /api/practice/getGeneratedPrompt` - Generate AI typing prompt
+
+### Authenticated Endpoints
+- `GET /api/users/me` - Get authenticated user profile
+- `POST /api/users/me` - Submit completed typing session
+- `GET /api/users/me/keyAccuracy` - Get per-key accuracy statistics
+- `GET /api/users/me/dates` - Get practice dates for calendar
+- `GET /api/users/me/wpmGraph` - Get WPM time-series data
+- `GET /api/users/me/summaryStats` - Get summary statistics
+- `GET /api/users/me/daily` - Get user's daily challenge status
+- `GET /api/users/me/achievements` - Get user achievements
+- `GET /api/users/me/activity` - Get recent activity
+- `GET /api/daily/stats` - Get daily challenge statistics
+
+### Webhooks
+- `POST /webhooks/clerk` - Clerk user lifecycle webhooks
+
+## 🗄️ Database Schema
+
 ```sql
 -- Core typing sessions
-CREATE TABLE IF NOT EXISTS typed_prompts (
+CREATE TABLE typed_prompts (
   id SERIAL PRIMARY KEY,
   user_id TEXT NOT NULL,
   started_at TIMESTAMPTZ NOT NULL,
@@ -82,8 +200,8 @@ CREATE TABLE IF NOT EXISTS typed_prompts (
   accuracy NUMERIC NOT NULL
 );
 
--- Per-key accuracy for each session
-CREATE TABLE IF NOT EXISTS key_accuracy_per_prompt (
+-- Per-key accuracy tracking
+CREATE TABLE key_accuracy_per_prompt (
   id SERIAL PRIMARY KEY,
   typed_prompt_id INTEGER NOT NULL REFERENCES typed_prompts(id) ON DELETE CASCADE,
   key TEXT NOT NULL,
@@ -91,75 +209,66 @@ CREATE TABLE IF NOT EXISTS key_accuracy_per_prompt (
   correct_presses INTEGER NOT NULL
 );
 ```
-Adjust types/indexes as needed for your environment.
 
-## Authentication
-All protected API routes expect a **Bearer** token from Clerk. On the frontend, you can obtain a token via `useAuth().getToken()` and send it in the `Authorization` header.
+## 🔐 Authentication
 
-## API Overview (dev URLs)
-Base URL: `http://localhost:3000`
+The application uses **Clerk** for authentication:
+- Secure JWT-based authentication
+- Protected API routes with Bearer token validation
+- User profile management
+- Webhook integration for user lifecycle events
 
-All endpoints below require `Authorization: Bearer <JWT>` unless stated.
+All protected endpoints require an `Authorization: Bearer <JWT>` header.
 
-- `GET /api/users/me` — returns the authenticated user profile/data used by the app
-- `POST /api/users/me` — submits a completed typing session
-  - Body example:
-    ```json
-    {
-      "start": "2025-01-01T12:00:00.000Z",
-      "end": "2025-01-01T12:01:00.000Z",
-      "numChars": 250,
-      "wpm": 70,
-      "acc": 96,
-      "keyDict": { "a": { "total": 10, "correct": 9 } }
-    }
-    ```
-- `GET /api/users/me/keyAccuracy` — key accuracy stats aggregated for the user
-- `GET /api/users/me/dates` — practice dates for the typing calendar
-- `GET /api/users/me/wpmGraph` — time-series WPM data
-- `GET /api/users/me/summaryStats` — summary metrics for the dashboard
-- `POST /webhooks/clerk` — Clerk webhook endpoint (no auth; verified via `CLERK_WEBHOOK_SECRET`)
+## 🎯 Key Accomplishments
 
-Example request (replace `TOKEN` with a valid Clerk JWT):
-```bash
-curl -H "Authorization: Bearer TOKEN" \
-  http://localhost:3000/api/users/me/wpmGraph
-```
+- ✅ **Full-stack application** - Complete frontend and backend implementation
+- ✅ **Production deployment** - Live on Railway with proper CORS and security
+- ✅ **Real-time analytics** - Comprehensive data visualization and tracking
+- ✅ **Gamification system** - Achievement system with 20+ milestones
+- ✅ **Social features** - Leaderboards and community statistics
+- ✅ **Modern UI/UX** - Polished interface with animations and responsive design
+- ✅ **Scalable architecture** - Clean code structure and separation of concerns
+- ✅ **Performance optimized** - Efficient data fetching and state management
+- ✅ **Type-safe patterns** - Well-structured React components and hooks
 
-## Development Notes
-- Frontend config lives under `src/` (entry `src/main.jsx`, app root `src/components/App.jsx`)
-- Backend is a minimal server in `server.js` using Node’s built-in `http` module
-- CORS is set to allow `http://localhost:5173`; update for production as needed
-- WebSockets provider exists but is currently commented out in `src/main.jsx`
+## 📈 Performance Features
 
-## Scripts
+- Optimized re-renders with React hooks
+- Efficient database queries with proper indexing
+- Lazy loading and code splitting ready
+- Responsive design for all screen sizes
+- Fast API responses with native Node.js HTTP
+
+## 🔮 Future Enhancements
+
+- WebSocket integration for real-time multiplayer typing races
+- Additional practice modes (code typing, programming languages)
+- Social features (friends, challenges, sharing)
+- Mobile app version
+- Advanced analytics and insights
+
+## 📝 Scripts
+
 ```bash
 npm run dev      # Start Vite dev server
-npm run build    # Build frontend assets
+npm run build    # Build for production
 npm run preview  # Preview production build
-npm run lint     # Lint
+npm run lint     # Run ESLint
 ```
 
-## Project Structure (partial)
-```
-typing-gym/
-  api/                # Backend API route handlers
-  webhooks/           # Clerk webhook handler
-  handlers/           # User lifecycle handlers (created/updated/deleted)
-  src/                # Frontend React app
-    components/
-    hooks/
-    pages/
-    styles/
-  server.js           # Node HTTP server (port 3000)
-  db.js               # Postgres client (pg)
-  vite.config.js      # Dev server + proxy config
-```
+## 🤝 Contributing
 
-## Deployment
-- Provide production values for all env vars
-- Update CORS in `server.js` to allow your deployed frontend URL
-- Serve the built frontend (`npm run build`) via your preferred host and run the Node server (or containerize both)
+This is a personal project, but suggestions and feedback are welcome!
 
-## License
+## 📄 License
+
 ISC
+
+## 👤 Author
+
+Built with ❤️ by [alecnhance](https://github.com/alecnhance)
+
+---
+
+**⭐ If you find this project interesting, please consider giving it a star!**
