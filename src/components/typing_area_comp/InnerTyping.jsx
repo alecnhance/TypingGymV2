@@ -138,7 +138,7 @@ const InnerTyping = React.forwardRef(
                 return;
             }
             if (prompt[len - 1] === newChar) {
-                if (len === prompt.length && redCount === 0) {
+                if (len === prompt.length && (redCount === 0 || (redCount ===1 && colorDict[len - 1] === 'text-red-500'))) {
                     const acc = numTyped > 0 ? Math.floor(((numTyped - numWrong) / numTyped) * 100) : 100;
                     const startISO = new Date(startRef.current).toISOString();
                     const endISO = new Date(Date.now()).toISOString();
