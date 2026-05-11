@@ -1,18 +1,12 @@
 # 🏋️ Typing Gym
 
-> **A full-stack typing practice platform with gamification, real-time analytics, and social features**
-
-## 🌐 **Live Application**
-
-### **[👉 Try Typing Gym Now 👈](https://typinggymv2-production.up.railway.app/home)**
-
-**Production URL:** https://typinggymv2-production.up.railway.app/home
-
----
+> **A full-stack typing practice platform with analytics, gamification, and social features**
 
 ## 📋 Overview
 
-**Typing Gym** is a comprehensive, production-ready typing practice application that combines real-time performance tracking, gamification elements, and social features to help users improve their typing skills. Built with modern web technologies, the platform offers a complete typing experience from practice sessions to detailed analytics and competitive challenges.
+**Typing Gym** is a full-stack typing practice application that combines performance tracking, gamification elements, and social features to help users improve their typing skills. Built with modern web technologies, the platform offers typing practice, detailed analytics, achievement systems, and competitive daily challenges.
+
+> Note: The live deployment is currently offline, but the project can be run locally using the setup instructions below.
 
 ## ✨ Key Features
 
@@ -35,7 +29,7 @@
 - **Activity Feed** - Recent typing sessions and accomplishments
 
 ### 👥 **Social & Community Features**
-- **Community Graph** - Real-time visualization of community activity and average WPM
+- **Community Graph** - Visualization of community activity and average WPM
 - **Daily Challenge Leaderboard** - See how you rank against other users
 - **User Profiles** - Personalized profiles with statistics and achievements
 
@@ -59,14 +53,14 @@
 ### **Backend**
 - **Node.js** - Native HTTP server (no Express overhead)
 - **PostgreSQL** - Robust relational database
-- **Clerk** - Enterprise-grade authentication and user management
+- **Clerk** - Authentication and user management
 - **Svix** - Webhook verification for secure event handling
 
 ### **Infrastructure & Deployment**
-- **Railway** - Production deployment platform
+- **Railway** - Cloud deployment platform
 - **WebSockets** - Real-time communication support (infrastructure ready)
 - **RESTful API** - Well-structured API endpoints
-- **CORS** - Properly configured for production
+- **CORS** - Configured for secure frontend/backend communication
 
 ## 🏗️ Architecture
 
@@ -91,7 +85,7 @@
 
 ## 📁 Project Structure
 
-```
+```text
 typing-gym/
 ├── api/                    # Backend API route handlers
 │   ├── daily/             # Daily challenge endpoints
@@ -107,9 +101,9 @@ typing-gym/
 │   │   ├── stat_components/    # Statistics dashboard components
 │   │   └── typing_area_comp/   # Typing interface components
 │   ├── hooks/             # Custom React hooks
-│   ├── pages/              # Page components
-│   ├── styles/             # Global styles
-│   └── utils/              # Utility functions
+│   ├── pages/             # Page components
+│   ├── styles/            # Global styles
+│   └── utils/             # Utility functions
 ├── server.js              # Node.js HTTP server
 └── db.js                  # PostgreSQL client
 ```
@@ -131,7 +125,9 @@ npm install
 ```
 
 2. **Configure environment variables**
+
 Create a `.env` file in the project root:
+
 ```bash
 # Database
 DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DB_NAME
@@ -146,6 +142,7 @@ FRONTEND_URL=http://localhost:5173
 ```
 
 3. **Set up the database**
+
 Run the SQL schema to create necessary tables (see Database section below).
 
 4. **Start the development servers**
@@ -161,6 +158,7 @@ npm run dev
 ```
 
 5. **Open the application**
+
 Navigate to `http://localhost:5173`
 
 ## 📊 API Endpoints
@@ -223,7 +221,7 @@ All protected endpoints require an `Authorization: Bearer <JWT>` header.
 ## 🎯 Key Accomplishments
 
 - ✅ **Full-stack application** - Complete frontend and backend implementation
-- ✅ **Production deployment** - Live on Railway with proper CORS and security
+- ✅ **Deployment-ready architecture** - Configured for Railway deployment
 - ✅ **Real-time analytics** - Comprehensive data visualization and tracking
 - ✅ **Gamification system** - Achievement system with 20+ milestones
 - ✅ **Social features** - Leaderboards and community statistics
