@@ -49,7 +49,7 @@ const Header = () => {
         <header className="flex w-full justify-between items-center p-4 bg-headerGray text-white ">
             <div className="flex items-center space-x-2">
                 <img src={dumbbell} alt="Logo" className="w-6 h-6 invert" />
-                <h1 className="text-lg">TypeGym</h1>
+                <h1 className="text-lg">TypingGym</h1>
             </div>
             <nav className="space-x-6">
                 <NavLink

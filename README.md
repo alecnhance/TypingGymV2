@@ -1,12 +1,12 @@
-# 🏋️ Typing Gym
+# 🏋️ TypingGym
 
 > **A full-stack typing practice platform with analytics, gamification, and social features**
 
 ## 📋 Overview
 
-**Typing Gym** is a full-stack typing practice application that combines performance tracking, gamification elements, and social features to help users improve their typing skills. Built with modern web technologies, the platform offers typing practice, detailed analytics, achievement systems, and competitive daily challenges.
+🔗 **Live app:** [typinggymv2-production.up.railway.app](https://typinggymv2-production.up.railway.app/)
 
-> Note: The live deployment is currently offline, but the project can be run locally using the setup instructions below.
+**TypingGym** is a full-stack typing practice application that combines performance tracking, gamification elements, and social features to help users improve their typing skills. Built with modern web technologies, the platform offers typing practice, detailed analytics, achievement systems, and competitive daily challenges. Try it live at the link above, or follow the setup instructions below to run it locally.
 
 ## ✨ Key Features
 
